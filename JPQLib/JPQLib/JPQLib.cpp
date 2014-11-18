@@ -26,9 +26,9 @@ JPQLib::JPQLib()
     printf("Index:%llu\n", hash % HASHSIZE);*/
     
     //CreateJPQPackage("/Users/jared/Desktop/Test.JPQ", 4);
-    PrintLocalVariables();
     LoadJPQPackage("/Users/jared/Desktop/Test.JPQ");
-    AddFile("/Users/jared/Desktop/abc.txt", "\\SupWorld\\Images/LocalImages/abc.txt");
+    //PrintLocalVariables();
+    AddFile("/Users/jared/Desktop/JonesJ_PA3.asm", "\\SupWorld\\Images/LocalImages/JonesJ_PA4.asm");
 }
 
 void JPQLib::AddFile(std::string localPath, std::string jpqIndexPath)
