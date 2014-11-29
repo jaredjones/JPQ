@@ -6,13 +6,12 @@
 //  Copyright (c) 2014 Uvora. All rights reserved.
 //
 
-#import "JPQLibCPlusPlusBridge.h"
+#import "JPQLibBridge.h"
 #import "JPQLib.h"
 
 JPQLib* _jpqLib;
 
-
-@implementation JPQLibCPlusPlusBridge
+@implementation JPQLibBridge
 - (instancetype)init
 {
     self = [super init];
@@ -21,4 +20,5 @@ JPQLib* _jpqLib;
     }
     return self;
 }
+
 @end

@@ -7,23 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F12AEF31A298A9600E7625C /* JPQFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F12AEF11A298A9600E7625C /* JPQFile.cpp */; };
+		7F12AEF41A298A9600E7625C /* JPQFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F12AEF21A298A9600E7625C /* JPQFile.h */; };
 		7FA7C8AB1A06A7070061BDCB /* JPQLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FA7C8AA1A06A7070061BDCB /* JPQLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7FA7C8AF1A06A7070061BDCB /* JPQLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8AE1A06A7070061BDCB /* JPQLib.cpp */; };
 		7FA7C8BD1A06A7510061BDCB /* SpookyV2.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FA7C8BB1A06A7510061BDCB /* SpookyV2.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		7FA7C8BE1A06A7510061BDCB /* SpookyV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8BC1A06A7510061BDCB /* SpookyV2.cpp */; };
-		7FA7C8C51A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FA7C8C31A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7FA7C8C61A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8C41A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.mm */; };
+		7FA7C8C51A06A9DC0061BDCB /* JPQLibBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FA7C8C31A06A9DC0061BDCB /* JPQLibBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7FA7C8C61A06A9DC0061BDCB /* JPQLibBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8C41A06A9DC0061BDCB /* JPQLibBridge.mm */; };
 		7FFB11321A07216300A02520 /* JPQUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FFB11311A07216300A02520 /* JPQUtilities.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F12AEF11A298A9600E7625C /* JPQFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JPQFile.cpp; sourceTree = "<group>"; };
+		7F12AEF21A298A9600E7625C /* JPQFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPQFile.h; sourceTree = "<group>"; };
 		7FA7C8A71A06A7070061BDCB /* libJPQLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJPQLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7C8AA1A06A7070061BDCB /* JPQLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPQLib.h; sourceTree = "<group>"; };
 		7FA7C8AE1A06A7070061BDCB /* JPQLib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JPQLib.cpp; sourceTree = "<group>"; };
 		7FA7C8BB1A06A7510061BDCB /* SpookyV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpookyV2.h; sourceTree = "<group>"; };
 		7FA7C8BC1A06A7510061BDCB /* SpookyV2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpookyV2.cpp; sourceTree = "<group>"; };
-		7FA7C8C31A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPQLibCPlusPlusBridge.h; sourceTree = "<group>"; };
-		7FA7C8C41A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JPQLibCPlusPlusBridge.mm; sourceTree = "<group>"; };
+		7FA7C8C31A06A9DC0061BDCB /* JPQLibBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPQLibBridge.h; sourceTree = "<group>"; };
+		7FA7C8C41A06A9DC0061BDCB /* JPQLibBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JPQLibBridge.mm; sourceTree = "<group>"; };
 		7FA7C8D11A06DE4F0061BDCB /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		7FFB11311A07216300A02520 /* JPQUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPQUtilities.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,9 +67,11 @@
 				7FA7C8D11A06DE4F0061BDCB /* Common.h */,
 				7FA7C8AA1A06A7070061BDCB /* JPQLib.h */,
 				7FA7C8AE1A06A7070061BDCB /* JPQLib.cpp */,
+				7F12AEF21A298A9600E7625C /* JPQFile.h */,
+				7F12AEF11A298A9600E7625C /* JPQFile.cpp */,
 				7FFB11311A07216300A02520 /* JPQUtilities.h */,
-				7FA7C8C31A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.h */,
-				7FA7C8C41A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.mm */,
+				7FA7C8C31A06A9DC0061BDCB /* JPQLibBridge.h */,
+				7FA7C8C41A06A9DC0061BDCB /* JPQLibBridge.mm */,
 			);
 			path = JPQLib;
 			sourceTree = "<group>";
@@ -78,7 +84,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FA7C8AB1A06A7070061BDCB /* JPQLib.h in Headers */,
-				7FA7C8C51A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.h in Headers */,
+				7F12AEF41A298A9600E7625C /* JPQFile.h in Headers */,
+				7FA7C8C51A06A9DC0061BDCB /* JPQLibBridge.h in Headers */,
 				7FA7C8BD1A06A7510061BDCB /* SpookyV2.h in Headers */,
 				7FFB11321A07216300A02520 /* JPQUtilities.h in Headers */,
 			);
@@ -142,7 +149,8 @@
 			files = (
 				7FA7C8BE1A06A7510061BDCB /* SpookyV2.cpp in Sources */,
 				7FA7C8AF1A06A7070061BDCB /* JPQLib.cpp in Sources */,
-				7FA7C8C61A06A9DC0061BDCB /* JPQLibCPlusPlusBridge.mm in Sources */,
+				7FA7C8C61A06A9DC0061BDCB /* JPQLibBridge.mm in Sources */,
+				7F12AEF31A298A9600E7625C /* JPQFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

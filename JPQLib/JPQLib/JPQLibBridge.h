@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JPQLibCPlusPlusBridge : NSObject
+@interface JPQLibBridge : NSObject
 - (instancetype)init;
 @end
