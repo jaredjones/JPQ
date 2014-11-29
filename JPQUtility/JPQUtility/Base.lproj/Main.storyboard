@@ -719,6 +719,9 @@
                                                 <segment image="NSAddTemplate" width="34"/>
                                             </segments>
                                         </segmentedCell>
+                                        <connections>
+                                            <action selector="addJPQSegmentAction:" target="XfG-lQ-9wD" id="zM8-6h-Xnb"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                                 <constraints>
@@ -839,6 +842,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addJPQSegmentButton" destination="gGA-Lm-Ku5" id="yYX-pO-HXd"/>
+                        <outlet property="loadJPQSegmentButton" destination="0fM-W8-W3O" id="Ce8-xo-oid"/>
                         <outlet property="toolbarVisualEffectsView" destination="ds0-ha-Frb" id="g6A-Zh-GIl"/>
                     </connections>
                 </viewController>
