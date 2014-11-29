@@ -42,15 +42,17 @@ class ViewController: NSViewController {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
             self.savePanel!.beginWithCompletionHandler { (result: Int) -> Void in
-                
-                if let fileLocation = self.savePanel?.URL?.path
+                if result == NSFileHandlingPanelOKButton
                 {
-                    self.saveFile(fileLocation, replace: false)
-                }
-                else
-                {
-                    self.dispatchStandardAlert("JPQFile Failed to Save!", body: "The file location you're attemping to save to is invalid aka nil.",
-                        style: NSAlertStyle.WarningAlertStyle)
+                    if let fileLocation = self.savePanel?.URL?.path
+                    {
+                        self.saveFile(fileLocation, replace: false)
+                    }
+                    else
+                    {
+                        self.dispatchStandardAlert("JPQFile Failed to Save!", body: "The file location you're attemping to save to is invalid aka nil.",
+                            style: NSAlertStyle.WarningAlertStyle)
+                    }
                 }
                 self.addJPQSegmentButton.enabled = true
             }
