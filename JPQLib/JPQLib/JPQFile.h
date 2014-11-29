@@ -17,7 +17,10 @@ class JPQFile
 {
     friend class JPQLib;
 private:
-    JPQFile();
+    JPQFile()
+    {
+        
+    }
     std::string _filePath;
     uint16 _fileVersion;
     uint32 _maxNumberOfFiles;

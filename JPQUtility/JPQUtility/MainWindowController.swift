@@ -10,18 +10,12 @@ import Cocoa
 
 class MainWindowController: NSWindowController {
 
-    
-    
     override func awakeFromNib() {
-        
         self.window!.styleMask = self.window!.styleMask | NSFullSizeContentViewWindowMask
         self.window!.titlebarAppearsTransparent = true
-
     }
     override func windowDidLoad() {
         super.windowDidLoad()
-        
-        
     }
 
 }

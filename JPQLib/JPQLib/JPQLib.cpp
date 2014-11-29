@@ -15,25 +15,25 @@
 #include "JPQFile.h"
 #include "JPQUtilities.h"
 
- JPQFile* JPQLib::CreateJPQPackage(std::string path, uint32 maxNumberOfFiles, uint16 version, uint8 filePositionSizeInBytes)
+ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, uint32 maxNumberOfFiles, uint16 version, uint8 filePositionSizeInBytes)
 {
     srand((unsigned int)time(0));
     JPQFile *newFile = new JPQFile();    
     
-    newFile->_filePath = path;
+    newFile->_filePath = localFilePath;
     newFile->_fileVersion = version;
     newFile->_maxNumberOfFiles = maxNumberOfFiles;
     newFile->_filePositionSizeInBytes = filePositionSizeInBytes;
     
     FILE *file;
-    if ((file = fopen(path.c_str(), "rb")))
+    if ((file = fopen(localFilePath.c_str(), "rb")))
     {
         fclose(file);
         printf("File already exists!\n");
         return nullptr;
     }
     
-    file = fopen(path.c_str(), "w+b");
+    file = fopen(localFilePath.c_str(), "w+b");
     if (!file)
     {
         printf("There was an error creating the file!");
@@ -103,17 +103,17 @@
     return newFile;
 }
 
-JPQFile* JPQLib::LoadJPQPackage(std::string path)
+JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
 {
     JPQFile *loadedFile = new JPQFile();
     
     FILE *jpqFile;
-    if (!(jpqFile = fopen(path.c_str(), "rb")))
+    if (!(jpqFile = fopen(localFilePath.c_str(), "rb")))
     {
         printf("Cannot open the JPQFile!\n");
         return nullptr;
     }
-    loadedFile->_filePath = path;
+    loadedFile->_filePath = localFilePath;
     
     int jpqSigLen = (int)strlen(JPQ_SIGNATURE);
     fseek(jpqFile, jpqSigLen, SEEK_SET);

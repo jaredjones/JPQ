@@ -30,8 +30,6 @@ class ViewController: NSViewController {
         toolbarVisualEffectsView.state = NSVisualEffectState.FollowsWindowActiveState
         toolbarVisualEffectsView.material = NSVisualEffectMaterial.Titlebar
         toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.BehindWindow
-        
-        var asdf = JPQLibCPlusPlusBridge()
         // Do any additional setup after loading the view.
     }
 
@@ -47,7 +45,10 @@ class ViewController: NSViewController {
                 
                 if let fileLocation = self.savePanel?.URL?.path
                 {
-                    println("\(fileLocation)\n")
+                    var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
+                        withMaxNumberOfFiles: nil,
+                        withVersion: nil,
+                        withFilePositionSizeInBytes: nil)
                 }
                 else
                 {
@@ -64,8 +65,6 @@ class ViewController: NSViewController {
             //dispatch_async must return void
             return
         })
-            
-        
         
         
     }
