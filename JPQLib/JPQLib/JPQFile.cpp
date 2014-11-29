@@ -114,10 +114,12 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     fclose(newFile);
     fclose(jpqFile);
+    _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
 void JPQFile::DisplayFileVariables()
 {
+    printf("####DISPLAYING FILE VARIABLES####\n");
     printf("_filePath:%s\n", _filePath.c_str());
     printf("_maxNumberOfFiles:%u\n", _maxNumberOfFiles);
     printf("_filePositionSizeInByte:%d\n",_filePositionSizeInBytes);
@@ -126,5 +128,12 @@ void JPQFile::DisplayFileVariables()
     printf("_hTBeginIndex:%llu\n",_hTBeginIndex);
     printf("_dataBlockIndex:%llu\n",_dataBlockIndex);
     printf("_dataBlockEnd:%llu\n",_dataBlockEnd);
+    printf("####DISPLAYING CLASS VARIABLES####\n");
+    printf("_errorCode:%u", _errorCode);
     
+}
+
+uint32 JPQFile::GetErrorCode()
+{
+    return _errorCode;
 }

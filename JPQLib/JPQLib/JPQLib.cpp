@@ -15,10 +15,10 @@
 #include "JPQFile.h"
 #include "JPQUtilities.h"
 
- JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, uint32 maxNumberOfFiles, uint16 version, uint8 filePositionSizeInBytes)
+JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile, uint32 maxNumberOfFiles, uint16 version, uint8 filePositionSizeInBytes)
 {
     srand((unsigned int)time(0));
-    JPQFile *newFile = new JPQFile();    
+    JPQFile *newFile = new JPQFile();
     
     newFile->_filePath = localFilePath;
     newFile->_fileVersion = version;
@@ -26,18 +26,23 @@
     newFile->_filePositionSizeInBytes = filePositionSizeInBytes;
     
     FILE *file;
-    if ((file = fopen(localFilePath.c_str(), "rb")))
+    if (!overwriteFile)
     {
-        fclose(file);
-        printf("File already exists!\n");
-        return nullptr;
+        if ((file = fopen(localFilePath.c_str(), "rb")))
+        {
+            fclose(file);
+            printf("The file you are trying to create already exists!\n");
+            newFile->_errorCode |= (uint32)JPQFileError::ALREADY_EXISTS;
+            return newFile;
+        }
     }
     
     file = fopen(localFilePath.c_str(), "w+b");
     if (!file)
     {
-        printf("There was an error creating the file!");
-        return nullptr;
+        printf("The OS has denied you write access to the location you've chosen!\n");
+        newFile->_errorCode |= (uint32)JPQFileError::WRITE_ACCESS_DENIED;
+        return newFile;
     }
     
     int jpqSigLen = (int)strlen(JPQ_SIGNATURE);
@@ -100,6 +105,7 @@
     fseek(file, newFile->_dataBlockEnd, SEEK_SET);
     
     fclose(file);
+    newFile->_errorCode = (uint32)JPQFileError::NO_ERROR;
     return newFile;
 }
 
@@ -110,8 +116,9 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     FILE *jpqFile;
     if (!(jpqFile = fopen(localFilePath.c_str(), "rb")))
     {
-        printf("Cannot open the JPQFile!\n");
-        return nullptr;
+        printf("The OS has denied you read access to the JPQFile you specified!\n");
+        loadedFile->_errorCode |= (uint32)JPQFileError::READ_ACCESS_DENIED;
+        return loadedFile;
     }
     loadedFile->_filePath = localFilePath;
     

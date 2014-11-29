@@ -26,13 +26,13 @@ class ViewController: NSViewController {
         savePanel!.allowsOtherFileTypes = false
         savePanel!.extensionHidden = false
         savePanel!.canCreateDirectories = true
-
+        
         toolbarVisualEffectsView.state = NSVisualEffectState.FollowsWindowActiveState
         toolbarVisualEffectsView.material = NSVisualEffectMaterial.Titlebar
         toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.BehindWindow
         // Do any additional setup after loading the view.
     }
-
+    
     @IBAction func addJPQSegmentAction(sender: NSSegmentedControl) {
         
         sender.enabled = false
@@ -45,19 +45,12 @@ class ViewController: NSViewController {
                 
                 if let fileLocation = self.savePanel?.URL?.path
                 {
-                    var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
-                        withMaxNumberOfFiles: nil,
-                        withVersion: nil,
-                        withFilePositionSizeInBytes: nil)
+                    self.saveFile(fileLocation, replace: false)
                 }
                 else
                 {
-                    let alert = NSAlert()
-                    alert.addButtonWithTitle("Continue")
-                    alert.messageText = "File Saving Failed!"
-                    alert.informativeText = "The file location you're attemping to save to is invalid aka nil."
-                    alert.alertStyle = NSAlertStyle.WarningAlertStyle
-                    alert.beginSheetModalForWindow(self.view.window!, modalDelegate: self, didEndSelector: nil, contextInfo: nil)
+                    self.dispatchStandardAlert("JPQFile Failed to Save!", body: "The file location you're attemping to save to is invalid aka nil.",
+                        style: NSAlertStyle.WarningAlertStyle)
                 }
                 self.addJPQSegmentButton.enabled = true
             }
@@ -65,16 +58,77 @@ class ViewController: NSViewController {
             //dispatch_async must return void
             return
         })
-        
-        
     }
     
-    override var representedObject: AnyObject? {
-        didSet {
-        // Update the view, if already loaded.
+    func saveFile(fileLocation:String, replace:Bool = false) -> Void
+    {
+        var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
+            withOverwriteFile: replace,
+            withMaxNumberOfFiles: nil,
+            withVersion: nil,
+            withFilePositionSizeInBytes: nil)
+        if ((jpqFile) != nil)
+        {
+            if jpqFile.errorCode != 0
+            {
+                switch jpqFile.errorCode
+                {
+                case 1:
+                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                        body: "An unknown error has occured that has prevented the JPQFile from saving.",
+                        style: NSAlertStyle.WarningAlertStyle)
+                    fallthrough
+                case 2:
+                    let alert = NSAlert()
+                    alert.addButtonWithTitle("Cancel")
+                    alert.addButtonWithTitle("Overwrite File");
+                    alert.messageText = "JPQFile Already Exists!"
+                    alert.informativeText = "The JPQFile already exists!\rAre you sure you want to overwrite the file?\rThere is no going back!"
+                    alert.alertStyle = NSAlertStyle.CriticalAlertStyle
+                    alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
+                        if NSModalResponse == NSAlertSecondButtonReturn
+                        {
+                            self.saveFile(fileLocation, replace: true)
+                        }
+                    })
+                    fallthrough
+                case 4:
+                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                        body: "OS X has denied you write access to the location you've chosen!",
+                        style: NSAlertStyle.WarningAlertStyle)
+                    fallthrough
+                case 8:
+                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                        body: "OS X has denied you read access to the location you've chosen!",
+                        style: NSAlertStyle.WarningAlertStyle)
+                default:
+                    break
+                }
+            }
+        }
+        else
+        {
+            self.dispatchStandardAlert("JPQFile Failed to Save!",
+                body: "An unknown error has occured that has prevented the file from saving. The JPQFile was returned as nil to the program.",
+                style: NSAlertStyle.WarningAlertStyle)
         }
     }
-
-
+    
+    func dispatchStandardAlert(title:String, body:String, style:NSAlertStyle)
+    {
+        let alert = NSAlert()
+        alert.addButtonWithTitle("Continue")
+        alert.messageText = title
+        alert.informativeText = body
+        alert.alertStyle = style
+        alert.beginSheetModalForWindow(self.view.window!, modalDelegate: self, didEndSelector: nil, contextInfo: nil)
+    }
+    override var representedObject: AnyObject? {
+        didSet {
+            // Update the view, if already loaded.
+        }
+    }
+    
+    
 }
 

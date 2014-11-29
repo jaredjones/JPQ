@@ -16,6 +16,8 @@
 class JPQFile
 {
     friend class JPQLib;
+public:
+    uint32 GetErrorCode();
 private:
     JPQFile()
     {
@@ -30,6 +32,8 @@ private:
     uint64 _hTBeginIndex;
     uint64 _dataBlockIndex;
     uint64 _dataBlockEnd;
+    
+    uint32 _errorCode = 0;
 public:
     void AddFile(std::string localFilePath, std::string jpqFilePath);
     void DisplayFileVariables();
