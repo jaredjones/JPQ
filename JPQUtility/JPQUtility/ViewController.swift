@@ -14,11 +14,13 @@ class ViewController: NSViewController {
     @IBOutlet weak var addJPQSegmentButton: NSSegmentedControl!
     @IBOutlet weak var loadJPQSegmentButton: NSSegmentedControl!
     @IBOutlet weak var fileTableScrollView: FileScrollView!
+    @IBOutlet weak var fileTableView: NSTableView!
     
     var savePanel:NSSavePanel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType))
         
         savePanel = NSSavePanel()
         savePanel!.nameFieldLabel = "JPQ Name:"
