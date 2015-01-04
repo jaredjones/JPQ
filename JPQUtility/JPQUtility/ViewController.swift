@@ -13,6 +13,7 @@ class ViewController: NSViewController {
     @IBOutlet var toolbarVisualEffectsView: NSVisualEffectView!
     @IBOutlet weak var addJPQSegmentButton: NSSegmentedControl!
     @IBOutlet weak var loadJPQSegmentButton: NSSegmentedControl!
+    @IBOutlet weak var fileTableScrollView: FileScrollView!
     
     var savePanel:NSSavePanel?
     
@@ -106,6 +107,10 @@ class ViewController: NSViewController {
                 default:
                     break
                 }
+            }
+            else
+            {
+                
             }
         }
         else
