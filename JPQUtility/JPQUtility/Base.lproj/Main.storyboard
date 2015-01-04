@@ -624,7 +624,7 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0fM-W8-W3O">
+                                    <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0fM-W8-W3O">
                                         <rect key="frame" x="78" y="19" width="40" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="Iwn-T3-Epr"/>
@@ -647,7 +647,7 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gGA-Lm-Ku5">
+                                    <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGA-Lm-Ku5">
                                         <rect key="frame" x="18" y="19" width="40" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="5TJ-rn-L3e"/>
@@ -682,8 +682,8 @@
                                     <rect key="frame" x="1" y="0.0" width="238" height="134"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="gnv-Hp-TB3" id="Jlc-NF-yJb" customClass="FileTableView" customModule="JPQUtility" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="224" height="19"/>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="gnv-Hp-TB3" id="Jlc-NF-yJb" customClass="FileTableView" customModule="JPQUtility" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="291" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -715,7 +715,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="size" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="MUx-2y-dmo">
+                                                <tableColumn identifier="size" width="413" minWidth="10" maxWidth="3.4028234663852886e+38" id="MUx-2y-dmo">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Size">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -741,7 +741,7 @@
                                     <rect key="frame" x="1" y="119" width="223" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="UqZ-az-5hU">
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="UqZ-az-5hU">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
