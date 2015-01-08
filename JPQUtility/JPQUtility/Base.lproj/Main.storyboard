@@ -605,10 +605,10 @@
             </objects>
             <point key="canvasLocation" x="10" y="350"/>
         </scene>
-        <!--View Controller-->
+        <!--File View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="JPQUtility" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="FileViewController" customModule="JPQUtility" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="640" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -616,64 +616,88 @@
                             <visualEffectView appearanceType="vibrantLight" blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="ds0-ha-Frb">
                                 <rect key="frame" x="0.0" y="406" width="640" height="74"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qhR-iq-hae">
-                                        <rect key="frame" x="70" y="5" width="57" height="14"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Load JPQ" id="VUw-1h-tub">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0fM-W8-W3O">
-                                        <rect key="frame" x="78" y="19" width="40" height="25"/>
+                                    <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dJR-H5-u37" userLabel="fileModifierView">
+                                        <rect key="frame" x="0.0" y="0.0" width="640" height="74"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xzd-Zk-IxA">
+                                                <rect key="frame" x="579" y="21" width="40" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="GUo-GB-SsZ"/>
+                                                    <constraint firstAttribute="width" constant="40" id="ylZ-4h-nkO"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yk6-mk-2LN">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fEK-Zq-FiY">
+                                                <rect key="frame" x="565" y="7" width="68" height="14"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Unload JPQ" id="QON-Og-nmR">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="Iwn-T3-Epr"/>
-                                            <constraint firstAttribute="width" constant="40" id="M0g-VU-qQP"/>
+                                            <constraint firstItem="xzd-Zk-IxA" firstAttribute="top" secondItem="dJR-H5-u37" secondAttribute="top" constant="29" id="8gz-nx-GaQ"/>
+                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="Dcq-hE-BKz"/>
+                                            <constraint firstAttribute="trailing" secondItem="xzd-Zk-IxA" secondAttribute="trailing" constant="21" id="KPb-Ve-fBo"/>
+                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="LaK-So-g7B"/>
+                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="gul-n2-ppN"/>
+                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="uAe-B5-WaC"/>
+                                            <constraint firstAttribute="trailing" secondItem="fEK-Zq-FiY" secondAttribute="trailing" constant="9" id="vYl-XY-Rwu"/>
                                         </constraints>
-                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="momentary" id="aB3-Xj-fxR">
-                                            <font key="font" metaFont="system"/>
-                                            <segments>
-                                                <segment image="NSListViewTemplate" width="34">
-                                                    <nil key="label"/>
-                                                </segment>
-                                            </segments>
-                                        </segmentedCell>
-                                    </segmentedControl>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="USg-wC-c09">
-                                        <rect key="frame" x="12" y="5" width="52" height="14"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add JPQ" id="0yD-e2-5rk">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGA-Lm-Ku5">
-                                        <rect key="frame" x="18" y="19" width="40" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="5TJ-rn-L3e"/>
-                                            <constraint firstAttribute="height" constant="22" id="dnL-Jn-3nO"/>
-                                        </constraints>
-                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="momentary" id="F47-Em-hgW">
-                                            <font key="font" metaFont="system"/>
-                                            <segments>
-                                                <segment image="NSAddTemplate" width="34"/>
-                                            </segments>
-                                        </segmentedCell>
-                                        <connections>
-                                            <action selector="addJPQSegmentAction:" target="XfG-lQ-9wD" id="zM8-6h-Xnb"/>
-                                        </connections>
-                                    </segmentedControl>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="kmZ-4j-7BL" userLabel="jpqModifierView">
+                                        <rect key="frame" x="0.0" y="0.0" width="640" height="74"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qhR-iq-hae">
+                                                <rect key="frame" x="76" y="7" width="57" height="14"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Load JPQ" id="VUw-1h-tub">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="USg-wC-c09">
+                                                <rect key="frame" x="18" y="7" width="52" height="14"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add JPQ" id="0yD-e2-5rk">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LW3-sE-rCV">
+                                                <rect key="frame" x="24" y="21" width="40" height="25"/>
+                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zwe-bM-IId">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="addJPQButtonAction:" target="XfG-lQ-9wD" id="EU7-rn-ZLl"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Vt-hV-c1C">
+                                                <rect key="frame" x="84" y="21" width="40" height="25"/>
+                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSListViewTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xAy-n8-aqk">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                            </button>
+                                        </subviews>
+                                    </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="qhR-iq-hae" firstAttribute="leading" secondItem="USg-wC-c09" secondAttribute="trailing" constant="10" id="45f-3z-x9j"/>
-                                    <constraint firstItem="0fM-W8-W3O" firstAttribute="leading" secondItem="gGA-Lm-Ku5" secondAttribute="trailing" constant="20" id="5qi-38-Geu"/>
+                                    <constraint firstItem="kmZ-4j-7BL" firstAttribute="top" secondItem="ds0-ha-Frb" secondAttribute="top" id="37K-1v-5Je"/>
                                     <constraint firstAttribute="height" constant="74" id="8zS-Ka-eYq"/>
-                                    <constraint firstItem="qhR-iq-hae" firstAttribute="top" secondItem="0fM-W8-W3O" secondAttribute="bottom" constant="2" id="Ekx-FO-Fvb"/>
-                                    <constraint firstItem="USg-wC-c09" firstAttribute="leading" secondItem="ds0-ha-Frb" secondAttribute="leading" constant="14" id="Fof-45-XGF"/>
-                                    <constraint firstItem="0fM-W8-W3O" firstAttribute="top" secondItem="ds0-ha-Frb" secondAttribute="top" constant="31" id="Laf-5c-pr4"/>
-                                    <constraint firstItem="gGA-Lm-Ku5" firstAttribute="leading" secondItem="ds0-ha-Frb" secondAttribute="leading" constant="18" id="kiM-L8-XWf"/>
-                                    <constraint firstItem="gGA-Lm-Ku5" firstAttribute="top" secondItem="ds0-ha-Frb" secondAttribute="top" constant="31" id="qsZ-d3-RBq"/>
-                                    <constraint firstItem="USg-wC-c09" firstAttribute="top" secondItem="gGA-Lm-Ku5" secondAttribute="bottom" constant="2" id="wMp-p4-eGz"/>
+                                    <constraint firstItem="dJR-H5-u37" firstAttribute="top" secondItem="ds0-ha-Frb" secondAttribute="top" id="Iv8-bv-aYH"/>
+                                    <constraint firstItem="dJR-H5-u37" firstAttribute="leading" secondItem="ds0-ha-Frb" secondAttribute="leading" id="KVM-65-eHG"/>
+                                    <constraint firstItem="kmZ-4j-7BL" firstAttribute="leading" secondItem="ds0-ha-Frb" secondAttribute="leading" id="NBF-XW-4el"/>
+                                    <constraint firstAttribute="trailing" secondItem="kmZ-4j-7BL" secondAttribute="trailing" id="ddf-QG-dMB"/>
+                                    <constraint firstAttribute="bottom" secondItem="kmZ-4j-7BL" secondAttribute="bottom" id="hcL-MM-cAy"/>
+                                    <constraint firstAttribute="bottom" secondItem="dJR-H5-u37" secondAttribute="bottom" id="m62-Ui-z4C"/>
+                                    <constraint firstAttribute="trailing" secondItem="dJR-H5-u37" secondAttribute="trailing" id="rGz-Qd-kgg"/>
                                 </constraints>
                             </visualEffectView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RVT-fR-V0P" customClass="FileScrollView" customModule="JPQUtility" customModuleProvider="target">
@@ -683,7 +707,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="gnv-Hp-TB3" id="Jlc-NF-yJb" customClass="FileTableView" customModule="JPQUtility" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="291" height="19"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="640" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -762,11 +786,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="addJPQSegmentButton" destination="gGA-Lm-Ku5" id="yYX-pO-HXd"/>
+                        <outlet property="addJPQButton" destination="LW3-sE-rCV" id="MAh-ku-79H"/>
+                        <outlet property="fileModifierView" destination="dJR-H5-u37" id="4GB-Hd-oMi"/>
                         <outlet property="fileTableScrollView" destination="RVT-fR-V0P" id="IqW-a9-zlP"/>
                         <outlet property="fileTableView" destination="Jlc-NF-yJb" id="Z96-RL-Lcc"/>
-                        <outlet property="loadJPQSegmentButton" destination="0fM-W8-W3O" id="Ce8-xo-oid"/>
+                        <outlet property="jpqModifierView" destination="kmZ-4j-7BL" id="2Kx-88-LBb"/>
+                        <outlet property="loadJPQButton" destination="2Vt-hV-c1C" id="5wS-oo-53I"/>
                         <outlet property="toolbarVisualEffectsView" destination="ds0-ha-Frb" id="g6A-Zh-GIl"/>
+                        <outlet property="unloadJPQButton" destination="xzd-Zk-IxA" id="9dz-v1-O5Z"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -778,5 +805,6 @@
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSListViewTemplate" width="14" height="10"/>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
     </resources>
 </document>

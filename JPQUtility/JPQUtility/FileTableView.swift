@@ -10,6 +10,8 @@ import Cocoa
 
 class FileTableView: NSTableView, NSDraggingDestination
 {
+    weak var controller:FileViewController?
+    
     override func draggingEntered(sender: NSDraggingInfo) -> NSDragOperation {
         return NSDragOperation.Copy
     }
@@ -25,8 +27,9 @@ class FileTableView: NSTableView, NSDraggingDestination
         {
             let fileURL = NSURL(fromPasteboard: pboard)
             let fileName = fileURL?.path
-            (self.delegate() as FileTableDelegateAndData).tableData.append(Dictionary(dictionaryLiteral: ("filename", fileName!)))
-            self.reloadData()
+            controller?.addFile(fileName!, replace: false)
+            //(self.delegate() as FileTableDelegateAndData).tableData.append(Dictionary(dictionaryLiteral: ("filename", fileName!)))
+            //self.reloadData()
         }
         
         return true

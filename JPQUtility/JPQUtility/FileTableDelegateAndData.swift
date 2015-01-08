@@ -14,7 +14,7 @@ class FileTableDelegateAndData: NSObject, NSTableViewDelegate, NSTableViewDataSo
     
     override init() {
         super.init()
-        tableData.append(["filename":"Steve Jobs", "datemodified":"01/01/1984", "size":"0"])
+        //tableData.append(["filename":"Steve Jobs", "datemodified":"01/01/1984", "size":"0"])
     }
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return tableData.count

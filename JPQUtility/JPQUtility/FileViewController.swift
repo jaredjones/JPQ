@@ -8,18 +8,23 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class FileViewController: NSViewController {
     
     @IBOutlet var toolbarVisualEffectsView: NSVisualEffectView!
-    @IBOutlet weak var addJPQSegmentButton: NSSegmentedControl!
-    @IBOutlet weak var loadJPQSegmentButton: NSSegmentedControl!
+    @IBOutlet weak var jpqModifierView: NSView!
+    @IBOutlet weak var fileModifierView: NSView!
+    @IBOutlet weak var addJPQButton: NSButton!
+    @IBOutlet weak var loadJPQButton: NSButton!
+    @IBOutlet weak var unloadJPQButton: NSButton!
     @IBOutlet weak var fileTableScrollView: FileScrollView!
-    @IBOutlet weak var fileTableView: NSTableView!
+    @IBOutlet weak var fileTableView: FileTableView!
     
     var savePanel:NSSavePanel?
+    var loadedJPQFile:JPQFileSwiftBridge?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fileTableView.controller = self
         fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType))
         
         savePanel = NSSavePanel()
@@ -36,10 +41,10 @@ class ViewController: NSViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func addJPQSegmentAction(sender: NSSegmentedControl) {
+    @IBAction func addJPQButtonAction(sender: NSButton) {
         
         sender.enabled = false
-        
+        loadJPQButton.enabled = false
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -57,7 +62,8 @@ class ViewController: NSViewController {
                             style: NSAlertStyle.WarningAlertStyle)
                     }
                 }
-                self.addJPQSegmentButton.enabled = true
+                self.addJPQButton.enabled = true
+                self.loadJPQButton.enabled = true
             }
             
             //dispatch_async must return void
@@ -112,7 +118,9 @@ class ViewController: NSViewController {
             }
             else
             {
-                
+                self.jpqModifierView.hidden = true
+                self.fileModifierView.hidden = false
+                self.loadedJPQFile = jpqFile
             }
         }
         else
@@ -121,6 +129,11 @@ class ViewController: NSViewController {
                 body: "An unknown error has occured that has prevented the file from saving. The JPQFile was returned as nil to the program.",
                 style: NSAlertStyle.WarningAlertStyle)
         }
+    }
+    
+    func addFile(fileLocation:String, replace:Bool = false) -> Void
+    {
+        
     }
     
     func dispatchStandardAlert(title:String, body:String, style:NSAlertStyle)
