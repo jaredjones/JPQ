@@ -1,6 +1,20 @@
-  NOTE! The Lesser GPL license V2 has been chosen for this software for various reasons. The first reason is that I am a strong proponent against the the communistic view of Richard Stallman's GPL license. I believe that people should be able to make money off of closed source software utilizing libraries that are open source. The LGPL has been chosen because it allows people use my library with the intention of making money with closed source software. The LGPL V2 has also been chosen over the V3 version so that it can be compatible with GPLv2. The only reason I have chosen LGPL instead of BSD is because I want any modifications made to the library to be provided back as open source software. The reason I'm requiring modifications of this library to be open source is because I want to continue to improve the library whenever possible.
+  NOTE! The Lesser GPL license V2 has been chosen for this software for various reasons.
+The first reason is that I am a strong proponent against the the communistic view of 
+Richard Stallman's GPL license. I believe that people should be able to make money off of 
+closed source software utilizing libraries that are open source. The LGPL has been chosen 
+because it allows people to use my library with the intention of making money with closed
+source software. The LGPL V2 has also been chosen over the V3 version so that it can be 
+compatible with GPLv2. The only reason I have chosen LGPL instead of BSD is because I want 
+any modifications made to the library to be provided back as open source software. The reason 
+I'm requiring modifications of this library to be open source is because I want to continue 
+to improve the library whenever possible.
 
-So to keep things simply put, feel free to use this library in proprietary software. If you make any changes to the library you must publish them back open source. I also do not care if this library is statically linked instead of dynamically linked. Feel free to use it in your project through any means necessary. If your company would like to use the library without the restrictions of LGPL please contact me with the reason why and if we come to a consensus, a redistribution of the software with a different license may be used with approval.
+So to keep things simply put, feel free to use this library in proprietary software. If you make 
+any changes to the library you must publish them back open source. I also do not care if this 
+library is statically linked instead of dynamically linked. Feel free to use it in your project 
+through any means necessary. If your company would like to use the library without the restrictions 
+of LGPL please contact me with the reason why and if we come to a consensus, a redistribution of 
+the software with a different license may be used with approval.
 
 This software is copyrighted and owned by Uvora LLC, a company located in the state of Texas.
 
