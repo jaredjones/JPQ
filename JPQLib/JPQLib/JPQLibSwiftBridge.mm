@@ -73,4 +73,14 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.file != nil)
+    {
+        JPQFile *file = (JPQFile*)_file;
+        delete file;
+        _file = nil;
+    }
+}
+
 @end

@@ -15,6 +15,7 @@
 @property void* file;
 @property uint32 errorCode;
 - (instancetype)init;
+- (void)dealloc;
 @end
 
 @interface JPQLibSwiftBridge : NSObject

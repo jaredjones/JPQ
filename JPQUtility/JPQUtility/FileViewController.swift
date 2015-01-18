@@ -71,6 +71,13 @@ class FileViewController: NSViewController {
         })
     }
     
+    @IBAction func unloadJPQPressed(sender: NSButton)
+    {
+        self.loadedJPQFile = nil;
+        self.jpqModifierView.hidden = false
+        self.fileModifierView.hidden = true
+    }
+    
     func saveFile(fileLocation:String, replace:Bool = false) -> Void
     {
         var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
@@ -88,7 +95,6 @@ class FileViewController: NSViewController {
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "An unknown error has occured that has prevented the JPQFile from saving.",
                         style: NSAlertStyle.WarningAlertStyle)
-                    fallthrough
                 case 2:
                     let alert = NSAlert()
                     alert.addButtonWithTitle("Cancel")
@@ -102,12 +108,10 @@ class FileViewController: NSViewController {
                             self.saveFile(fileLocation, replace: true)
                         }
                     })
-                    fallthrough
                 case 4:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you write access to the location you've chosen!",
                         style: NSAlertStyle.WarningAlertStyle)
-                    fallthrough
                 case 8:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you read access to the location you've chosen!",
