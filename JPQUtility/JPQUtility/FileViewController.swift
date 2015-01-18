@@ -42,9 +42,22 @@ class FileViewController: NSViewController {
     }
     
     @IBAction func addJPQButtonAction(sender: NSButton) {
+        let pop = NSPopover()
+        pop.contentViewController = NSViewController(nibName: "AddJPQPopover", bundle: nil)
+        //pop.contentViewController = (NSStoryboard(name: "AddJPQPopover", bundle: nil)?.instantiateControllerWithIdentifier("AddJPQPopoverVC") as NSViewController)
+        // Since running the savePanel will hault the sender action from returning
+        // we must prompt the save panel asyncronously
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            pop.showRelativeToRect(NSRect(x: 600, y: 0, width: 100, height: 100), ofView: self.view, preferredEdge: 0)
+            })
         
+        return;
+        //Since this method is returning, nothing should be getting called after this return
+        //however that's not the case. The button becomes disabled at sender.enabled= false
         sender.enabled = false
+        
         loadJPQButton.enabled = false
+        
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in

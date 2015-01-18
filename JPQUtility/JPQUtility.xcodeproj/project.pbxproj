@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7F004D1C1A16FD2400EBCA6D /* TopLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */; };
+		7F1017D21A6BA770002E40BD /* AddJPQPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */; };
+		7F1017D31A6BA770002E40BD /* AddJPQPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */; };
 		7F3FBDB61A59D976009F3930 /* FileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3FBDB51A59D976009F3930 /* FileTableView.swift */; };
 		7F9F7C4D1A170CB200B062DC /* FileScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */; };
 		7F9F7C7A1A17429600B062DC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F7C791A17429600B062DC /* MainWindowController.swift */; };
@@ -33,6 +35,8 @@
 
 /* Begin PBXFileReference section */
 		7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopLineView.swift; sourceTree = "<group>"; };
+		7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddJPQPopover.swift; sourceTree = "<group>"; };
+		7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddJPQPopover.xib; sourceTree = "<group>"; };
 		7F3FBDB51A59D976009F3930 /* FileTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileTableView.swift; sourceTree = "<group>"; };
 		7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileScrollView.swift; sourceTree = "<group>"; };
 		7F9F7C791A17429600B062DC /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 				7FEF00921A59B6E200F26E05 /* Table Stuff */,
 				7F9F7C791A17429600B062DC /* MainWindowController.swift */,
 				7FA7C8831A06A6F60061BDCB /* FileViewController.swift */,
+				7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */,
+				7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */,
 			);
 			name = "File View Window";
 			sourceTree = "<group>";
@@ -238,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F1017D31A6BA770002E40BD /* AddJPQPopover.xib in Resources */,
 				7FA7C8861A06A6F60061BDCB /* Images.xcassets in Resources */,
 				7FA7C8891A06A6F60061BDCB /* Main.storyboard in Resources */,
 			);
@@ -262,6 +269,7 @@
 				7FA7C8821A06A6F60061BDCB /* AppDelegate.swift in Sources */,
 				7F004D1C1A16FD2400EBCA6D /* TopLineView.swift in Sources */,
 				7F9F7C7A1A17429600B062DC /* MainWindowController.swift in Sources */,
+				7F1017D21A6BA770002E40BD /* AddJPQPopover.swift in Sources */,
 				7FEF00941A59B71300F26E05 /* FileTableDelegateAndData.swift in Sources */,
 				7F3FBDB61A59D976009F3930 /* FileTableView.swift in Sources */,
 			);
