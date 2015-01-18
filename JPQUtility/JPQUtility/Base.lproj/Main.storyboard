@@ -790,6 +790,7 @@
                     </view>
                     <connections>
                         <outlet property="addJPQButton" destination="LW3-sE-rCV" id="MAh-ku-79H"/>
+                        <outlet property="addJPQLabel" destination="USg-wC-c09" id="N7D-Ow-TnI"/>
                         <outlet property="fileModifierView" destination="dJR-H5-u37" id="4GB-Hd-oMi"/>
                         <outlet property="fileTableScrollView" destination="RVT-fR-V0P" id="IqW-a9-zlP"/>
                         <outlet property="fileTableView" destination="Jlc-NF-yJb" id="Z96-RL-Lcc"/>

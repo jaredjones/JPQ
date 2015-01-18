@@ -14,6 +14,7 @@ class FileViewController: NSViewController {
     @IBOutlet weak var jpqModifierView: NSView!
     @IBOutlet weak var fileModifierView: NSView!
     @IBOutlet weak var addJPQButton: NSButton!
+    @IBOutlet weak var addJPQLabel: NSTextField!
     @IBOutlet weak var loadJPQButton: NSButton!
     @IBOutlet weak var unloadJPQButton: NSButton!
     @IBOutlet weak var fileTableScrollView: FileScrollView!
@@ -48,7 +49,7 @@ class FileViewController: NSViewController {
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            pop.showRelativeToRect(NSRect(x: 600, y: 0, width: 100, height: 100), ofView: self.view, preferredEdge: 0)
+            pop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
             })
         
         return;
