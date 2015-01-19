@@ -6,15 +6,88 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AddJPQPopover" customModule="JPQUtility" customModuleProvider="target">
             <connections>
+                <outlet property="combinedStorageTextField" destination="RDo-Zn-tgM" id="yf2-QM-h3G"/>
+                <outlet property="filePositionByteSizeTextField" destination="4GH-Hs-KBA" id="7bN-GB-SpR"/>
+                <outlet property="maxNumberOfFilesTextField" destination="9xb-wH-CUX" id="ach-hp-pvE"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="250" height="160"/>
+            <rect key="frame" x="0.0" y="0.0" width="288" height="160"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <point key="canvasLocation" x="398" y="311"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9xb-wH-CUX">
+                    <rect key="frame" x="164" y="121" width="83" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="HXd-j8-Z2o">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-LJ-7FA">
+                    <rect key="frame" x="12" y="123" width="146" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Max Number of Files:" id="COv-Wx-jsN">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="upB-cp-G69">
+                    <rect key="frame" x="181" y="7" width="87" height="25"/>
+                    <buttonCell key="cell" type="squareTextured" title="Create JPQ" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="q1o-aR-dGH">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="createJPQButton:" target="-2" id="zd3-do-D3J"/>
+                    </connections>
+                </button>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-xI-CeO">
+                    <rect key="frame" x="252" y="118" width="19" height="27"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="G3o-sx-Eev"/>
+                </stepper>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
+                    <rect key="frame" x="14" y="7" width="55" height="25"/>
+                    <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4GH-Hs-KBA">
+                    <rect key="frame" x="164" y="94" width="83" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="VXy-en-ZMe">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
+                    <rect key="frame" x="12" y="96" width="146" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="File Position Byte Size:" id="3cy-K5-NuT">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i30-zx-IVF">
+                    <rect key="frame" x="252" y="91" width="19" height="27"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="BF8-Rr-4cP"/>
+                </stepper>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RDo-Zn-tgM">
+                    <rect key="frame" x="12" y="76" width="273" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="You may store up to x bytes of files." id="U7d-uJ-xt4">
+                        <font key="font" metaFont="system" size="10"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="417" y="311"/>
         </customView>
     </objects>
 </document>

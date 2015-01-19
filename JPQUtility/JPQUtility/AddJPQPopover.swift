@@ -8,11 +8,42 @@
 
 import Cocoa
 
-class AddJPQPopover: NSViewController {
+class AddJPQPopover: NSViewController
+{
+    @IBOutlet weak var maxNumberOfFilesTextField: NSTextField!
+    @IBOutlet weak var filePositionByteSizeTextField: NSTextField!
+    @IBOutlet weak var combinedStorageTextField: NSTextField!
+    
+    weak var container:FileViewController?
+    
+    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
 
-    override func viewDidLoad() {
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         // Do view setup here.
     }
     
+    override func viewDidAppear() {
+        super.viewDidAppear()
+    }
+    
+    @IBAction func cancelJPQPopover(sender: AnyObject)
+    {
+        container!.addJPQPop.close()
+    }
+    @IBAction func createJPQButton(sender: NSButton)
+    {
+    }
+    
+    func setContainer(cont:FileViewController)
+    {
+        self.container = cont
+    }
 }

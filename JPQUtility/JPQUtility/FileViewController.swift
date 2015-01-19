@@ -22,6 +22,8 @@ class FileViewController: NSViewController {
     
     var savePanel:NSSavePanel?
     var loadedJPQFile:JPQFileSwiftBridge?
+    var addJPQPop = NSPopover()
+    var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle: nil)!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,17 +41,20 @@ class FileViewController: NSViewController {
         toolbarVisualEffectsView.state = NSVisualEffectState.FollowsWindowActiveState
         toolbarVisualEffectsView.material = NSVisualEffectMaterial.Titlebar
         toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.BehindWindow
+        
+        addJPQPop.contentViewController = addJPQPopVC
+        addJPQPop.behavior = NSPopoverBehavior.Semitransient
+        addJPQPopVC.setContainer(self)
+        
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func addJPQButtonAction(sender: NSButton) {
-        let pop = NSPopover()
-        pop.contentViewController = NSViewController(nibName: "AddJPQPopover", bundle: nil)
-        //pop.contentViewController = (NSStoryboard(name: "AddJPQPopover", bundle: nil)?.instantiateControllerWithIdentifier("AddJPQPopoverVC") as NSViewController)
+    @IBAction func addJPQButtonAction(sender: NSButton)
+    {
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            pop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
+            self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
             })
         
         return;
@@ -83,6 +88,11 @@ class FileViewController: NSViewController {
             //dispatch_async must return void
             return
         })
+    }
+    
+    @IBAction func loadJPQActionButton(sender: NSButton)
+    {
+        
     }
     
     @IBAction func unloadJPQPressed(sender: NSButton)
