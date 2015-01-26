@@ -50,6 +50,9 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     }
     @IBAction func createJPQButton(sender: NSButton)
     {
+        let x = self.maxFilesStepper.integerValue
+        let y = self.filePositionStepper.integerValue
+        container!.createJPQFilePrompt(x, filePositionByteSize: y)
     }
     
     func setContainer(cont:FileViewController)

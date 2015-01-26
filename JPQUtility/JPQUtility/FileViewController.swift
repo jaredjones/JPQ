@@ -56,12 +56,24 @@ class FileViewController: NSViewController {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
             })
+        return
+    }
+    
+    @IBAction func loadJPQActionButton(sender: NSButton)
+    {
         
-        return;
-        //Since this method is returning, nothing should be getting called after this return
-        //however that's not the case. The button becomes disabled at sender.enabled= false
-        sender.enabled = false
-        
+    }
+    
+    @IBAction func unloadJPQPressed(sender: NSButton)
+    {
+        self.loadedJPQFile = nil;
+        self.jpqModifierView.hidden = false
+        self.fileModifierView.hidden = true
+    }
+    
+    func createJPQFilePrompt(maxFiles:Int, filePositionByteSize:Int)
+    {
+        addJPQButton.enabled = false
         loadJPQButton.enabled = false
         
         // Since running the savePanel will hault the sender action from returning
@@ -73,7 +85,7 @@ class FileViewController: NSViewController {
                 {
                     if let fileLocation = self.savePanel?.URL?.path
                     {
-                        self.saveFile(fileLocation, replace: false)
+                        self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: false)
                     }
                     else
                     {
@@ -90,25 +102,13 @@ class FileViewController: NSViewController {
         })
     }
     
-    @IBAction func loadJPQActionButton(sender: NSButton)
-    {
-        
-    }
-    
-    @IBAction func unloadJPQPressed(sender: NSButton)
-    {
-        self.loadedJPQFile = nil;
-        self.jpqModifierView.hidden = false
-        self.fileModifierView.hidden = true
-    }
-    
-    func saveFile(fileLocation:String, replace:Bool = false) -> Void
+    func saveFile(fileLocation:String, maxFiles:Int, filePositionByteSize:Int, replace:Bool = false) -> Void
     {
         var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
             withOverwriteFile: replace,
-            withMaxNumberOfFiles: nil,
+            withMaxNumberOfFiles: maxFiles,
             withVersion: nil,
-            withFilePositionSizeInBytes: nil)
+            withFilePositionSizeInBytes: filePositionByteSize)
         if ((jpqFile) != nil)
         {
             if jpqFile.errorCode != 0
@@ -129,7 +129,7 @@ class FileViewController: NSViewController {
                     alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
                         if NSModalResponse == NSAlertSecondButtonReturn
                         {
-                            self.saveFile(fileLocation, replace: true)
+                            self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
                     })
                 case 4:
@@ -146,6 +146,7 @@ class FileViewController: NSViewController {
             }
             else
             {
+                addJPQPop.close()
                 self.jpqModifierView.hidden = true
                 self.fileModifierView.hidden = false
                 self.loadedJPQFile = jpqFile
