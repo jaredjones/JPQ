@@ -116,7 +116,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         }
         lastLength = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
         
-        if obj == maxNumberOfFilesTextField
+        if txtField == maxNumberOfFilesTextField
         {
             self.maxFilesStepper.integerValue = txtField.integerValue
             self.stepperPressed(self.maxFilesStepper)
