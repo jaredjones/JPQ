@@ -8,6 +8,8 @@
             <connections>
                 <outlet property="combinedStorageTextField" destination="RDo-Zn-tgM" id="yf2-QM-h3G"/>
                 <outlet property="filePositionByteSizeTextField" destination="4GH-Hs-KBA" id="7bN-GB-SpR"/>
+                <outlet property="filePositionStepper" destination="i30-zx-IVF" id="aBb-AX-ql3"/>
+                <outlet property="maxFilesStepper" destination="vWT-xI-CeO" id="eVx-ld-PCT"/>
                 <outlet property="maxNumberOfFilesTextField" destination="9xb-wH-CUX" id="ach-hp-pvE"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -46,7 +48,10 @@
                 </button>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-xI-CeO">
                     <rect key="frame" x="252" y="118" width="19" height="27"/>
-                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="G3o-sx-Eev"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="9.2233720368547758e+18" doubleValue="1" id="G3o-sx-Eev"/>
+                    <connections>
+                        <action selector="stepperPressed:" target="-2" id="gGD-Ur-ypx"/>
+                    </connections>
                 </stepper>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
                     <rect key="frame" x="14" y="7" width="55" height="25"/>
@@ -58,14 +63,6 @@
                         <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4GH-Hs-KBA">
-                    <rect key="frame" x="164" y="94" width="83" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="VXy-en-ZMe">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
                     <rect key="frame" x="12" y="96" width="146" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="File Position Byte Size:" id="3cy-K5-NuT">
@@ -76,7 +73,10 @@
                 </textField>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i30-zx-IVF">
                     <rect key="frame" x="252" y="91" width="19" height="27"/>
-                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="BF8-Rr-4cP"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="9.2233720368547758e+18" doubleValue="1" id="BF8-Rr-4cP"/>
+                    <connections>
+                        <action selector="stepperPressed:" target="-2" id="jsp-tJ-hHM"/>
+                    </connections>
                 </stepper>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RDo-Zn-tgM">
                     <rect key="frame" x="12" y="76" width="273" height="17"/>
@@ -84,6 +84,14 @@
                         <font key="font" metaFont="system" size="10"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4GH-Hs-KBA">
+                    <rect key="frame" x="164" y="94" width="83" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="VXy-en-ZMe">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
