@@ -119,6 +119,7 @@ class FileViewController: NSViewController {
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "An unknown error has occured that has prevented the JPQFile from saving.",
                         style: NSAlertStyle.WarningAlertStyle)
+                    fallthrough
                 case 2:
                     let alert = NSAlert()
                     alert.addButtonWithTitle("Cancel")
@@ -132,14 +133,17 @@ class FileViewController: NSViewController {
                             self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
                     })
+                    fallthrough
                 case 4:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you write access to the location you've chosen!",
                         style: NSAlertStyle.WarningAlertStyle)
+                    fallthrough
                 case 8:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you read access to the location you've chosen!",
                         style: NSAlertStyle.WarningAlertStyle)
+                    fallthrough
                 default:
                     break
                 }
