@@ -12,7 +12,8 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
 {
     @IBOutlet weak var maxNumberOfFilesTextField: NSTextField!
     @IBOutlet weak var filePositionByteSizeTextField: NSTextField!
-    @IBOutlet weak var combinedStorageTextField: NSTextField!
+    @IBOutlet weak var combinedStorageLabel: NSTextField!
+    @IBOutlet weak var fileSizeLabel: NSTextField!
     @IBOutlet weak var maxFilesStepper: NSStepper!
     @IBOutlet weak var filePositionStepper: NSStepper!
     
@@ -44,6 +45,24 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         super.viewDidAppear()
     }
     
+    func setContainer(cont:FileViewController)
+    {
+        self.container = cont
+    }
+    
+    func updateFileSizeLabel()
+    {
+        var fileIndexSize = 4
+        let headerSize = 49
+        if maxFilesStepper.integerValue >= Int(powf(2, 31))
+        {
+            fileIndexSize = 8
+        }
+        let estimatedFileSize:Int = headerSize + maxFilesStepper.integerValue * (4 + filePositionStepper.integerValue)
+        fileSizeLabel.stringValue = "The estimated file size will be \(estimatedFileSize) bytes."
+        
+    }
+    
     @IBAction func cancelJPQPopover(sender: AnyObject)
     {
         container!.addJPQPop.close()
@@ -55,10 +74,6 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         container!.createJPQFilePrompt(x, filePositionByteSize: y)
     }
     
-    func setContainer(cont:FileViewController)
-    {
-        self.container = cont
-    }
     
     @IBAction func stepperPressed(sender: NSStepper)
     {
@@ -87,6 +102,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             self.filePositionStepper.integerValue = x
             self.filePositionByteSizeTextField.stringValue = ("\(x)")
         }
+        updateFileSizeLabel()
     }
     //Allows only numbers in Textfield
     var lastLength:Int = 0
@@ -120,6 +136,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         {
             self.maxFilesStepper.integerValue = txtField.integerValue
             self.stepperPressed(self.maxFilesStepper)
+            updateFileSizeLabel()
         }
     }
     
