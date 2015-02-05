@@ -8,6 +8,13 @@
 
 import Cocoa
 
+extension Double
+{
+    func format(f: String) -> String {
+        return NSString(format: "%\(f)f", self)
+    }
+}
+
 class AddJPQPopover: NSViewController, NSTextFieldDelegate
 {
     @IBOutlet weak var maxNumberOfFilesTextField: NSTextField!
@@ -57,14 +64,57 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     
     func updateFileSizeLabel()
     {
-        var fileIndexSize = 4
-        let headerSize = 49
+        var fileIndexSize:UInt64 = 4
+        let headerSize:UInt64 = 49
         if maxNumberOfFiles >= UInt64(powf(2, 31))
         {
             fileIndexSize = 8
         }
         let estimatedFileSize:UInt64 = headerSize + maxNumberOfFiles * (4 + UInt64(filePositionByteSize))
-        fileSizeLabel.stringValue = "The estimated file size will be \(estimatedFileSize) bytes."
+        
+        var abreviatedSizeBig:Swift.Float80 = Swift.Float80(estimatedFileSize)
+        
+        var counter:Int = 0
+        while abreviatedSizeBig > 1024.0
+        {
+            abreviatedSizeBig /= Float80(1024.0)
+            counter++
+        }
+        let abreviatedSize:Double = Double(abreviatedSizeBig)
+        
+        var byteString:String
+        var format = ".3"
+        switch counter
+        {
+        case 0:
+            byteString = "\(abreviatedSize) bytes"
+        case 1:
+            byteString = "\(abreviatedSize.format(format))KiBs"
+        case 2:
+            byteString = "\(abreviatedSize.format(format))MiBs"
+        case 3:
+            byteString = "\(abreviatedSize.format(format))GiBs"
+        case 4:
+            byteString = "\(abreviatedSize.format(format))TiBs"
+        case 5:
+            byteString = "\(abreviatedSize.format(format))PiBs"
+        case 6:
+            byteString = "\(abreviatedSize.format(format))EiBs"
+        case 7:
+            byteString = "\(abreviatedSize.format(format))ZiBs"
+        case 8:
+            byteString = "\(abreviatedSize.format(format))YiBs"
+        default:
+            byteString = "\(abreviatedSize.format(format)) bytes"
+        }
+        if counter == 0
+        {
+            fileSizeLabel.stringValue = "JPQ Size: \(estimatedFileSize) bytes."
+        }
+        else
+        {
+            fileSizeLabel.stringValue = "JPQ Size: \(estimatedFileSize) bytes (\(byteString))."
+        }
     }
     
     @IBAction func cancelJPQPopover(sender: AnyObject)

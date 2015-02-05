@@ -38,23 +38,13 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="upB-cp-G69">
-                    <rect key="frame" x="181" y="7" width="87" height="25"/>
+                    <rect key="frame" x="235" y="7" width="87" height="25"/>
                     <buttonCell key="cell" type="squareTextured" title="Create JPQ" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="q1o-aR-dGH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="createJPQButton:" target="-2" id="zd3-do-D3J"/>
-                    </connections>
-                </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
-                    <rect key="frame" x="14" y="7" width="55" height="25"/>
-                    <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
@@ -83,7 +73,7 @@
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DXn-gW-f2M">
                     <rect key="frame" x="12" y="70" width="291" height="13"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="The estimated file size will be x bytes." id="9TB-NI-5Hn">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="JPQ Size: x bytes (xKiBs)" id="9TB-NI-5Hn">
                         <font key="font" metaFont="system" size="10"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -103,6 +93,16 @@
                         <action selector="stepperPressed:" target="-2" id="jsp-tJ-hHM"/>
                     </connections>
                 </stepper>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
+                    <rect key="frame" x="7" y="7" width="55" height="25"/>
+                    <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="437.5" y="311"/>
         </customView>
