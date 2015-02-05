@@ -81,16 +81,22 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         var byteString:String
         var format = ".3"
         
+        var dividend:Swift.Float80 = 1024.0
+        if (useBaseTwo){
+            dividend = 1024.0
+        }else{
+            dividend = 1000.0
+        }
+        
+        while abreviatedSizeBig > dividend
+        {
+            abreviatedSizeBig /= dividend
+            counter++
+        }
+        let abreviatedSize:Double = Double(abreviatedSizeBig)
+        
         if (useBaseTwo)
         {
-            while abreviatedSizeBig > 1024.0
-            {
-                abreviatedSizeBig /= Float80(1024.0)
-                counter++
-            }
-            
-            let abreviatedSize:Double = Double(abreviatedSizeBig)
-            
             switch counter
             {
             case 0:
@@ -117,14 +123,6 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         }
         else
         {
-            while abreviatedSizeBig > 1000.0
-            {
-                abreviatedSizeBig /= Float80(1000.0)
-                counter++
-            }
-            
-            let abreviatedSize:Double = Double(abreviatedSizeBig)
-            
             switch counter
             {
             case 0:
