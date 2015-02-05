@@ -90,7 +90,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         {
             var x = self.filePositionStepper.integerValue
             let y = self.filePositionByteSizeTextField.integerValue
-            5
+            
             if x < y
             {
                 x = y / 2
@@ -140,9 +140,9 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         
         if txtField == maxNumberOfFilesTextField
         {
-            if Double(txtField.doubleValue) >= pow(2, 53)
+            if Double(txtField.doubleValue) >= (pow(2, 53) + 1.0)
             {
-                txtField.stringValue = "\(Int(pow(2,53)+1.0))"
+                txtField.stringValue = "\(UInt64(pow(2,53) + 1.0))"
             }
             self.maxFilesStepper.integerValue = txtField.integerValue
             self.maxNumberOfFiles = UInt64(txtField.integerValue)
