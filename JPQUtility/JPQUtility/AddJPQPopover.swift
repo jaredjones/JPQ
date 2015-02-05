@@ -17,6 +17,9 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     @IBOutlet weak var maxFilesStepper: NSStepper!
     @IBOutlet weak var filePositionStepper: NSStepper!
     
+    var maxNumberOfFiles:UInt64 = 1024
+    var filePositionByteSize:UInt8 = 4
+    
     weak var container:FileViewController?
     
     override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -33,11 +36,13 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         maxNumberOfFilesTextField.delegate = self
         filePositionByteSizeTextField.delegate = self
         
-        maxFilesStepper.integerValue = 1024
-        filePositionStepper.integerValue = 4
+        maxFilesStepper.integerValue = Int(maxNumberOfFiles)
+        filePositionStepper.integerValue = Int(filePositionByteSize)
         
-        maxNumberOfFilesTextField.stringValue = String("\(maxFilesStepper.integerValue)")
-        filePositionByteSizeTextField.stringValue = String("\(filePositionStepper.integerValue)")
+        maxNumberOfFilesTextField.stringValue = String("\(maxNumberOfFiles)")
+        filePositionByteSizeTextField.stringValue = String("\(filePositionByteSize)")
+        
+        updateFileSizeLabel()
         // Do view setup here.
     }
     
@@ -54,38 +59,38 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     {
         var fileIndexSize = 4
         let headerSize = 49
-        if maxFilesStepper.integerValue >= Int(powf(2, 31))
+        if maxNumberOfFiles >= UInt64(powf(2, 31))
         {
             fileIndexSize = 8
         }
-        let estimatedFileSize:Int = headerSize + maxFilesStepper.integerValue * (4 + filePositionStepper.integerValue)
+        let estimatedFileSize:UInt64 = headerSize + maxNumberOfFiles * (4 + UInt64(filePositionByteSize))
         fileSizeLabel.stringValue = "The estimated file size will be \(estimatedFileSize) bytes."
-        
     }
     
     @IBAction func cancelJPQPopover(sender: AnyObject)
     {
         container!.addJPQPop.close()
     }
+    
     @IBAction func createJPQButton(sender: NSButton)
     {
-        let x = self.maxFilesStepper.integerValue
-        let y = self.filePositionStepper.integerValue
+        let x = maxNumberOfFiles
+        let y = filePositionByteSize
         container!.createJPQFilePrompt(x, filePositionByteSize: y)
     }
-    
     
     @IBAction func stepperPressed(sender: NSStepper)
     {
         if sender == self.maxFilesStepper
         {
-            self.maxNumberOfFilesTextField.stringValue = self.maxFilesStepper.stringValue
+            self.maxNumberOfFiles = UInt64(maxFilesStepper.integerValue)
+            self.maxNumberOfFilesTextField.stringValue = ("\(self.maxNumberOfFiles)")
         }
         if sender == self.filePositionStepper
         {
             var x = self.filePositionStepper.integerValue
             let y = self.filePositionByteSizeTextField.integerValue
-            
+            5
             if x < y
             {
                 x = y / 2
@@ -100,7 +105,8 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             }
             
             self.filePositionStepper.integerValue = x
-            self.filePositionByteSizeTextField.stringValue = ("\(x)")
+            self.filePositionByteSize = UInt8(x)
+            self.filePositionByteSizeTextField.stringValue = ("\(filePositionByteSize)")
         }
         updateFileSizeLabel()
     }
@@ -134,7 +140,12 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         
         if txtField == maxNumberOfFilesTextField
         {
+            if Double(txtField.doubleValue) >= pow(2, 53)
+            {
+                txtField.stringValue = "\(Int(pow(2,53)+1.0))"
+            }
             self.maxFilesStepper.integerValue = txtField.integerValue
+            self.maxNumberOfFiles = UInt64(txtField.integerValue)
             self.stepperPressed(self.maxFilesStepper)
             updateFileSizeLabel()
         }

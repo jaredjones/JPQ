@@ -71,7 +71,7 @@ class FileViewController: NSViewController {
         self.fileModifierView.hidden = true
     }
     
-    func createJPQFilePrompt(maxFiles:Int, filePositionByteSize:Int)
+    func createJPQFilePrompt(maxFiles:UInt64, filePositionByteSize:UInt8)
     {
         addJPQButton.enabled = false
         loadJPQButton.enabled = false
@@ -102,13 +102,13 @@ class FileViewController: NSViewController {
         })
     }
     
-    func saveFile(fileLocation:String, maxFiles:Int, filePositionByteSize:Int, replace:Bool = false) -> Void
+    func saveFile(fileLocation:String, maxFiles:UInt64, filePositionByteSize:UInt8, replace:Bool = false) -> Void
     {
         var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
             withOverwriteFile: replace,
-            withMaxNumberOfFiles: maxFiles,
+            withMaxNumberOfFiles: NSNumber(unsignedLongLong: maxFiles),
             withVersion: nil,
-            withFilePositionSizeInBytes: filePositionByteSize)
+            withFilePositionSizeInBytes: NSNumber(unsignedChar: filePositionByteSize))
         if ((jpqFile) != nil)
         {
             if jpqFile.errorCode != 0
