@@ -67,19 +67,25 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     
     func updateFileSizeLabel()
     {
-        var fileIndexSize:UInt64 = 4
         let headerSize:UInt64 = 49
+        
+        var spaceForFiles:UInt64
+        if ( filePositionByteSize * 8 == 64)
+        {
+            spaceForFiles = UInt64.max
+        }
+        else
+        {
+            spaceForFiles = UInt64(pow(2,Float(filePositionByteSize * 8)))
+        }
+        
+        spaceForFiles -= headerSize
+        
+        /*var fileIndexSize:UInt64 = 4
         if maxNumberOfFiles >= UInt64(powf(2, 31))
         {
             fileIndexSize = 8
-        }
-        let estimatedFileSize:UInt64 = headerSize + maxNumberOfFiles * (4 + UInt64(filePositionByteSize))
-        
-        var abreviatedSizeBig:Swift.Float80 = Swift.Float80(estimatedFileSize)
-        
-        var counter:Int = 0
-        var byteString:String
-        var format = ".3"
+        }*/
         
         var dividend:Swift.Float80
         if (useBaseTwo){
@@ -88,37 +94,75 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             dividend = 1000.0
         }
         
-        while abreviatedSizeBig > dividend
-        {
-            abreviatedSizeBig /= dividend
-            counter++
-        }
-        let abreviatedSize:Double = Double(abreviatedSizeBig)
+        let estimatedMaxFileSize:UInt64 = headerSize + maxNumberOfFiles * (4 + UInt64(filePositionByteSize))
+        var abbreviatedMaxFilesBig:Swift.Float80 = Swift.Float80(estimatedMaxFileSize)
         
+        var counterMaxFiles:Int = 0
+        while abbreviatedMaxFilesBig > dividend
+        {
+            abbreviatedMaxFilesBig /= dividend
+            counterMaxFiles++
+        }
+        
+        var abbreviatedSpaceFilesBig:Swift.Float80 = Swift.Float80(spaceForFiles)
+        var counterSpaceFiles:Int = 0
+        while abbreviatedSpaceFilesBig > dividend
+        {
+            abbreviatedSpaceFilesBig /= dividend
+            counterSpaceFiles++
+        }
+        
+        let maxFileByteString = convertToAbbreviatedForm(counterMaxFiles, size: Double(abbreviatedMaxFilesBig))
+        
+        if counterMaxFiles == 0
+        {
+            fileSizeLabel.stringValue = "JPQ Size: \(estimatedMaxFileSize) bytes."
+        }
+        else
+        {
+            fileSizeLabel.stringValue = "JPQ Size: \(estimatedMaxFileSize) bytes (\(maxFileByteString))."
+        }
+        
+        let combinedStorageByteString = convertToAbbreviatedForm(counterSpaceFiles, size: Double(abbreviatedSpaceFilesBig))
+        
+        if counterSpaceFiles == 0
+        {
+            combinedStorageLabel.stringValue = "Max Storage: \(spaceForFiles) bytes."
+        }
+        else
+        {
+            combinedStorageLabel.stringValue = "Max Storage: \(spaceForFiles) bytes (\(combinedStorageByteString))."
+        }
+    }
+    
+    func convertToAbbreviatedForm(counter:Int, size:Double) -> String
+    {
+        var byteString:String
+        var format = ".3"
         if (useBaseTwo)
         {
             switch counter
             {
             case 0:
-                byteString = "\(abreviatedSize) bytes"
+                byteString = "\(size) bytes"
             case 1:
-                byteString = "\(abreviatedSize.format(format))KiBs"
+                byteString = "\(size.format(format))KiBs"
             case 2:
-                byteString = "\(abreviatedSize.format(format))MiBs"
+                byteString = "\(size.format(format))MiBs"
             case 3:
-                byteString = "\(abreviatedSize.format(format))GiBs"
+                byteString = "\(size.format(format))GiBs"
             case 4:
-                byteString = "\(abreviatedSize.format(format))TiBs"
+                byteString = "\(size.format(format))TiBs"
             case 5:
-                byteString = "\(abreviatedSize.format(format))PiBs"
+                byteString = "\(size.format(format))PiBs"
             case 6:
-                byteString = "\(abreviatedSize.format(format))EiBs"
+                byteString = "\(size.format(format))EiBs"
             case 7:
-                byteString = "\(abreviatedSize.format(format))ZiBs"
+                byteString = "\(size.format(format))ZiBs"
             case 8:
-                byteString = "\(abreviatedSize.format(format))YiBs"
+                byteString = "\(size.format(format))YiBs"
             default:
-                byteString = "\(abreviatedSize.format(format)) bytes"
+                byteString = "\(size.format(format)) bytes"
             }
         }
         else
@@ -126,35 +170,28 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             switch counter
             {
             case 0:
-                byteString = "\(abreviatedSize) bytes"
+                byteString = "\(size) bytes"
             case 1:
-                byteString = "\(abreviatedSize.format(format))KBs"
+                byteString = "\(size.format(format))KBs"
             case 2:
-                byteString = "\(abreviatedSize.format(format))MBs"
+                byteString = "\(size.format(format))MBs"
             case 3:
-                byteString = "\(abreviatedSize.format(format))GBs"
+                byteString = "\(size.format(format))GBs"
             case 4:
-                byteString = "\(abreviatedSize.format(format))TBs"
+                byteString = "\(size.format(format))TBs"
             case 5:
-                byteString = "\(abreviatedSize.format(format))PBs"
+                byteString = "\(size.format(format))PBs"
             case 6:
-                byteString = "\(abreviatedSize.format(format))EBs"
+                byteString = "\(size.format(format))EBs"
             case 7:
-                byteString = "\(abreviatedSize.format(format))ZBs"
+                byteString = "\(size.format(format))ZBs"
             case 8:
-                byteString = "\(abreviatedSize.format(format))YBs"
+                byteString = "\(size.format(format))YBs"
             default:
-                byteString = "\(abreviatedSize.format(format)) bytes"
+                byteString = "\(size.format(format)) bytes"
             }
         }
-        if counter == 0
-        {
-            fileSizeLabel.stringValue = "JPQ Size: \(estimatedFileSize) bytes."
-        }
-        else
-        {
-            fileSizeLabel.stringValue = "JPQ Size: \(estimatedFileSize) bytes (\(byteString))."
-        }
+        return byteString;
     }
     
     @IBAction func baseChangePressed(sender: NSButton) {
