@@ -81,7 +81,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         var byteString:String
         var format = ".3"
         
-        var dividend:Swift.Float80 = 1024.0
+        var dividend:Swift.Float80
         if (useBaseTwo){
             dividend = 1024.0
         }else{
