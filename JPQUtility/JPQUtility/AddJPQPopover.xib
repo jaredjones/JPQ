@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AddJPQPopover" customModule="JPQUtility" customModuleProvider="target">
             <connections>
+                <outlet property="baseTwoCheckBox" destination="kXB-j0-e5S" id="n6d-uo-hPX"/>
                 <outlet property="combinedStorageLabel" destination="RDo-Zn-tgM" id="koB-HE-lkT"/>
                 <outlet property="filePositionByteSizeTextField" destination="4GH-Hs-KBA" id="7bN-GB-SpR"/>
                 <outlet property="filePositionStepper" destination="i30-zx-IVF" id="aBb-AX-ql3"/>
@@ -45,6 +46,16 @@
                     </buttonCell>
                     <connections>
                         <action selector="createJPQButton:" target="-2" id="zd3-do-D3J"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
+                    <rect key="frame" x="7" y="7" width="55" height="25"/>
+                    <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
@@ -93,14 +104,14 @@
                         <action selector="stepperPressed:" target="-2" id="jsp-tJ-hHM"/>
                     </connections>
                 </stepper>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
-                    <rect key="frame" x="7" y="7" width="55" height="25"/>
-                    <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kXB-j0-e5S">
+                    <rect key="frame" x="110" y="11" width="94" height="18"/>
+                    <buttonCell key="cell" type="check" title="Use Base-2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VS2-jn-56e">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
+                        <action selector="baseChangePressed:" target="-2" id="fgg-jG-bfm"/>
                     </connections>
                 </button>
             </subviews>
