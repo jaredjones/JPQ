@@ -87,10 +87,12 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     //filePositionSizeInBytes (For Big File Sizes): It is important to have m-bit pointers to file locations
     
     uint64 htSize = maxNumberOfFiles * ( JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + filePositionSizeInBytes );
-    
-    //File up file with the space required for the HashTable
+    uint8 *hTBuffer = (uint8 *)malloc(htSize);
+    //File up buffer with zeroed data
     for (uint64 i = 0; i < htSize; i++)
-        fwrite(&a, 1, 1, file);
+        hTBuffer[i] = 0;
+    //Write buffer
+    fwrite(hTBuffer, htSize, 1, file);
     
     newFile->_dataBlockIndex = ftell(file);
     //Go to beginning of hashtable - 16 to get to where we need to write our 8 bytes for the data block index
