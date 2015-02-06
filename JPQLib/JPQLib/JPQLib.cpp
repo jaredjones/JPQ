@@ -93,6 +93,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
         hTBuffer[i] = 0;
     //Write buffer
     fwrite(hTBuffer, htSize, 1, file);
+    free (hTBuffer);
     
     newFile->_dataBlockIndex = ftell(file);
     //Go to beginning of hashtable - 16 to get to where we need to write our 8 bytes for the data block index
