@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7F004D1C1A16FD2400EBCA6D /* TopLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */; };
+		7F017EC01A85756C00B2CF8A /* libJPQLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F017EBF1A85756C00B2CF8A /* libJPQLib.a */; };
 		7F1017D21A6BA770002E40BD /* AddJPQPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */; };
 		7F1017D31A6BA770002E40BD /* AddJPQPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */; };
 		7F3FBDB61A59D976009F3930 /* FileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3FBDB51A59D976009F3930 /* FileTableView.swift */; };
@@ -18,7 +19,6 @@
 		7FA7C8861A06A6F60061BDCB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7C8851A06A6F60061BDCB /* Images.xcassets */; };
 		7FA7C8891A06A6F60061BDCB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7C8871A06A6F60061BDCB /* Main.storyboard */; };
 		7FA7C8951A06A6F60061BDCB /* JPQUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8941A06A6F60061BDCB /* JPQUtilityTests.swift */; };
-		7FA7C8B61A06A7110061BDCB /* libJPQLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA7C8B51A06A7110061BDCB /* libJPQLib.a */; };
 		7FA7C8D01A06AE900061BDCB /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA7C8CF1A06AE900061BDCB /* libc++.dylib */; };
 		7FEF00941A59B71300F26E05 /* FileTableDelegateAndData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF00931A59B71300F26E05 /* FileTableDelegateAndData.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopLineView.swift; sourceTree = "<group>"; };
+		7F017EBF1A85756C00B2CF8A /* libJPQLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJPQLib.a; path = ../DerivedData/JPQUtility/Build/Products/Debug/libJPQLib.a; sourceTree = "<group>"; };
 		7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddJPQPopover.swift; sourceTree = "<group>"; };
 		7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddJPQPopover.xib; sourceTree = "<group>"; };
 		7F3FBDB51A59D976009F3930 /* FileTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileTableView.swift; sourceTree = "<group>"; };
@@ -61,7 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FA7C8D01A06AE900061BDCB /* libc++.dylib in Frameworks */,
-				7FA7C8B61A06A7110061BDCB /* libJPQLib.a in Frameworks */,
+				7F017EC01A85756C00B2CF8A /* libJPQLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +79,7 @@
 		7FA7C8731A06A6F60061BDCB = {
 			isa = PBXGroup;
 			children = (
+				7F017EBF1A85756C00B2CF8A /* libJPQLib.a */,
 				7FB58E961A5AA6D400F79B84 /* Libraries */,
 				7FA7C8BF1A06A7730061BDCB /* JPQUtility-Bridging-Header.h */,
 				7FA7C87E1A06A6F60061BDCB /* JPQUtility */,
@@ -395,7 +397,10 @@
 				);
 				INFOPLIST_FILE = JPQUtility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jared/Documents/JPQ/DerivedData/JPQUtility/Build/Products/Debug,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "JPQUtility-Bridging-Header.h";
@@ -416,7 +421,10 @@
 				);
 				INFOPLIST_FILE = JPQUtility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jared/Documents/JPQ/DerivedData/JPQUtility/Build/Products/Debug,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "JPQUtility-Bridging-Header.h";

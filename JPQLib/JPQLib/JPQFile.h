@@ -10,8 +10,17 @@
 #define __JPQLib__JPQFile__
 
 #include <string>
-
 #include "Common.h"
+#include "SpookyV2.h"
+
+enum class JPQFileError : uint32
+{
+    NO_ERROR            = 0x0,
+    UNKOWN_ERROR        = 0x1,
+    ALREADY_EXISTS      = 0x2,
+    WRITE_ACCESS_DENIED = 0x4,
+    READ_ACCESS_DENIED  = 0x8,
+};
 
 class JPQFile
 {

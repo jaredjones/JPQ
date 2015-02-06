@@ -67,7 +67,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     
     func updateFileSizeLabel()
     {
-        let headerSize:UInt64 = 49
+        let headerSize:UInt64 = UInt64(JPQLibSwiftBridge.getJPQHeaderSize())
         
         var spaceForFiles:UInt64
         if ( filePositionByteSize * 8 == 64)

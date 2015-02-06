@@ -18,8 +18,10 @@
 - (void)dealloc;
 @end
 
+
 @interface JPQLibSwiftBridge : NSObject
 - (instancetype)init;
++ (UInt8)getJPQHeaderSize;
 + (JPQFileSwiftBridge *)CreateJPQPackage:(NSString *)localFilePath withOverwriteFile:(BOOL)overwriteFile withMaxNumberOfFiles:(NSNumber *)maxNumberOfFiles withVersion:(NSNumber *)version withFilePositionSizeInBytes:(NSNumber *)filePositionSizeInBytes;
 + (JPQFileSwiftBridge *)LoadJPQPackage:(NSString *)localFilePath;
 @end

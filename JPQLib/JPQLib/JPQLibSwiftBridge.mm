@@ -57,6 +57,11 @@
     return tmpFileBridge;
 }
 
++ (UInt8)getJPQHeaderSize
+{
+    return JPQ_HEADER_SIZE;
+}
+
 @end
 
 
