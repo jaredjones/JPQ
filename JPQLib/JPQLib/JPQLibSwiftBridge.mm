@@ -26,7 +26,7 @@
     BOOL defaultOverwriteFile = JPQ_DEFAULT_OVERWRITEFILE;
     UInt32 defaultMaxNumberOfFiles = JPQ_DEFAULT_MAXFILES;
     UInt16 defaultJPQVersion = JPQ_DEFAULT_VERSION;
-    UInt8 defaultFilePositionSizeInBytes = JPQ_DEFAULT_FILEPOSITIONSIZEINBYTES;
+    UInt8 defaultFilePositionSizeInBytes = JPQ_DEFAULT_FILE_POSITION_SIZE_IN_BYTES;
     
     if (overwriteFile)
         defaultOverwriteFile = !(defaultOverwriteFile);

@@ -79,7 +79,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         
         //Use linear probing (efficient?) to check if the next index is occupied
         //NOTE: Run performance tests to compare linear vs quadradic probing in the future!
-        fseek(jpqFile, _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (4 + _filePositionSizeInBytes)), SEEK_SET);
+        fseek(jpqFile, _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
         fread(&currHashValue, 4, 1, jpqFile);
         fseek(jpqFile, -4, SEEK_CUR);
         

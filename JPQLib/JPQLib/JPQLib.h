@@ -21,7 +21,7 @@ class JPQLib
 {
 public:
     static JPQFile* CreateJPQPackage(std::string localFilePath, bool overwriteFile = false, uint32 maxNumberOfFiles = JPQ_DEFAULT_MAXFILES, uint16 version = JPQ_DEFAULT_VERSION,
-                          uint8 filePositionSizeInBytes = JPQ_DEFAULT_FILEPOSITIONSIZEINBYTES);
+                          uint8 filePositionSizeInBytes = JPQ_DEFAULT_FILE_POSITION_SIZE_IN_BYTES);
     static JPQFile* LoadJPQPackage(std::string localFilePath);
    
 };

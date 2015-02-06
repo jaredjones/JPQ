@@ -48,7 +48,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     int jpqSigLen = (int)strlen(JPQ_SIGNATURE);
     fwrite(JPQ_SIGNATURE, 1, jpqSigLen, file);
     
-    //BEGIN HEADER (34 byte header)
+    //BEGIN HEADER (49 byte header)
     fwrite(&version, 2, 1, file);
     fwrite(&maxNumberOfFiles, 4, 1, file);
     
@@ -86,14 +86,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     //fileIndexSizeInBytes (For Lots of Files): We need  n-bits as well so that we can store 2^n bytes of files.
     //filePositionSizeInBytes (For Big File Sizes): It is important to have m-bit pointers to file locations
     
-    //Complete HashTable Size
-    uint8 fileIndexSize = 4;
-    
-    //If our hashtable file index contains more than 2 billion files, lets go ahead
-    //and assume that 2^64 is reasonable. (The hashtable will be HUGE at this point like 32GBs big!)
-    if (maxNumberOfFiles >= JPQ_DEFAULT_FILEHASHINDEXSIZEINBYTES)
-        fileIndexSize = 8;
-    uint64 htSize = maxNumberOfFiles * ( fileIndexSize + filePositionSizeInBytes );
+    uint64 htSize = maxNumberOfFiles * ( JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + filePositionSizeInBytes );
     
     //File up file with the space required for the HashTable
     for (uint64 i = 0; i < htSize; i++)
