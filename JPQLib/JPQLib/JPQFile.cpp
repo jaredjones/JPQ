@@ -31,6 +31,7 @@ void JPQFile::Close()
     if (_jpqFile)
     {
         fclose(_jpqFile);
+        _jpqFile = nullptr;
     }
 }
 
@@ -85,20 +86,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     printf("_hdFileIndex:%llu\n", htFileIndex);
     
-    //Get # of files by iterating through the table.
-    uint64 fileCounter = 0;
-    for (int i = 0; i < _maxNumberOfFiles; i++)
-    {
-        fseek(_jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
-        uint32 collisValue;
-        fread(&collisValue, 4, 1, _jpqFile);
-        fseek(_jpqFile, -4, SEEK_CUR);
-        printf("Exist[%u]:%u\n", i, collisValue);
-        if (collisValue != 0)
-            ++fileCounter;
-    }
-    
-    printf("Number of Elements in Table:%llu\n", fileCounter);
+    printf("Number of Elements in Table:%llu\n", GetNumberOfFiles());
     
     fseek(_jpqFile, _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
     
@@ -162,21 +150,24 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
 
 uint64 JPQFile::GetNumberOfFiles()
 {
-    /*if (FILE NOT NULL)
+    if (_jpqFile == nullptr)
+    {
+        _errorCode = (uint32)JPQFileError::JPQ_FILE_NULL;
+        return 0;
+    }
+    
     uint64 fileCounter = 0;
     for (int i = 0; i < _maxNumberOfFiles; i++)
     {
-        fseek(jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+        fseek(_jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
         uint32 collisValue;
-        fread(&collisValue, 4, 1, jpqFile);
-        fseek(jpqFile, -4, SEEK_CUR);
+        fread(&collisValue, 4, 1, _jpqFile);
+        fseek(_jpqFile, -4, SEEK_CUR);
         printf("Exist[%u]:%u\n", i, collisValue);
         if (collisValue != 0)
             ++fileCounter;
     }
-    
-    printf("Number of Elements in Table:%llu\n", fileCounter);
-     return fileCounter;*/return 0;
+    return fileCounter;
 }
 
 void JPQFile::DisplayFileVariables()

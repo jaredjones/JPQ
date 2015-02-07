@@ -21,7 +21,8 @@ enum class JPQFileError : uint32
     ALREADY_EXISTS      = 0x2,
     WRITE_ACCESS_DENIED = 0x4,
     READ_ACCESS_DENIED  = 0x8,
-    MALLOC_ERROR        = 0x16
+    MALLOC_ERROR        = 0x16,
+    JPQ_FILE_NULL       = 0x32
 };
 
 class JPQFile

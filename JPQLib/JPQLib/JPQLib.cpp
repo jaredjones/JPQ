@@ -153,6 +153,8 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     fread(&loadedFile->_dataBlockIndex, 8, 1, jpqFile);
     fread(&loadedFile->_dataBlockEnd, 8, 1, jpqFile);
     
+    loadedFile->_errorCode = (uint32)JPQFileError::NO_ERROR;
+    
     fclose(jpqFile);
     return loadedFile;
 }
