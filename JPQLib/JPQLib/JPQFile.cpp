@@ -12,10 +12,12 @@
 
 void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
 {
-    auto cleanUpMemory = [](FILE *f1, FILE *f2)
+    auto cleanUpMemory = [](FILE **f1, FILE **f2)
     {
-        fclose(f1);
-        fclose(f2);
+        fclose(*f1);
+        fclose(*f2);
+        *f1 = nullptr;
+        *f2 = nullptr;
         f1 = nullptr;
         f2 = nullptr;
     };
@@ -24,13 +26,13 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     FILE *jpqFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
-        cleanUpMemory(newFile, jpqFile);
+        cleanUpMemory(&newFile, &jpqFile);
         printf("Cannot read the file you wanted to insert into the JPQ!\n");
         return;
     }
     if (!(jpqFile = fopen(_filePath.c_str(), "r+b")))
     {
-        cleanUpMemory(newFile, jpqFile);
+        cleanUpMemory(&newFile, &jpqFile);
         printf("Cannot open the JPQFile for writing!\n");
         return;
     }
@@ -82,7 +84,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         if (currHashValue == collisHash)
         {
             printf("File already exists, this should replace but at the moment writing won't happen!\n");
-            cleanUpMemory(newFile, jpqFile);
+            cleanUpMemory(&newFile, &jpqFile);
             return;
         }
         
@@ -97,7 +99,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         if (currHashValue != 0 && _maxNumberOfFiles == (i+1))
         {
             printf("Hash table is full! Insertion Exited!\n");
-            cleanUpMemory(newFile, jpqFile);
+            cleanUpMemory(&newFile, &jpqFile);
             return;
         }
         
@@ -123,7 +125,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     free(data);
     data = nullptr;
     
-    cleanUpMemory(newFile, jpqFile);
+    cleanUpMemory(&newFile, &jpqFile);
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
