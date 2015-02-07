@@ -182,7 +182,7 @@ void JPQFile::DisplayFileVariables()
     printf("_dataBlockIndex:%llu\n",_dataBlockIndex);
     printf("_dataBlockEnd:%llu\n",_dataBlockEnd);
     printf("####DISPLAYING CLASS VARIABLES####\n");
-    printf("_errorCode:%u", _errorCode);
+    printf("_errorCode:%u\n", _errorCode);
     
 }
 

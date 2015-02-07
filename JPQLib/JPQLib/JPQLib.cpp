@@ -141,6 +141,7 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
         return loadedFile;
     }
     loadedFile->_filePath = localFilePath;
+    loadedFile->_jpqFile = jpqFile;
     
     int jpqSigLen = (int)strlen(JPQ_SIGNATURE);
     fseek(jpqFile, jpqSigLen, SEEK_SET);
@@ -155,7 +156,6 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     
     loadedFile->_errorCode = (uint32)JPQFileError::NO_ERROR;
     
-    fclose(jpqFile);
     return loadedFile;
 }
 

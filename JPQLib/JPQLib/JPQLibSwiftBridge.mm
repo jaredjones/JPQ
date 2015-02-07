@@ -15,6 +15,13 @@
     self = [super init];
     if (self)
     {
+        //TESTING
+        JPQFile *file;
+        //file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
+        file = JPQLib::LoadJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"));
+        file->DisplayFileVariables();
+        NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
+        
         // JPQLib consists only of static classes at the moment;
         // therefore there is nothing to instantiate.
     }
