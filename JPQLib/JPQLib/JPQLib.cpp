@@ -31,6 +31,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
         if ((file = fopen(localFilePath.c_str(), "rb")))
         {
             fclose(file);
+            file = nullptr;
             printf("The file you are trying to create already exists!\n");
             newFile->_errorCode |= (uint32)JPQFileError::ALREADY_EXISTS;
             return newFile;
@@ -40,6 +41,8 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     file = fopen(localFilePath.c_str(), "w+b");
     if (!file)
     {
+        fclose(file);
+        file = nullptr;
         printf("The OS has denied you write access to the location you've chosen!\n");
         newFile->_errorCode |= (uint32)JPQFileError::WRITE_ACCESS_DENIED;
         return newFile;
@@ -83,13 +86,14 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     fwrite(&newFile->_hTBeginIndex, 8, 1, file);
     fseek(file, newFile->_hTBeginIndex, SEEK_SET);
     
-    //fileIndexSizeInBytes (For Lots of Files): We need  n-bits as well so that we can store 2^n bytes of files.
     //filePositionSizeInBytes (For Big File Sizes): It is important to have m-bit pointers to file locations
     
     uint64 htSize = maxNumberOfFiles * ( JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + filePositionSizeInBytes );
     uint8 *hTBuffer = (uint8 *)malloc(htSize);
     if (hTBuffer == NULL)
     {
+        fclose(file);
+        file = nullptr;
         printf("Malloc has failed to create the HashTable. Please report this as a bug on GitHub.com/jaredjones/JPQ\n \
                Please include your OS, RAM, and Disk Space when filing the bug report. Also include the values you passed in\
                during creation of this file.\n");
@@ -102,6 +106,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     //Write buffer
     fwrite(hTBuffer, htSize, 1, file);
     free (hTBuffer);
+    hTBuffer = nullptr;
     
     newFile->_dataBlockIndex = ftell(file);
     //Go to beginning of hashtable - 16 to get to where we need to write our 8 bytes for the data block index
@@ -115,6 +120,8 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     fseek(file, newFile->_dataBlockEnd, SEEK_SET);
     
     fclose(file);
+    file = nullptr;
+    
     newFile->_errorCode = (uint32)JPQFileError::NO_ERROR;
     return newFile;
 }
@@ -126,6 +133,8 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     FILE *jpqFile;
     if (!(jpqFile = fopen(localFilePath.c_str(), "rb")))
     {
+        fclose(jpqFile);
+        jpqFile = nullptr;
         printf("The OS has denied you read access to the JPQFile you specified!\n");
         loadedFile->_errorCode |= (uint32)JPQFileError::READ_ACCESS_DENIED;
         return loadedFile;

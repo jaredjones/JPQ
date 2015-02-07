@@ -16,11 +16,19 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     FILE *jpqFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
+        fclose(newFile);
+        fclose(jpqFile);
+        newFile = nullptr;
+        jpqFile = nullptr;
         printf("Cannot read the file you wanted to insert into the JPQ!\n");
         return;
     }
     if (!(jpqFile = fopen(_filePath.c_str(), "r+b")))
     {
+        fclose(newFile);
+        fclose(jpqFile);
+        newFile = nullptr;
+        jpqFile = nullptr;
         printf("Cannot open the JPQFile for writing!\n");
         return;
     }
@@ -74,6 +82,8 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
             printf("File already exists, this should replace but at the moment writing won't happen!\n");
             fclose(newFile);
             fclose(jpqFile);
+            newFile = nullptr;
+            jpqFile = nullptr;
             return;
         }
         
@@ -90,6 +100,8 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
             printf("Hash table is full! Insertion Exited!\n");
             fclose(newFile);
             fclose(jpqFile);
+            newFile = nullptr;
+            jpqFile = nullptr;
             return;
         }
         
@@ -112,8 +124,13 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     fseek(jpqFile, _hTBeginIndex-8, SEEK_SET);
     fwrite(&_dataBlockEnd, 8, 1, jpqFile);
     
+    free(data);
+    data = nullptr;
+    
     fclose(newFile);
     fclose(jpqFile);
+    newFile = nullptr;
+    jpqFile = nullptr;
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
