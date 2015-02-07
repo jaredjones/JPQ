@@ -119,7 +119,8 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     fwrite(&newFile->_dataBlockEnd, 8, 1, file);
     fseek(file, newFile->_dataBlockEnd, SEEK_SET);
     
-    fclose(file);
+    newFile->_jpqFile = file;
+    
     file = nullptr;
     
     newFile->_errorCode = (uint32)JPQFileError::NO_ERROR;

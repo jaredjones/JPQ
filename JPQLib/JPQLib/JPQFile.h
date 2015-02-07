@@ -9,6 +9,7 @@
 #ifndef __JPQLib__JPQFile__
 #define __JPQLib__JPQFile__
 
+#include <stdlib.h>
 #include <string>
 #include "Common.h"
 #include "SpookyV2.h"
@@ -31,8 +32,8 @@ public:
 private:
     JPQFile()
     {
-        
     }
+    FILE *_jpqFile;
     std::string _filePath;
     uint16 _fileVersion;
     uint32 _maxNumberOfFiles;
@@ -45,7 +46,16 @@ private:
     
     uint32 _errorCode = 0;
 public:
+    ~JPQFile()
+    {
+        fclose(_jpqFile);
+        _jpqFile = nullptr;
+    }
+    void Reopen();
+    void Close();
+    void Clear();
     void AddFile(std::string localFilePath, std::string jpqFilePath);
+    uint64 GetNumberOfFiles();
     void DisplayFileVariables();
 };
 

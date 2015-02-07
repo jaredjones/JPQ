@@ -6,34 +6,65 @@
 //  Copyright (c) 2014 Uvora. All rights reserved.
 //
 
-#include <stdlib.h>
 #include "JPQFile.h"
 #include "Common.h"
 
+void JPQFile::Reopen()
+{
+    Close();
+    if (_filePath.empty())
+    {
+        printf("ERROR: File path is empty!\n");
+        return;
+    }
+    
+    if (!(_jpqFile = fopen(_filePath.c_str(), "a+")))
+    {
+        printf("File failed to open for writing/reading!\n");
+        return;
+    }
+    //TODO: Rescan file after opening, at the moment we better hope nothing has changed.
+}
+
+void JPQFile::Close()
+{
+    if (_jpqFile)
+    {
+        fclose(_jpqFile);
+    }
+}
+
+void JPQFile::Clear()
+{
+    Close();
+    _jpqFile = nullptr;
+    _filePath = std::string();
+    _fileVersion = 0;
+    _maxNumberOfFiles = 0;
+    _filePositionSizeInBytes = 0;
+    _indexSeed = 0;
+    _collisionSeed = 0;
+    _hTBeginIndex = 0;
+    _dataBlockIndex = 0;
+    _dataBlockEnd = 0;
+    _errorCode = 0;
+}
+
 void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
 {
-    auto cleanUpMemory = [](FILE **f1, FILE **f2)
+    //Lambda for cleaning up common memory that was malloc'd
+    auto cleanUpMemory = [](FILE **f1)
     {
         fclose(*f1);
-        fclose(*f2);
         *f1 = nullptr;
-        *f2 = nullptr;
         f1 = nullptr;
-        f2 = nullptr;
     };
     
     FILE *newFile;
-    FILE *jpqFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
-        cleanUpMemory(&newFile, &jpqFile);
+        cleanUpMemory(&newFile);
         printf("Cannot read the file you wanted to insert into the JPQ!\n");
-        return;
-    }
-    if (!(jpqFile = fopen(_filePath.c_str(), "r+b")))
-    {
-        cleanUpMemory(&newFile, &jpqFile);
-        printf("Cannot open the JPQFile for writing!\n");
         return;
     }
     
@@ -58,10 +89,10 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     uint64 fileCounter = 0;
     for (int i = 0; i < _maxNumberOfFiles; i++)
     {
-        fseek(jpqFile, _hTBeginIndex + (i * (4 + _filePositionSizeInBytes)), SEEK_SET);
+        fseek(_jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
         uint32 collisValue;
-        fread(&collisValue, 4, 1, jpqFile);
-        fseek(jpqFile, -4, SEEK_CUR);
+        fread(&collisValue, 4, 1, _jpqFile);
+        fseek(_jpqFile, -4, SEEK_CUR);
         printf("Exist[%u]:%u\n", i, collisValue);
         if (collisValue != 0)
             ++fileCounter;
@@ -69,12 +100,12 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     printf("Number of Elements in Table:%llu\n", fileCounter);
     
-    fseek(jpqFile, _hTBeginIndex + (htFileIndex * (4 + _filePositionSizeInBytes)), SEEK_SET);
+    fseek(_jpqFile, _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
     
     //Get the current hash value at this index
     uint32 currHashValue;
-    fread(&currHashValue, 4, 1, jpqFile);
-    fseek(jpqFile, -4, SEEK_CUR);
+    fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
+    fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
     
     //If there is data at this value then the space is occupied.
     //Iterate through hash table till we find an available spot
@@ -84,22 +115,22 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         if (currHashValue == collisHash)
         {
             printf("File already exists, this should replace but at the moment writing won't happen!\n");
-            cleanUpMemory(&newFile, &jpqFile);
+            cleanUpMemory(&newFile);
             return;
         }
         
         //Use linear probing (efficient?) to check if the next index is occupied
         //NOTE: Run performance tests to compare linear vs quadradic probing in the future!
-        fseek(jpqFile, _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
-        fread(&currHashValue, 4, 1, jpqFile);
-        fseek(jpqFile, -4, SEEK_CUR);
+        fseek(_jpqFile, _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+        fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
+        fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
         
         //If we're at the last element in our hash table and our collission hash is still not NULL
         //then we can assume that the hash table is full!
         if (currHashValue != 0 && _maxNumberOfFiles == (i+1))
         {
             printf("Hash table is full! Insertion Exited!\n");
-            cleanUpMemory(&newFile, &jpqFile);
+            cleanUpMemory(&newFile);
             return;
         }
         
@@ -109,24 +140,43 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     printf("HT Written at Index:%llu\n", htFileIndex);
     
-    fwrite(&collisHash, 4, 1, jpqFile);
+    fwrite(&collisHash, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
     //Write the pointer to where the data begins
-    fwrite(&_dataBlockEnd, _filePositionSizeInBytes, 1, jpqFile);
+    fwrite(&_dataBlockEnd, _filePositionSizeInBytes, 1, _jpqFile);
     
     //Use the _dataBlockEnd to store the next file!
-    fseek(jpqFile, _dataBlockEnd, SEEK_SET);
-    fwrite(data, fileSize, 1, jpqFile);
+    fseek(_jpqFile, _dataBlockEnd, SEEK_SET);
+    fwrite(data, fileSize, 1, _jpqFile);
     
     //Update _dataBlockEnd pointer
-    _dataBlockEnd = ftell(jpqFile);
-    fseek(jpqFile, _hTBeginIndex-8, SEEK_SET);
-    fwrite(&_dataBlockEnd, 8, 1, jpqFile);
+    _dataBlockEnd = ftell(_jpqFile);
+    fseek(_jpqFile, _hTBeginIndex-8, SEEK_SET);
+    fwrite(&_dataBlockEnd, 8, 1, _jpqFile);
     
     free(data);
     data = nullptr;
     
-    cleanUpMemory(&newFile, &jpqFile);
+    cleanUpMemory(&newFile);
     _errorCode = (uint32)JPQFileError::NO_ERROR;
+}
+
+uint64 JPQFile::GetNumberOfFiles()
+{
+    /*if (FILE NOT NULL)
+    uint64 fileCounter = 0;
+    for (int i = 0; i < _maxNumberOfFiles; i++)
+    {
+        fseek(jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+        uint32 collisValue;
+        fread(&collisValue, 4, 1, jpqFile);
+        fseek(jpqFile, -4, SEEK_CUR);
+        printf("Exist[%u]:%u\n", i, collisValue);
+        if (collisValue != 0)
+            ++fileCounter;
+    }
+    
+    printf("Number of Elements in Table:%llu\n", fileCounter);
+     return fileCounter;*/return 0;
 }
 
 void JPQFile::DisplayFileVariables()
