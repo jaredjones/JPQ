@@ -88,6 +88,14 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     
     uint64 htSize = maxNumberOfFiles * ( JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + filePositionSizeInBytes );
     uint8 *hTBuffer = (uint8 *)malloc(htSize);
+    if (hTBuffer == NULL)
+    {
+        printf("Malloc has failed to create the HashTable. Please report this as a bug on GitHub.com/jaredjones/JPQ\n \
+               Please include your OS, RAM, and Disk Space when filing the bug report. Also include the values you passed in\
+               during creation of this file.\n");
+        newFile->_errorCode = (uint32)JPQFileError::MALLOC_ERROR;
+        return newFile;
+    }
     //File up buffer with zeroed data
     for (uint64 i = 0; i < htSize; i++)
         hTBuffer[i] = 0;
