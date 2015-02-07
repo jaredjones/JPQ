@@ -12,23 +12,25 @@
 
 void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
 {
+    auto cleanUpMemory = [](FILE *f1, FILE *f2)
+    {
+        fclose(f1);
+        fclose(f2);
+        f1 = nullptr;
+        f2 = nullptr;
+    };
+    
     FILE *newFile;
     FILE *jpqFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
-        fclose(newFile);
-        fclose(jpqFile);
-        newFile = nullptr;
-        jpqFile = nullptr;
+        cleanUpMemory(newFile, jpqFile);
         printf("Cannot read the file you wanted to insert into the JPQ!\n");
         return;
     }
     if (!(jpqFile = fopen(_filePath.c_str(), "r+b")))
     {
-        fclose(newFile);
-        fclose(jpqFile);
-        newFile = nullptr;
-        jpqFile = nullptr;
+        cleanUpMemory(newFile, jpqFile);
         printf("Cannot open the JPQFile for writing!\n");
         return;
     }
@@ -80,10 +82,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         if (currHashValue == collisHash)
         {
             printf("File already exists, this should replace but at the moment writing won't happen!\n");
-            fclose(newFile);
-            fclose(jpqFile);
-            newFile = nullptr;
-            jpqFile = nullptr;
+            cleanUpMemory(newFile, jpqFile);
             return;
         }
         
@@ -98,10 +97,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         if (currHashValue != 0 && _maxNumberOfFiles == (i+1))
         {
             printf("Hash table is full! Insertion Exited!\n");
-            fclose(newFile);
-            fclose(jpqFile);
-            newFile = nullptr;
-            jpqFile = nullptr;
+            cleanUpMemory(newFile, jpqFile);
             return;
         }
         
@@ -127,10 +123,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     free(data);
     data = nullptr;
     
-    fclose(newFile);
-    fclose(jpqFile);
-    newFile = nullptr;
-    jpqFile = nullptr;
+    cleanUpMemory(newFile, jpqFile);
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
