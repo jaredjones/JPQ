@@ -22,6 +22,10 @@
         file->DisplayFileVariables();
         NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
         
+        file->AddFile(std::string("/Users/jared/Desktop/InstructorsSolutionsManual.pdf"), std::string("/big.whatever"));
+        file->AddFile(std::string("/Users/jared/a.txt"), std::string("/a.txt"));
+        //file->AddFile(std::string("/Users/jared/1.txt"), std::string("/1.txt"));
+        
         // JPQLib consists only of static classes at the moment;
         // therefore there is nothing to instantiate.
     }

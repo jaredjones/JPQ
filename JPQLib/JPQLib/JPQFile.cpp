@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Uvora. All rights reserved.
 //
 
+#include <stdio.h>
+
 #include "JPQFile.h"
 #include "Common.h"
 
@@ -18,7 +20,7 @@ void JPQFile::Reopen()
         return;
     }
     
-    if (!(_jpqFile = fopen(_filePath.c_str(), "a+")))
+    if (!(_jpqFile = fopen(_filePath.c_str(), "r+")))
     {
         printf("File failed to open for writing/reading!\n");
         return;
@@ -60,7 +62,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         *f1 = nullptr;
         f1 = nullptr;
     };
-    
+  
     FILE *newFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
@@ -123,13 +125,17 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         }
         
         if (currHashValue == 0)
+        {
             htFileIndex = (htFileIndex+i+1) % _maxNumberOfFiles;
+            break;
+        }
     }
     
     printf("HT Written at Index:%llu\n", htFileIndex);
     
     fwrite(&collisHash, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
     //Write the pointer to where the data begins
+    printf("DATA AT: %llu\n", _dataBlockEnd);
     fwrite(&_dataBlockEnd, _filePositionSizeInBytes, 1, _jpqFile);
     
     //Use the _dataBlockEnd to store the next file!
@@ -138,9 +144,11 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     //Update _dataBlockEnd pointer
     _dataBlockEnd = ftell(_jpqFile);
+    printf("DBEND:%llu\n", _dataBlockEnd);
+    printf("HTBEG:%llu\n", _hTBeginIndex);
     fseek(_jpqFile, _hTBeginIndex-8, SEEK_SET);
     fwrite(&_dataBlockEnd, 8, 1, _jpqFile);
-    
+    fflush(_jpqFile);
     free(data);
     data = nullptr;
     

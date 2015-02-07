@@ -36,9 +36,13 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
             newFile->_errorCode |= (uint32)JPQFileError::ALREADY_EXISTS;
             return newFile;
         }
+        else
+        {
+            fclose(file);
+        }
     }
     
-    file = fopen(localFilePath.c_str(), "w+b");
+    file = fopen(localFilePath.c_str(), "w+");
     if (!file)
     {
         fclose(file);
@@ -132,7 +136,7 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     JPQFile *loadedFile = new JPQFile();
     
     FILE *jpqFile;
-    if (!(jpqFile = fopen(localFilePath.c_str(), "rb")))
+    if (!(jpqFile = fopen(localFilePath.c_str(), "r+")))
     {
         fclose(jpqFile);
         jpqFile = nullptr;
