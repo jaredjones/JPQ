@@ -28,7 +28,7 @@ class FileViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fileTableView.controller = self
-        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as! [AnyObject])
+        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType))
         
         savePanel = NSSavePanel()
         savePanel!.nameFieldLabel = "JPQ Name:"
@@ -44,7 +44,7 @@ class FileViewController: NSViewController {
         
         addJPQPop.contentViewController = addJPQPopVC
         addJPQPop.behavior = NSPopoverBehavior.Semitransient
-        addJPQPopVC.setObjectContainer(self)
+        addJPQPopVC.setContainer(self)
         
         // Do any additional setup after loading the view.
     }

@@ -11,7 +11,7 @@ import Cocoa
 extension Double
 {
     func format(f: String) -> String {
-        return NSString(format: "%\(f)f", self) as! String
+        return NSString(format: "%\(f)f", self)
     }
 }
 
@@ -60,7 +60,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         super.viewDidAppear()
     }
     
-    func setObjectContainer(cont:FileViewController)
+    func setContainer(cont:FileViewController)
     {
         self.container = cont
     }
@@ -253,7 +253,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     var lastLength:Int = 0
     override func controlTextDidChange(obj: NSNotification)
     {
-        let txtField:NSTextField = obj.object as! NSTextField
+        let txtField:NSTextField = obj.object as NSTextField
         let len = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
         if len == 0
         {
@@ -273,7 +273,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         if chr < 48 || chr > 57
         {
             str = str.substringToIndex(len - 1)
-            txtField.stringValue = str as! String
+            txtField.stringValue = str
         }
         lastLength = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
         
@@ -292,7 +292,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     
     override func controlTextDidBeginEditing(obj: NSNotification)
     {
-        let txtField:NSTextField = obj.object as! NSTextField
+        let txtField:NSTextField = obj.object as NSTextField
         lastLength = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
     }
 }
