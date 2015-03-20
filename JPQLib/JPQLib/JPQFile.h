@@ -33,6 +33,7 @@ public:
 private:
     JPQFile()
     {
+        Clear();
     }
     FILE *_jpqFile;
     std::string _filePath;
@@ -56,6 +57,7 @@ public:
     void Close();
     void Clear();
     void AddFile(std::string localFilePath, std::string jpqFilePath);
+    void* LoadFile(std::string path, uint64 &size);
     uint64 GetNumberOfFiles();
     void DisplayFileVariables();
 };

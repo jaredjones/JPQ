@@ -63,6 +63,11 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         f1 = nullptr;
     };
   
+    if (_jpqFile == nullptr)
+    {
+        printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
+        return;
+    }
     FILE *newFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
