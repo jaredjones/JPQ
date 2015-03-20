@@ -72,7 +72,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     if (!JPQUtilities::ValidFileName(jpqFilePath))
     {
-        printf("The filename/path you've chosen is invalid:%s", jpqFilePath.c_str());
+        printf("The filename/path you've chosen is either invalid or reserved by the JPQ file system:%s", jpqFilePath.c_str());
         return;
     }
     
