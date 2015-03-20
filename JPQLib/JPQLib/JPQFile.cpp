@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #include "JPQFile.h"
+#include "JPQUtilities.h"
 #include "Common.h"
 
 void JPQFile::Reopen()
@@ -68,6 +69,13 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
         return;
     }
+    
+    if (!JPQUtilities::ValidFileName(jpqFilePath))
+    {
+        printf("The filename/path you've chosen is invalid:%s", jpqFilePath.c_str());
+        return;
+    }
+    
     FILE *newFile;
     if (!(newFile = fopen(localFilePath.c_str(), "rb")))
     {
@@ -145,6 +153,15 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     //Use the _dataBlockEnd to store the next file!
     fseek(_jpqFile, _dataBlockEnd, SEEK_SET);
+    
+    //Write Space for ArchiveSize, Origional Size, and Flags
+    //20 bytes total
+    char a = '\x00';
+    fwrite(&fileSize, 8, 1, _jpqFile);  // Archive Size
+    fwrite(&fileSize, 8, 1, _jpqFile);  // Original Size
+    fwrite(&a, 4, 1, _jpqFile);         // File Mask
+    
+    //Write file contents
     fwrite(data, fileSize, 1, _jpqFile);
     
     //Update _dataBlockEnd pointer
