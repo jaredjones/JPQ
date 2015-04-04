@@ -197,11 +197,35 @@ void* JPQFile::LoadFile(std::string jpqFilePath)
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
     
     uint64 htFileIndex = indexHash % _maxNumberOfFiles;
-    fseek(_jpqFile, _hTBeginIndex + htFileIndex, SEEK_SET);
+    fseek(_jpqFile,
+          _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+          SEEK_SET);
     
+    uint32 currHashValue;
+    void *file = nullptr;
     
-    
-    printf("_hdFileIndex:%llu\n", htFileIndex);
+    do
+    {
+        //Read currentHashValue into stack memory
+        fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
+        
+        //Load File
+        if (currHashValue == collisHash)
+        {
+            
+            break;
+        }
+        
+        //Unwind last read position
+        fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
+        
+        //Check for next currHashValue
+        fseek(_jpqFile,
+              _hTBeginIndex + ((++htFileIndex) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes),
+              SEEK_SET);
+        
+    }
+    while (currHashValue != collisHash);
     
     return nullptr;
 }
