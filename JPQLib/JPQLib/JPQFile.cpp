@@ -182,6 +182,30 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
+void* JPQFile::LoadFile(std::string jpqFilePath)
+{
+    if (_jpqFile == nullptr)
+    {
+        printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
+        return nullptr;
+    }
+    
+    std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
+    std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
+    
+    uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
+    uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
+    
+    uint64 htFileIndex = indexHash % _maxNumberOfFiles;
+    fseek(_jpqFile, _hTBeginIndex + htFileIndex, SEEK_SET);
+    
+    
+    
+    printf("_hdFileIndex:%llu\n", htFileIndex);
+    
+    return nullptr;
+}
+
 uint64 JPQFile::GetNumberOfFiles()
 {
     if (_jpqFile == nullptr)
