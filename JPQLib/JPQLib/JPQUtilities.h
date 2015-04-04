@@ -14,13 +14,13 @@ class JPQUtilities
 private:
     
 public:
-    static bool ValidFileName(std::string s)
+    static bool ReservedFileName(std::string s)
     {
         char f = s[0];
         char l = s[s.length() - 1];
         if (f == '(' && l == ')')
-            return false;
-        return true;
+            return true;
+        return false;
     }
 };
 

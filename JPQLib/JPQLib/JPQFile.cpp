@@ -54,7 +54,7 @@ void JPQFile::Clear()
     _errorCode = 0;
 }
 
-void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
+void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir)
 {
     //Lambda for cleaning up common memory that was malloc'd
     auto cleanUpMemory = [](FILE **f1)
@@ -70,7 +70,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         return;
     }
     
-    if (!JPQUtilities::ValidFileName(jpqFilePath))
+    if (JPQUtilities::ReservedFileName(jpqFilePath))
     {
         printf("The filename/path you've chosen is either invalid or reserved by the JPQ file system:%s", jpqFilePath.c_str());
         return;
@@ -103,7 +103,9 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
     
     printf("Number of Elements in Table:%llu\n", GetNumberOfFiles());
     
-    fseek(_jpqFile, _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+    fseek(_jpqFile,
+          _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+          SEEK_SET);
     
     //Get the current hash value at this index
     uint32 currHashValue;
@@ -124,7 +126,9 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath)
         
         //Use linear probing (efficient?) to check if the next index is occupied
         //NOTE: Run performance tests to compare linear vs quadradic probing in the future!
-        fseek(_jpqFile, _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+        fseek(_jpqFile,
+              _hTBeginIndex + (((htFileIndex+i+1) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+              SEEK_SET);
         fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
         fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
         
@@ -189,7 +193,9 @@ uint64 JPQFile::GetNumberOfFiles()
     uint64 fileCounter = 0;
     for (int i = 0; i < _maxNumberOfFiles; i++)
     {
-        fseek(_jpqFile, _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)), SEEK_SET);
+        fseek(_jpqFile,
+              _hTBeginIndex + (i * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+              SEEK_SET);
         uint32 collisValue;
         fread(&collisValue, 4, 1, _jpqFile);
         fseek(_jpqFile, -4, SEEK_CUR);
@@ -202,7 +208,9 @@ uint64 JPQFile::GetNumberOfFiles()
 
 void JPQFile::DisplayFileVariables()
 {
+    printf("#################################\n");
     printf("####DISPLAYING FILE VARIABLES####\n");
+    printf("#################################\n");
     printf("_filePath:%s\n", _filePath.c_str());
     printf("_maxNumberOfFiles:%u\n", _maxNumberOfFiles);
     printf("_filePositionSizeInByte:%d\n",_filePositionSizeInBytes);
@@ -211,9 +219,11 @@ void JPQFile::DisplayFileVariables()
     printf("_hTBeginIndex:%llu\n",_hTBeginIndex);
     printf("_dataBlockIndex:%llu\n",_dataBlockIndex);
     printf("_dataBlockEnd:%llu\n",_dataBlockEnd);
+    printf("##################################\n");
     printf("####DISPLAYING CLASS VARIABLES####\n");
+    printf("##################################\n");
     printf("_errorCode:%u\n", _errorCode);
-    
+    printf("\n");
 }
 
 uint32 JPQFile::GetErrorCode()

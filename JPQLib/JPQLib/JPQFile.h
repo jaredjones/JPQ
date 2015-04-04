@@ -56,7 +56,7 @@ public:
     void Reopen();
     void Close();
     void Clear();
-    void AddFile(std::string localFilePath, std::string jpqFilePath);
+    void AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir = true);
     void* LoadFile(std::string path, uint64 &size);
     uint64 GetNumberOfFiles();
     void DisplayFileVariables();
