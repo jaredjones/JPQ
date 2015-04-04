@@ -161,9 +161,9 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     //Write Space for ArchiveSize, Origional Size, and Flags
     //20 bytes total
     char a = '\x00';
-    fwrite(&fileSize, 8, 1, _jpqFile);  // Archive Size
-    fwrite(&fileSize, 8, 1, _jpqFile);  // Original Size
-    fwrite(&a, 4, 1, _jpqFile);         // File Mask
+    fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Archive Size
+    fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Original Size
+    fwrite(&a, sizeof(uint32), 1, _jpqFile);         // File Mask
     
     //Write file contents
     fwrite(data, fileSize, 1, _jpqFile);
@@ -182,7 +182,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
-void* JPQFile::LoadFile(std::string jpqFilePath)
+void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
 {
     if (_jpqFile == nullptr)
     {
@@ -212,7 +212,20 @@ void* JPQFile::LoadFile(std::string jpqFilePath)
         //Load File
         if (currHashValue == collisHash)
         {
+            uint64 filePosition;
+            uint64 archiveSize;
+            uint64 originalSize;
+            uint32 archiveMask;
+            fread(&filePosition, JPQ_DEFAULT_FILE_POSITION_SIZE_IN_BYTES, 1, _jpqFile);
+            fseek(_jpqFile, filePosition, SEEK_SET);
+            fread(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
+            fread(&originalSize, sizeof(originalSize), 1, _jpqFile);
+            fread(&archiveMask, sizeof(archiveMask), 1, _jpqFile);
             
+            file = malloc(archiveSize);
+            fread(file, archiveSize, 1, _jpqFile);
+            *fileSize = archiveSize;
+            return file;
             break;
         }
         

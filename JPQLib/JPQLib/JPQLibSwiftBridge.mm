@@ -26,8 +26,11 @@
         //file->AddFile(std::string("/Users/jared/a.txt"), std::string("/a.txt"));
         //file->AddFile(std::string("/Users/jared/Desktop/liststuff.pl"), std::string("/liststuff.pl"));
         
+        uint64 fileSize;
+        void* loadedFile = file->LoadFile(std::string("/liststuff.pl"), &fileSize);
         
-        file->LoadFile(std::string("/liststuff.pl"));
+        free(loadedFile);
+        loadedFile = nullptr;
         
         // JPQLib consists only of static classes at the moment;
         // therefore there is nothing to instantiate.
