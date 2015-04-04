@@ -28,7 +28,7 @@ class FileViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fileTableView.controller = self
-        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType))
+        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as [AnyObject])
         
         savePanel = NSSavePanel()
         savePanel!.nameFieldLabel = "JPQ Name:"
@@ -44,7 +44,7 @@ class FileViewController: NSViewController {
         
         addJPQPop.contentViewController = addJPQPopVC
         addJPQPop.behavior = NSPopoverBehavior.Semitransient
-        addJPQPopVC.setContainer(self)
+        addJPQPopVC.holder = self;
         
         // Do any additional setup after loading the view.
     }
@@ -119,7 +119,6 @@ class FileViewController: NSViewController {
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "An unknown error has occured that has prevented the JPQFile from saving.",
                         style: NSAlertStyle.WarningAlertStyle)
-                    fallthrough
                 case 2:
                     let alert = NSAlert()
                     alert.addButtonWithTitle("Cancel")
@@ -133,17 +132,14 @@ class FileViewController: NSViewController {
                             self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
                     })
-                    fallthrough
                 case 4:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you write access to the location you've chosen!",
                         style: NSAlertStyle.WarningAlertStyle)
-                    fallthrough
                 case 8:
                     self.dispatchStandardAlert("JPQFile Failed to Save!",
                         body: "OS X has denied you read access to the location you've chosen!",
                         style: NSAlertStyle.WarningAlertStyle)
-                    fallthrough
                 default:
                     break
                 }
@@ -176,8 +172,11 @@ class FileViewController: NSViewController {
         alert.messageText = title
         alert.informativeText = body
         alert.alertStyle = style
-        alert.beginSheetModalForWindow(self.view.window!, modalDelegate: self, didEndSelector: nil, contextInfo: nil)
+        alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
+            
+        })
     }
+    
     override var representedObject: AnyObject? {
         didSet {
             // Update the view, if already loaded.
