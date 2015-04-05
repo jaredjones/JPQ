@@ -22,7 +22,8 @@ enum class JPQFileError : uint32
     WRITE_ACCESS_DENIED = 0x4,
     READ_ACCESS_DENIED  = 0x8,
     MALLOC_ERROR        = 0x16,
-    JPQ_FILE_NULL       = 0x32
+    JPQ_FILE_NULL       = 0x32,
+    JPQ_FILE_NOT_FOUND  = 0x64
 };
 
 class JPQFile

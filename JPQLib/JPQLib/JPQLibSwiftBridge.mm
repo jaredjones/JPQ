@@ -18,16 +18,18 @@
         //TESTING
         JPQFile *file;
         //file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
+        
         file = JPQLib::LoadJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"));
         file->DisplayFileVariables();
         NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
         
-        //file->AddFile(std::string("/Users/jared/Desktop/InstructorsSolutionsManual.pdf"), std::string("/big.whatever"));
-        //file->AddFile(std::string("/Users/jared/a.txt"), std::string("/a.txt"));
-        //file->AddFile(std::string("/Users/jared/Desktop/liststuff.pl"), std::string("/liststuff.pl"));
+        //file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("/a.txt"));
         
         uint64 fileSize;
-        void* loadedFile = file->LoadFile(std::string("/liststuff.pl"), &fileSize);
+        void* loadedFile = file->LoadFile(std::string("/a.txt"), &fileSize);
+        
+        
+        
         
         free(loadedFile);
         loadedFile = nullptr;

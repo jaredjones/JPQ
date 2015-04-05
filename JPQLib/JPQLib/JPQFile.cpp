@@ -182,6 +182,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
+//TODO: This function should be thread safe.
 void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
 {
     if (_jpqFile == nullptr)
@@ -209,6 +210,13 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
         //Read currentHashValue into stack memory
         fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
         
+        if (currHashValue == 0)
+        {
+            _errorCode = (uint32)JPQFileError::JPQ_FILE_NOT_FOUND;
+            printf("File At:\"%s\" does not exist in the archive.\n", jpqFilePath.c_str());
+            return nullptr;
+        }
+        
         //Load File
         if (currHashValue == collisHash)
         {
@@ -216,6 +224,7 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
             uint64 archiveSize;
             uint64 originalSize;
             uint32 archiveMask;
+            
             fread(&filePosition, JPQ_DEFAULT_FILE_POSITION_SIZE_IN_BYTES, 1, _jpqFile);
             fseek(_jpqFile, filePosition, SEEK_SET);
             fread(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
