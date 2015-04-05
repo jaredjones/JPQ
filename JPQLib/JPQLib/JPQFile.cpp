@@ -226,7 +226,6 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
             fread(file, archiveSize, 1, _jpqFile);
             *fileSize = archiveSize;
             return file;
-            break;
         }
         
         //Unwind last read position
