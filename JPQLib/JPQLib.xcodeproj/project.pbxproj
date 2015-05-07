@@ -30,6 +30,7 @@
 		7FA7C8C41A06A9DC0061BDCB /* JPQLibSwiftBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JPQLibSwiftBridge.mm; sourceTree = "<group>"; };
 		7FA7C8D11A06DE4F0061BDCB /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		7FFB11311A07216300A02520 /* JPQUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPQUtilities.h; sourceTree = "<group>"; };
+		7FFB6C181AFBA6E100B65D1C /* JPQHardware.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPQHardware.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 				7FFB11311A07216300A02520 /* JPQUtilities.h */,
 				7FA7C8C31A06A9DC0061BDCB /* JPQLibSwiftBridge.h */,
 				7FA7C8C41A06A9DC0061BDCB /* JPQLibSwiftBridge.mm */,
+				7FFB6C181AFBA6E100B65D1C /* JPQHardware.h */,
 			);
 			path = JPQLib;
 			sourceTree = "<group>";

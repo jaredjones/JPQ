@@ -8,6 +8,7 @@
 
 #import "JPQLibSwiftBridge.h"
 #import "JPQLib.h"
+#import "JPQHardware.h"
 
 @implementation JPQLibSwiftBridge
 - (instancetype)init
@@ -15,6 +16,14 @@
     self = [super init];
     if (self)
     {
+        UpdateCPUFlags();
+        if (!HW_SSE2)
+        {
+            printf("Your hardware does not support SSE2!\n");
+            self = nil;
+            return nil;
+        }
+        
         //TESTING
         JPQFile *file;
         //file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
