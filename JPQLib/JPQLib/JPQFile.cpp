@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Uvora. All rights reserved.
 //
 
+#include <vector>
+
 #include <stdio.h>
 
 #include "JPQFile.h"
@@ -54,6 +56,85 @@ void JPQFile::Clear()
     _errorCode = 0;
 }
 
+void JPQFile::EmptyFolderList(FolderList *list)
+{
+    FolderList *head = nullptr;
+    while (list != nullptr)
+    {
+        head = list->next;
+        
+        delete list->s;
+        list->s = nullptr;
+        
+        delete list;
+        
+        list = head;
+    }
+}
+
+// Please remember to delete the argument from the heap after calling this method unless
+// the argument lives on the stack. (aka from std::string, etc)
+FolderList* JPQFile::_createListOfFoldersFromPath(char* jpqFilePath)
+{
+    FolderList *list = nullptr;
+    FolderList *tail = nullptr;
+    
+    bool onGrab = false;
+    uint16 count = 0;
+    
+    char buff[strlen(jpqFilePath)];
+    
+    while (*jpqFilePath != 0)
+    {
+        if (*jpqFilePath == '/')
+        {
+            if (!onGrab)
+                onGrab = true;
+            else
+            {
+                buff[count] = NULL;
+                
+                char *folderName = new char[count];
+                for (int i = 0; i < count; i++)
+                {
+                    folderName[i] = buff[i];
+                    buff[i] = 0;
+                }
+                
+                if (list == nullptr)
+                {
+                    list = new FolderList();
+                    list->s = folderName;
+                }
+                else if (tail == nullptr)
+                {
+                    tail = new FolderList();
+                    tail->s = folderName;
+                    list->next = tail;
+                }
+                else
+                {
+                    tail->next = new FolderList();
+                    tail->next->s = folderName;
+                }
+                count = 0;
+            }
+            ++jpqFilePath;
+            continue;
+        }
+        
+        if (onGrab)
+        {
+            buff[count] = *jpqFilePath;
+            ++count;
+        }
+        
+        ++jpqFilePath;
+    }
+    
+    return list;
+}
+
 void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir)
 {
     //Lambda for cleaning up common memory that was malloc'd
@@ -63,7 +144,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
         *f1 = nullptr;
         f1 = nullptr;
     };
-  
+    
     if (_jpqFile == nullptr)
     {
         printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
@@ -93,6 +174,12 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     
     std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
     std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
+    if (jpqFilePath.at(0) != '/')
+    {
+        jpqFilePath.insert(0, std::string("/"));
+    }
+    
+    this->_createListOfFoldersFromPath((char*)jpqFilePath.c_str());
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
@@ -183,6 +270,63 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
 }
 
 //TODO: This function should be thread safe.
+bool JPQFile::_fileExists(std::string jpqFilePath)
+{
+    if (_jpqFile == nullptr)
+    {
+        printf("You are attempting to check for a file in a JPQ that does not have a JPQ file reference!\n");
+        return false;
+    }
+    
+    std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
+    std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
+    if (jpqFilePath.at(0) != '/')
+    {
+        jpqFilePath.insert(0, std::string("/"));
+    }
+    
+    uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
+    uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
+    
+    uint64 htFileIndex = indexHash % _maxNumberOfFiles;
+    fseek(_jpqFile,
+          _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+          SEEK_SET);
+    
+    uint32 currHashValue;
+    
+    do
+    {
+        //Read currentHashValue into stack memory
+        fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
+        
+        if (currHashValue == 0)
+        {
+            //File doesn't exist
+            return false;
+        }
+        
+        //Load File
+        if (currHashValue == collisHash)
+        {
+            return true;
+        }
+        
+        //Unwind last read position
+        fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
+        
+        //Check for next currHashValue
+        fseek(_jpqFile,
+              _hTBeginIndex + ((++htFileIndex) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes),
+              SEEK_SET);
+        
+    }
+    while (currHashValue != collisHash);
+    
+    return false;
+}
+
+//TODO: This function should be thread safe.
 void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
 {
     if (_jpqFile == nullptr)
@@ -193,6 +337,10 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
     
     std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
     std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
+    if (jpqFilePath.at(0) != '/')
+    {
+        jpqFilePath.insert(0, std::string("/"));
+    }
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);

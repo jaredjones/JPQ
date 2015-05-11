@@ -26,6 +26,12 @@ enum class JPQFileError : uint32
     JPQ_FILE_NOT_FOUND  = 0x40
 };
 
+struct FolderList
+{
+    char* s = nullptr;
+    FolderList *next = nullptr;
+};
+
 class JPQFile
 {
     friend class JPQLib;
@@ -36,6 +42,8 @@ private:
     {
         Clear();
     }
+    bool _fileExists(std::string jpqFilePath);
+    FolderList* _createListOfFoldersFromPath(char* jpqFilePath);
     FILE *_jpqFile;
     std::string _filePath;
     uint16 _fileVersion;
@@ -61,6 +69,7 @@ public:
     void* LoadFile(std::string path, uint64 *fileSize);
     uint64 GetNumberOfFiles();
     void DisplayFileVariables();
+    void EmptyFolderList(FolderList *list);
 };
 
 #endif /* defined(__JPQLib__JPQFile__) */
