@@ -128,49 +128,18 @@ FolderList* JPQFile::_createListOfFoldersFromPath(char* jpqFilePath)
             buff[count] = *jpqFilePath;
             ++count;
         }
-        
         ++jpqFilePath;
     }
-    
     return list;
 }
 
-void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir)
+void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir, bool overrideFileFormatCheck)
 {
-    //Lambda for cleaning up common memory that was malloc'd
-    auto cleanUpMemory = [](FILE **f1)
-    {
-        fclose(*f1);
-        *f1 = nullptr;
-        f1 = nullptr;
-    };
-    
     if (_jpqFile == nullptr)
     {
         printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
         return;
     }
-    
-    if (JPQUtilities::ReservedFileName(jpqFilePath))
-    {
-        printf("The filename/path you've chosen is either invalid or reserved by the JPQ file system:%s", jpqFilePath.c_str());
-        return;
-    }
-    
-    FILE *newFile;
-    if (!(newFile = fopen(localFilePath.c_str(), "rb")))
-    {
-        cleanUpMemory(&newFile);
-        printf("Cannot read the file you wanted to insert into the JPQ!\n");
-        return;
-    }
-    
-    fseek(newFile, 0, SEEK_END);
-    uint64 fileSize = ftell(newFile);
-    rewind(newFile);
-    
-    void *data = malloc(fileSize);
-    fread(data, fileSize, 1, newFile);
     
     std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
     std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
@@ -179,14 +148,31 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
         jpqFilePath.insert(0, std::string("/"));
     }
     
-    this->_createListOfFoldersFromPath((char*)jpqFilePath.c_str());
+    if (addToDir)
+    {
+        FolderList* fList = this->_createListOfFoldersFromPath((char*)jpqFilePath.c_str());
+        
+        std::string fullFolderPath("/");
+        while (fList != nullptr)
+        {
+            fullFolderPath += fList->s;
+            fullFolderPath += "/";
+            if (!_fileExists(fullFolderPath.c_str()))
+            {
+                //this->AddFile
+                printf("Create:%s(jpqdir)\n", fullFolderPath.c_str());
+            }
+            fList = fList->next;
+        }
+        EmptyFolderList(fList);
+    }
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
     
     uint64 htFileIndex = indexHash % _maxNumberOfFiles;
     
-    printf("_hdFileIndex:%llu\n", htFileIndex);
+    printf("_htFileIndex:%llu\n", htFileIndex);
     
     printf("Number of Elements in Table:%llu\n", GetNumberOfFiles());
     
@@ -207,7 +193,6 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
         if (currHashValue == collisHash)
         {
             printf("File already exists, this should replace but at the moment writing won't happen!\n");
-            cleanUpMemory(&newFile);
             return;
         }
         
@@ -224,7 +209,6 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
         if (currHashValue != 0 && _maxNumberOfFiles == (i+1))
         {
             printf("Hash table is full! Insertion Exited!\n");
-            cleanUpMemory(&newFile);
             return;
         }
         
@@ -265,8 +249,53 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     free(data);
     data = nullptr;
     
-    cleanUpMemory(&newFile);
+    
     _errorCode = (uint32)JPQFileError::NO_ERROR;
+}
+
+void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir, bool overrideFileFormatCheck)
+{
+    //Lambda for cleaning up common memory that was malloc'd
+    auto cleanUpMemory = [](FILE **f1)
+    {
+        fclose(*f1);
+        *f1 = nullptr;
+        f1 = nullptr;
+    };
+    
+    if (_jpqFile == nullptr)
+    {
+        printf("You are attempting to insert a file into a JPQ that does not have a JPQ file reference!\n");
+        return;
+    }
+    
+    if (!overrideFileFormatCheck && JPQUtilities::ReservedFileName(jpqFilePath))
+    {
+        printf("The filename/path you've chosen is either invalid or reserved by the JPQ file system:%s", jpqFilePath.c_str());
+        return;
+    }
+    
+    FILE *newFile;
+    if (!(newFile = fopen(localFilePath.c_str(), "rb")))
+    {
+        cleanUpMemory(&newFile);
+        printf("Cannot read the file you wanted to insert into the JPQ!\n");
+        return;
+    }
+    
+    fseek(newFile, 0, SEEK_END);
+    uint64 fileSize = ftell(newFile);
+    rewind(newFile);
+    
+    void *data = malloc(fileSize);
+    fread(data, fileSize, 1, newFile);
+    
+    //ATTENTION: There is no guarantee that this function will result positively,
+    // either use the JPQ Error Functions or do not write any code after this function
+    // call that depends on a positive output.
+    this->_addFile(data, fileSize, jpqFilePath, addToDir, overrideFileFormatCheck);
+    
+    cleanUpMemory(&newFile);
 }
 
 //TODO: This function should be thread safe.

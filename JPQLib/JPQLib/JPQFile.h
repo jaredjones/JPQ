@@ -30,6 +30,13 @@ struct FolderList
 {
     char* s = nullptr;
     FolderList *next = nullptr;
+    ~FolderList()
+    {
+        // Perhaps smart pointers with reference counting should be used instead?
+        // meh, speed is better in my opinion than reference counts.
+        printf("MEMORY LEAK: The data inside of this list is now dormant.\
+               please delete this object with: EmptyFolderList(FolderList *list\n");
+    }
 };
 
 class JPQFile
@@ -43,6 +50,7 @@ private:
         Clear();
     }
     bool _fileExists(std::string jpqFilePath);
+    void _addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir, bool overrideFileFormatCheck);
     FolderList* _createListOfFoldersFromPath(char* jpqFilePath);
     FILE *_jpqFile;
     std::string _filePath;
@@ -65,7 +73,7 @@ public:
     void Reopen();
     void Close();
     void Clear();
-    void AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir = true);
+    void AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir = true, bool overrideFileFormatCheck = false);
     void* LoadFile(std::string path, uint64 *fileSize);
     uint64 GetNumberOfFiles();
     void DisplayFileVariables();
