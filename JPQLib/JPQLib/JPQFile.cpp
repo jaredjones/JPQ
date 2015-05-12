@@ -404,7 +404,7 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
             uint64 originalSize;
             uint32 archiveMask;
             
-            fread(&filePosition, JPQ_DEFAULT_FILE_POSITION_SIZE_IN_BYTES, 1, _jpqFile);
+            fread(&filePosition, _filePositionSizeInBytes, 1, _jpqFile);
             fseek(_jpqFile, filePosition, SEEK_SET);
             fread(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
             fread(&originalSize, sizeof(originalSize), 1, _jpqFile);
