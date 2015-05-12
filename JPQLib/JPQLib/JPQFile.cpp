@@ -399,10 +399,10 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
         //Load File
         if (currHashValue == collisHash)
         {
-            uint64 filePosition;
-            uint64 archiveSize;
-            uint64 originalSize;
-            uint32 archiveMask;
+            uint64 filePosition = 0;
+            uint64 archiveSize = 0;
+            uint64 originalSize = 0;
+            uint32 archiveMask = 0;
             
             fread(&filePosition, _filePositionSizeInBytes, 1, _jpqFile);
             fseek(_jpqFile, filePosition, SEEK_SET);
