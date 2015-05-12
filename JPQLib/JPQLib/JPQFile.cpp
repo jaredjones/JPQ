@@ -133,7 +133,7 @@ FolderList* JPQFile::_createListOfFoldersFromPath(char* jpqFilePath)
     return list;
 }
 
-void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir, bool overrideFileFormatCheck)
+void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir)
 {
     if (_jpqFile == nullptr)
     {
@@ -157,9 +157,11 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
         {
             fullFolderPath += fList->s;
             fullFolderPath += "/";
-            if (!_fileExists(fullFolderPath.c_str()))
+            if (!_fileExists((fullFolderPath + "(jpqdir)").c_str()))
             {
-                //this->AddFile
+                //Are we reading from folder/(jpqdir) or will folder/ be implicit?
+                //char *list = "";
+                //this->_addFile(data, fileSize, (fullFolderPath + "(jpqdir)"), false);
                 printf("Create:%s(jpqdir)\n", fullFolderPath.c_str());
             }
             fList = fList->next;
@@ -295,7 +297,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     //ATTENTION: There is no guarantee that this function will result positively,
     // either use the JPQ Error Functions or do not write any code after this function
     // call that depends on a positive output.
-    this->_addFile(data, fileSize, jpqFilePath, addToDir, overrideFileFormatCheck);
+    this->_addFile(data, fileSize, jpqFilePath, addToDir);
     
     cleanUpMemory(&newFile);
 }
