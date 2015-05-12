@@ -26,22 +26,22 @@
         
         //TESTING
         JPQFile *file;
-        //file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
+        file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
         
-        file = JPQLib::LoadJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"));
+        //file = JPQLib::LoadJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"));
         file->DisplayFileVariables();
         NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
         
         file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"));
         
         uint64 fileSize;
-        //void* loadedFile = file->LoadFile(std::string("/dufus/marcus/a.txt"), &fileSize);
+        void* loadedFile = file->LoadFile(std::string("/dufus/marcus/a.txt"), &fileSize);
         
         
         
         
-        //free(loadedFile);
-        //loadedFile = nullptr;
+        free(loadedFile);
+        loadedFile = nullptr;
         
         // JPQLib consists only of static classes at the moment;
         // therefore there is nothing to instantiate.

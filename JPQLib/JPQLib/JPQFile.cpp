@@ -174,7 +174,7 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     
     printf("_htFileIndex:%llu\n", htFileIndex);
     
-    printf("Number of Elements in Table:%llu\n", GetNumberOfFiles());
+    printf("Number of Elements in Table (BEFORE):%llu\n", GetNumberOfFiles());
     
     fseek(_jpqFile,
           _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
@@ -225,6 +225,8 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     //Write the pointer to where the data begins
     printf("DATA AT: %llu\n", _dataBlockEnd);
     fwrite(&_dataBlockEnd, _filePositionSizeInBytes, 1, _jpqFile);
+    
+    printf("Number of Elements in Table (AFTER):%llu\n", GetNumberOfFiles());
     
     //Use the _dataBlockEnd to store the next file!
     fseek(_jpqFile, _dataBlockEnd, SEEK_SET);
