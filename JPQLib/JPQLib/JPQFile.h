@@ -75,6 +75,7 @@ public:
     void Clear();
     void AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir = true, bool overrideFileFormatCheck = false);
     void* LoadFile(std::string path, uint64 *fileSize);
+    void DeleteFile(std::string path);
     uint64 GetNumberOfFiles();
     void DisplayFileVariables();
     void EmptyFolderList(FolderList *list);
