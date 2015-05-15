@@ -15,6 +15,5 @@ This file format is relatively new and largely not usable in its current form. A
 
 ## System Requirements (Not Fully Specified Yet)
  + Platform: OS X, Windows, Linux, or BSD
- + Processor: SSE2 Support
 
 Please Note: The current JPQ system is only compatible with OS X as of this moment. Once we implement the required features specified above it'll be repackaged with cross platform CMake support.
