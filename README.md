@@ -14,6 +14,6 @@ This file format is relatively new and largely not usable in its current form. A
  + Much More: I have a lot of ideas in-store for this library. If you have any recommendations please create an issue on GitHub. Thanks!
 
 ## System Requirements (Not Fully Specified Yet)
- + Platform: OS X, Windows, Linux, or BSD
+ + Platform: OS X
 
 Please Note: The current JPQ system is only compatible with OS X as of this moment. Once we implement the required features specified above it'll be repackaged with cross platform CMake support.
