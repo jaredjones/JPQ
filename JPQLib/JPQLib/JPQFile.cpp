@@ -195,6 +195,7 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
                 fwrite(fileDataWithZeroesAtEnd, archiveSize, 1, _jpqFile);
                 fseek(_jpqFile, -archiveSize, SEEK_CUR);
                 fflush(_jpqFile);
+                free(data);
                 return;
             }
             
@@ -229,6 +230,7 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
             
             fflush(_jpqFile);
             free(emptyData);
+            free(data);
             return;
         }
         
@@ -242,6 +244,7 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
         
     }
     while (currHashValue != collisHash);
+    printf("ERROR: Something bad happened in _replaceFile! Report this on GitHub.\n");
 }
 
 void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool replaceIfExists, bool addToDir)
