@@ -32,6 +32,19 @@ public:
             s->insert(0, std::string("/"));
         }
     }
+    
+    static std::string FileToPath(std::string file)
+    {
+        uint64 marker = 0;
+        for (uint64 i = 0; i < file.length(); i++)
+        {
+            if (file.at(i) == '/')
+                marker = i;
+        }
+        
+        std::string s = file.substr(0, marker + 1);
+        return s;
+    }
 };
 
 #endif

@@ -32,10 +32,7 @@
         file->DisplayFileVariables();
         NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
         
-        file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), true, false);
-        file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), false, false);
-        file->AddFile(std::string("/Users/jared/Desktop/b.txt"), std::string("dufus/marcus/a.txt"), true, false);
-        file->AddFile(std::string("/Users/jared/Desktop/c.txt"), std::string("dufus/marcus/a.txt"), true, false);
+        file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), false, true);
         
         uint64 fileSize;
         void* loadedFile = file->LoadFile(std::string("dufus/marcus/a.txt"), &fileSize);

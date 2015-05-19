@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <stdio.h>
+#include <string.h>
 
 #include "JPQFile.h"
 #include "JPQUtilities.h"
@@ -88,6 +89,15 @@ FolderList* JPQFile::_createListOfFoldersFromPath(char* jpqFilePath)
     {
         if (*jpqFilePath == '/')
         {
+            if (count == 0)
+            {
+                list = new FolderList();
+                char *root = (char*)malloc(2);
+                root[0] = '/';
+                root[1] = 0x0;
+                list->s = root;
+            }
+            
             if (!onGrab)
                 onGrab = true;
             else
@@ -271,21 +281,51 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     {
         FolderList* fList = this->_createListOfFoldersFromPath((char*)jpqFilePath.c_str());
         
-        std::string fullFolderPath("/");
+        std::string fullFolderPath("");
+        bool first = true;
         while (fList != nullptr)
         {
             fullFolderPath += fList->s;
-            fullFolderPath += "/";
+            if (!first)
+                fullFolderPath += "/";
+            else
+                first = false;
+            
             if (!_fileExists((fullFolderPath + "(jpqdir)").c_str()))
             {
-                //Are we reading from folder/(jpqdir) or will folder/ be implicit?
-                //char *list = "";
-                //this->_addFile(data, fileSize, (fullFolderPath + "(jpqdir)"), false);
-                printf("Create:%s(jpqdir)\n", fullFolderPath.c_str());
+                //Are we reading from folder/(jpqdir) or will folder/ be implicit
+                void *jpqDirData = (void *)malloc(JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER);
+                char *jpqDirChar = (char*)jpqDirData;
+                
+                for (uint64 i = 0; i < JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER; i++)
+                    jpqDirChar[i] = 0x0;
+                printf("\n**\n%s\n**\n", (fullFolderPath + "(jpqdir)").c_str());
+                this->_addFile(jpqDirData, JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER, fullFolderPath + "(jpqdir)", false, false);
             }
             fList = fList->next;
         }
         EmptyFolderList(fList);
+        
+        uint64 jpqdirSize;
+        void *jpqdir = this->LoadFile(JPQUtilities::FileToPath(jpqFilePath) + "(jpqdir)", &jpqdirSize);
+        
+        std::string s((char*)jpqdir);
+        s.append(jpqFilePath + "\n");
+        free(jpqdir);
+        
+        if (s.length() <= JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER)
+        {
+            jpqdir = malloc(JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER);
+            strncpy((char*)jpqdir, s.c_str(), s.length()+1);
+            
+            this->_replaceFile(jpqdir, JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER, JPQUtilities::FileToPath(jpqFilePath) + "(jpqdir)");
+        }
+        else
+        {
+            jpqdir = malloc(s.length() + 1);
+            strncpy((char*)jpqdir, s.c_str(), s.length() + 1);
+            this->_replaceFile((char*)jpqdir, s.length() + 1, JPQUtilities::FileToPath(jpqFilePath) + "(jpqdir)");
+        }
     }
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
