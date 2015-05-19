@@ -235,7 +235,6 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
             
             //Update _dataBlockEnd pointer
             _dataBlockEnd = ftell(_jpqFile);
-            printf("DBEND:%llu\n", _dataBlockEnd);
             fseek(_jpqFile, _hTBeginIndex-8, SEEK_SET);
             fwrite(&_dataBlockEnd, 8, 1, _jpqFile);
             
@@ -358,10 +357,10 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     
     //Write Space for ArchiveSize, Origional Size, and Flags
     //20 bytes total
-    char a = '\x00';
+    uint32 fileMask = 0x0;
     fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Archive Size
     fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Original Size
-    fwrite(&a, sizeof(uint32), 1, _jpqFile);         // File Mask
+    fwrite(&fileMask, sizeof(uint32), 1, _jpqFile);  // File Mask
     
     //Write file contents
     fwrite(data, fileSize, 1, _jpqFile);
@@ -375,7 +374,6 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     fflush(_jpqFile);
     free(data);
     data = nullptr;
-    
     
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
