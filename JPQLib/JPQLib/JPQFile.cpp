@@ -142,7 +142,7 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
         return;
     }
     
-    JPQUtilities::CleanFilePath(jpqFilePath);
+    JPQUtilities::CleanFilePath(&jpqFilePath);
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
     uint64 htFileIndex = indexHash % _maxNumberOfFiles;
@@ -255,7 +255,7 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
         return;
     }
     
-    JPQUtilities::CleanFilePath(jpqFilePath);
+    JPQUtilities::CleanFilePath(&jpqFilePath);
     
     if (addToDir)
     {
@@ -423,7 +423,7 @@ bool JPQFile::_fileExists(std::string jpqFilePath)
         return false;
     }
     
-    JPQUtilities::CleanFilePath(jpqFilePath);
+    JPQUtilities::CleanFilePath(&jpqFilePath);
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
@@ -475,7 +475,7 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
         return nullptr;
     }
     
-    JPQUtilities::CleanFilePath(jpqFilePath);
+    JPQUtilities::CleanFilePath(&jpqFilePath);
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);

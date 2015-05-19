@@ -35,7 +35,7 @@
         file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), true, false);
         
         uint64 fileSize;
-        void* loadedFile = file->LoadFile(std::string("/dufus/marcus/a.txt"), &fileSize);
+        void* loadedFile = file->LoadFile(std::string("dufus/marcus/a.txt"), &fileSize);
         
         
         
