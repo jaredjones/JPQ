@@ -226,10 +226,9 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
             
             //Write Space for ArchiveSize, Origional Size, and Flags
             //20 bytes total
-            char a = '\x00';
-            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Archive Size
-            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Original Size
-            fwrite(&a, sizeof(uint32), 1, _jpqFile);         // File Mask
+            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);    // Archive Size
+            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);    // Original Size
+            fwrite(&archiveMask, sizeof(uint32), 1, _jpqFile); // ArchiveMask
             
             //Write file contents
             fwrite(data, fileSize, 1, _jpqFile);
