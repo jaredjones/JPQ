@@ -28,7 +28,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
     FILE *file;
     if (!overwriteFile)
     {
-        if ((file = fopen(localFilePath.c_str(), "rb")))
+        if ((file = fopen(localFilePath.c_str(), "rb+")))
         {
             fclose(file);
             file = nullptr;
@@ -42,7 +42,7 @@ JPQFile* JPQLib::CreateJPQPackage(std::string localFilePath, bool overwriteFile,
         }
     }
     
-    file = fopen(localFilePath.c_str(), "w+");
+    file = fopen(localFilePath.c_str(), "wb+");
     if (!file)
     {
         fclose(file);
@@ -136,7 +136,7 @@ JPQFile* JPQLib::LoadJPQPackage(std::string localFilePath)
     JPQFile *loadedFile = new JPQFile();
     
     FILE *jpqFile;
-    if (!(jpqFile = fopen(localFilePath.c_str(), "r+")))
+    if (!(jpqFile = fopen(localFilePath.c_str(), "rb+")))
     {
         fclose(jpqFile);
         jpqFile = nullptr;

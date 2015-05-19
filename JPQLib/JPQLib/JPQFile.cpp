@@ -23,7 +23,7 @@ void JPQFile::Reopen()
         return;
     }
     
-    if (!(_jpqFile = fopen(_filePath.c_str(), "r+")))
+    if (!(_jpqFile = fopen(_filePath.c_str(), "rb+")))
     {
         printf("File failed to open for writing/reading!\n");
         return;
@@ -179,21 +179,33 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
             fread(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
             fread(&originalSize, sizeof(originalSize), 1, _jpqFile);
             fread(&archiveMask, sizeof(archiveMask), 1, _jpqFile);
-            
+
             //If we're replacing with a smaller file, just fill up existing space
             if (fileSize <= archiveSize)
             {
-                uint8 *fileDataWithZeroesAtEnd = (uint8 *)malloc(archiveSize);
-                for (int i = 0; i < archiveSize; i++)
+                uint64 replacedDataSize = archiveSize;
+                uint8 *fileDataWithZeroesAtEnd = (uint8 *)malloc(replacedDataSize);
+                for (int i = 0; i < replacedDataSize; i++)
                 {
-                    if (i <= fileSize)
+                    if (i < fileSize)
                         fileDataWithZeroesAtEnd[i] = ((uint8 *)data)[i];
                     else
                         fileDataWithZeroesAtEnd[i] = 0;
                 }
+                fseek(_jpqFile, filePosition, SEEK_SET);
+                archiveSize = fileSize;
+                originalSize = fileSize;
+                fwrite(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
+                fwrite(&originalSize, sizeof(originalSize), 1, _jpqFile);
+                
+                fseek(_jpqFile, filePosition +
+                      sizeof(archiveSize) +
+                      sizeof(originalSize) +
+                      sizeof(archiveMask), SEEK_SET);
+                
                 //Write file contents
-                fwrite(fileDataWithZeroesAtEnd, archiveSize, 1, _jpqFile);
-                fseek(_jpqFile, -archiveSize, SEEK_CUR);
+                fwrite(fileDataWithZeroesAtEnd, replacedDataSize, 1, _jpqFile);
+
                 fflush(_jpqFile);
                 free(data);
                 return;
