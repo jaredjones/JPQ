@@ -143,6 +143,105 @@ void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
     }
     
     JPQUtilities::CleanFilePath(jpqFilePath);
+    uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
+    uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
+    uint64 htFileIndex = indexHash % _maxNumberOfFiles;
+    
+    fseek(_jpqFile,
+          _hTBeginIndex + (htFileIndex * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes)),
+          SEEK_SET);
+    
+    //Get the current hash value at this index
+    uint32 currHashValue;
+    
+    do
+    {
+        //Read currentHashValue into stack memory
+        fread(&currHashValue, JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, 1, _jpqFile);
+        
+        //File doesn't exist
+        if (currHashValue == 0)
+        {
+            printf("You are attempting to replace a file that doesn't exist!\nABORTING...\n");
+            return;
+        }
+        
+        //File exists
+        if (currHashValue == collisHash)
+        {
+            uint64 filePosition = 0;
+            uint64 archiveSize = 0;
+            uint64 originalSize = 0;
+            uint32 archiveMask = 0;
+            
+            fread(&filePosition, _filePositionSizeInBytes, 1, _jpqFile);
+            fseek(_jpqFile, filePosition, SEEK_SET);
+            fread(&archiveSize, sizeof(archiveSize), 1, _jpqFile);
+            fread(&originalSize, sizeof(originalSize), 1, _jpqFile);
+            fread(&archiveMask, sizeof(archiveMask), 1, _jpqFile);
+            
+            //If we're replacing with a smaller file, just fill up existing space
+            if (fileSize <= archiveSize)
+            {
+                uint8 *fileDataWithZeroesAtEnd = (uint8 *)malloc(archiveSize);
+                for (int i = 0; i < archiveSize; i++)
+                {
+                    if (i <= fileSize)
+                        fileDataWithZeroesAtEnd[i] = ((uint8 *)data)[i];
+                    else
+                        fileDataWithZeroesAtEnd[i] = 0;
+                }
+                //Write file contents
+                fwrite(fileDataWithZeroesAtEnd, archiveSize, 1, _jpqFile);
+                fseek(_jpqFile, -archiveSize, SEEK_CUR);
+                fflush(_jpqFile);
+                return;
+            }
+            
+            //New file size is bigger so we need to empty out old data and add a new file at the bottom
+            
+            //Empty old file
+            uint8 *emptyData = (uint8 *)malloc(archiveSize);
+            for (int i = 0; i < archiveSize; i++)
+                emptyData[i] = 0;
+            
+            //Write over old file with zeroes
+            fwrite(emptyData, archiveSize, 1, _jpqFile);
+            
+            //Use the _dataBlockEnd to store the new file as a replacement
+            fseek(_jpqFile, _dataBlockEnd, SEEK_SET);
+            
+            //Write Space for ArchiveSize, Origional Size, and Flags
+            //20 bytes total
+            char a = '\x00';
+            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Archive Size
+            fwrite(&fileSize, sizeof(uint64), 1, _jpqFile);  // Original Size
+            fwrite(&a, sizeof(uint32), 1, _jpqFile);         // File Mask
+            
+            //Write file contents
+            fwrite(data, fileSize, 1, _jpqFile);
+            
+            //Update _dataBlockEnd pointer
+            _dataBlockEnd = ftell(_jpqFile);
+            printf("DBEND:%llu\n", _dataBlockEnd);
+            fseek(_jpqFile, _hTBeginIndex-8, SEEK_SET);
+            fwrite(&_dataBlockEnd, 8, 1, _jpqFile);
+            
+            fflush(_jpqFile);
+            free(emptyData);
+            return;
+        }
+        
+        //Unwind last read position
+        fseek(_jpqFile, -JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES, SEEK_CUR);
+        
+        //Check for next currHashValue
+        fseek(_jpqFile,
+              _hTBeginIndex + ((++htFileIndex) % _maxNumberOfFiles) * (JPQ_DEFAULT_FILE_COLLISION_SIZE_IN_BYTES + _filePositionSizeInBytes),
+              SEEK_SET);
+        
+    }
+    while (currHashValue != collisHash);
 }
 
 void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool replaceIfExists, bool addToDir)
