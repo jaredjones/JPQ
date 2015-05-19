@@ -133,7 +133,19 @@ FolderList* JPQFile::_createListOfFoldersFromPath(char* jpqFilePath)
     return list;
 }
 
-void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir)
+//Only call this from within _addFile
+void JPQFile::_replaceFile(void *data, uint64 fileSize, std::string jpqFilePath)
+{
+    if (_jpqFile == nullptr)
+    {
+        printf("You are attempting to replace a file in a JPQ that does not have a JPQ file reference!\n");
+        return;
+    }
+    
+    JPQUtilities::CleanFilePath(jpqFilePath);
+}
+
+void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool replaceIfExists, bool addToDir)
 {
     if (_jpqFile == nullptr)
     {
@@ -141,12 +153,7 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
         return;
     }
     
-    std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
-    std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
-    if (jpqFilePath.at(0) != '/')
-    {
-        jpqFilePath.insert(0, std::string("/"));
-    }
+    JPQUtilities::CleanFilePath(jpqFilePath);
     
     if (addToDir)
     {
@@ -194,7 +201,10 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
         //Check to see if data is a file that already exists.
         if (currHashValue == collisHash)
         {
-            printf("File already exists, this should replace but at the moment writing won't happen!\n");
+            if (!replaceIfExists)
+                printf("File already exists!\n");
+            else
+                this->_replaceFile(data, fileSize, jpqFilePath);
             return;
         }
         
@@ -257,7 +267,7 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
     _errorCode = (uint32)JPQFileError::NO_ERROR;
 }
 
-void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir, bool overrideFileFormatCheck)
+void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool replaceIfExists, bool addToDir, bool overrideFileFormatCheck)
 {
     //Lambda for cleaning up common memory that was malloc'd
     auto cleanUpMemory = [](FILE **f1)
@@ -297,7 +307,7 @@ void JPQFile::AddFile(std::string localFilePath, std::string jpqFilePath, bool a
     //ATTENTION: There is no guarantee that this function will result positively,
     // either use the JPQ Error Functions or do not write any code after this function
     // call that depends on a positive output.
-    this->_addFile(data, fileSize, jpqFilePath, addToDir);
+    this->_addFile(data, fileSize, jpqFilePath, replaceIfExists, addToDir);
     
     cleanUpMemory(&newFile);
 }
@@ -311,12 +321,7 @@ bool JPQFile::_fileExists(std::string jpqFilePath)
         return false;
     }
     
-    std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
-    std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
-    if (jpqFilePath.at(0) != '/')
-    {
-        jpqFilePath.insert(0, std::string("/"));
-    }
+    JPQUtilities::CleanFilePath(jpqFilePath);
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);
@@ -368,12 +373,7 @@ void* JPQFile::LoadFile(std::string jpqFilePath, uint64 *fileSize)
         return nullptr;
     }
     
-    std::replace(jpqFilePath.begin(), jpqFilePath.end(), '\\', '/');
-    std::transform(jpqFilePath.begin(), jpqFilePath.end(), jpqFilePath.begin(), ::tolower);
-    if (jpqFilePath.at(0) != '/')
-    {
-        jpqFilePath.insert(0, std::string("/"));
-    }
+    JPQUtilities::CleanFilePath(jpqFilePath);
     
     uint64 indexHash = SpookyHash::Hash64(jpqFilePath.c_str(), jpqFilePath.length(), _indexSeed);
     uint32 collisHash = SpookyHash::Hash32(jpqFilePath.c_str(), jpqFilePath.length(), _collisionSeed);

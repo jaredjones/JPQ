@@ -50,7 +50,8 @@ private:
         Clear();
     }
     bool _fileExists(std::string jpqFilePath);
-    void _addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool addToDir);
+    void _addFile(void *data, uint64 fileSize, std::string jpqFilePath, bool replaceIfExists, bool addToDir);
+    void _replaceFile(void *data, uint64 fileSize, std::string jpqFilePath);
     FolderList* _createListOfFoldersFromPath(char* jpqFilePath);
     FILE *_jpqFile;
     std::string _filePath;
@@ -73,7 +74,7 @@ public:
     void Reopen();
     void Close();
     void Clear();
-    void AddFile(std::string localFilePath, std::string jpqFilePath, bool addToDir = true, bool overrideFileFormatCheck = false);
+    void AddFile(std::string localFilePath, std::string jpqFilePath, bool replaceIfExists = false, bool addToDir = true, bool overrideFileFormatCheck = false);
     void* LoadFile(std::string path, uint64 *fileSize);
     void DeleteFile(std::string path);
     uint64 GetNumberOfFiles();

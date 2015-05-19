@@ -22,6 +22,16 @@ public:
             return true;
         return false;
     }
+    
+    static void CleanFilePath(std::string s)
+    {
+        std::replace(s.begin(), s.end(), '\\', '/');
+        std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+        if (s.at(0) != '/')
+        {
+            s.insert(0, std::string("/"));
+        }
+    }
 };
 
 #endif
