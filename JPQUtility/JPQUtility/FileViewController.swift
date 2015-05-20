@@ -21,6 +21,7 @@ class FileViewController: NSViewController {
     @IBOutlet weak var fileTableView: FileTableView!
     
     var savePanel:NSSavePanel?
+    var openPanel:NSOpenPanel?
     var loadedJPQFile:JPQFileSwiftBridge?
     var addJPQPop = NSPopover()
     var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle: nil)!
@@ -37,6 +38,13 @@ class FileViewController: NSViewController {
         savePanel!.allowsOtherFileTypes = false
         savePanel!.extensionHidden = false
         savePanel!.canCreateDirectories = true
+        
+        openPanel = NSOpenPanel()
+        openPanel!.nameFieldLabel = "JPQ Name:"
+        openPanel!.nameFieldStringValue = "file.JPQ"
+        openPanel!.allowedFileTypes = ["JPQ"]
+        openPanel!.allowsOtherFileTypes = false
+        openPanel!.extensionHidden = false
         
         toolbarVisualEffectsView.state = NSVisualEffectState.FollowsWindowActiveState
         toolbarVisualEffectsView.material = NSVisualEffectMaterial.Titlebar
@@ -61,7 +69,19 @@ class FileViewController: NSViewController {
     
     @IBAction func loadJPQActionButton(sender: NSButton)
     {
+        addJPQButton.enabled = false
+        loadJPQButton.enabled = false
         
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.openPanel!.beginWithCompletionHandler({ (result:Int) -> Void in
+                if result == NSFileHandlingPanelOKButton
+                {
+                    self.loadJPQFile(self.openPanel!.URL!)
+                }
+            })
+            self.addJPQButton.enabled = true
+            self.loadJPQButton.enabled = true
+        })
     }
     
     @IBAction func unloadJPQPressed(sender: NSButton)
@@ -85,7 +105,7 @@ class FileViewController: NSViewController {
                 {
                     if let fileLocation = self.savePanel?.URL?.path
                     {
-                        self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: false)
+                        self.saveJPQFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: false)
                     }
                     else
                     {
@@ -102,7 +122,27 @@ class FileViewController: NSViewController {
         })
     }
     
-    func saveFile(fileLocation:String, maxFiles:UInt64, filePositionByteSize:UInt8, replace:Bool = false) -> Void
+    func loadJPQFile(jpqFilePath:NSURL)
+    {
+        var jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path)
+        if jpqFile != nil
+        {
+            self.jpqModifierView.hidden = true
+            self.fileModifierView.hidden = false
+            self.loadedJPQFile = jpqFile
+            
+            var fileSize:UInt64 = 0
+            let fileData:NSData = self.loadedJPQFile!.LoadFile("/dufus/marcus/(jpqdir)", withFileSize:&fileSize)
+            
+            let fileStuff:NSString = NSString(data: fileData, encoding: NSUTF8StringEncoding)!
+            
+            println("Size:\(fileSize)")
+            println("StringLength:\(fileStuff.length)")
+            println("Stuff:\(fileStuff)")
+        }
+    }
+    
+    func saveJPQFile(fileLocation:String, maxFiles:UInt64, filePositionByteSize:UInt8, replace:Bool = false) -> Void
     {
         var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
             withOverwriteFile: replace,
@@ -129,7 +169,7 @@ class FileViewController: NSViewController {
                     alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
                         if NSModalResponse == NSAlertSecondButtonReturn
                         {
-                            self.saveFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
+                            self.saveJPQFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
                     })
                 case 4:
