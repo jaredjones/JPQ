@@ -294,7 +294,7 @@ void JPQFile::_addFile(void *data, uint64 fileSize, std::string jpqFilePath, boo
             if (!_fileExists((fullFolderPath + "(jpqdir)").c_str()))
             {
                 //Are we reading from folder/(jpqdir) or will folder/ be implicit
-                void *jpqDirData = (void *)malloc(JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER);
+                void *jpqDirData = malloc(JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER);
                 char *jpqDirChar = (char*)jpqDirData;
                 
                 for (uint64 i = 0; i < JPQ_DEFAULT_NUMBER_OF_CHARACTERS_PER_FOLDER; i++)

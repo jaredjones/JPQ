@@ -23,7 +23,7 @@
             self = nil;
             return nil;
         }
-        
+        /*
         //TESTING
         JPQFile *file;
         file = JPQLib::CreateJPQPackage(std::string("/Users/jared/Desktop/Test.JPQ"),true,10,1,4);
@@ -33,6 +33,10 @@
         NSLog(@"Num Files:%llu\n", file->GetNumberOfFiles());
         
         file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), false, true);
+        file->AddFile(std::string("/Users/jared/Desktop/b.txt"), std::string("dufus/marcus/b.txt"), false, true);
+        file->AddFile(std::string("/Users/jared/Desktop/c.txt"), std::string("dufus/marcus/c.txt"), false, true);
+
+        //file->AddFile(std::string("/Users/jared/Desktop/a.txt"), std::string("dufus/marcus/a.txt"), false, true);
         
         uint64 fileSize;
         void* loadedFile = file->LoadFile(std::string("dufus/marcus/a.txt"), &fileSize);
@@ -42,7 +46,7 @@
         
         free(loadedFile);
         loadedFile = nullptr;
-        
+        */
         // JPQLib consists only of static classes at the moment;
         // therefore there is nothing to instantiate.
     }
@@ -106,11 +110,61 @@
     return self;
 }
 
+- (void)Reopen
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->Reopen();
+}
+
+- (void)Close
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->Close();
+}
+
+- (void)Clear
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->Clear();
+}
+
+- (void)EmptyFolderList: (FolderList *) list
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->EmptyFolderList(list);
+}
+
+- (void)AddFile: (NSString *)localFilePath withJPQFilePath:(NSString *)jpqFilePath replaceIfExists:(BOOL)replaceIfExists addToDir:(BOOL)addToDir overrideFileFormatCheck:(BOOL)overrideFileFormatCheck
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->AddFile(std::string([localFilePath UTF8String]), std::string([localFilePath UTF8String]), replaceIfExists, addToDir, overrideFileFormatCheck);
+}
+
+- (NSData *)LoadFile: (NSString *)jpqFilePath withFileSize: (UInt64 *)fileSize
+{
+    JPQFile *file = (JPQFile *)_file;
+    void* data = file->LoadFile([jpqFilePath UTF8String], fileSize);
+    return [NSData dataWithBytes:data length:*fileSize];
+}
+
+- (NSNumber *)GetNumberOfFiles
+{
+    JPQFile *file = (JPQFile *)_file;
+    UInt64 fileCount = file->GetNumberOfFiles();
+    return [NSNumber numberWithUnsignedLongLong:fileCount];
+}
+
+- (void)DisplayFileVariables
+{
+    JPQFile *file = (JPQFile *)_file;
+    file->DisplayFileVariables();
+}
+
 - (void)dealloc
 {
     if (self.file != nil)
     {
-        JPQFile *file = (JPQFile*)_file;
+        JPQFile *file = (JPQFile *)_file;
         delete file;
         _file = nil;
     }
