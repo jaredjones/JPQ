@@ -17,13 +17,15 @@ class FileViewController: NSViewController {
     @IBOutlet weak var addJPQLabel: NSTextField!
     @IBOutlet weak var loadJPQButton: NSButton!
     @IBOutlet weak var unloadJPQButton: NSButton!
-
-//    @IBOutlet weak var fileTableView: FileTableView!
-
+    
+    //    @IBOutlet weak var fileTableView: FileTableView!
+    
     var fileOutlineScrollView: FileScrollView!
     
     var savePanel:NSSavePanel?
     var openPanel:NSOpenPanel?
+    
+    //TODO: Make this atomic when swift implemented this
     var loadedJPQFile:JPQFileSwiftBridge?
     var addJPQPop = NSPopover()
     var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle: nil)!
@@ -45,11 +47,11 @@ class FileViewController: NSViewController {
         
         super.init(coder: coder)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        fileTableView.controller = self
-//        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as [AnyObject])
+        //        fileTableView.controller = self
+        //        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as [AnyObject])
         
         
         
@@ -80,12 +82,18 @@ class FileViewController: NSViewController {
         // Do any additional setup after loading the view.
     }
     
+    var firstTimeViewAppeared = true
     override func viewWillAppear() {
         super.viewWillAppear()
-        var frame = view.window!.frame
-        frame.size.height = 74
-        frame.size.width = 640
-        view.window!.setFrame(frame, display: true, animate: false)
+        
+        if (firstTimeViewAppeared)
+        {
+            var frame = view.window!.frame
+            frame.size.height = 74
+            frame.size.width = 640
+            view.window!.setFrame(frame, display: true, animate: false)
+            firstTimeViewAppeared = false
+        }
     }
     
     override func viewDidAppear() {
@@ -99,7 +107,7 @@ class FileViewController: NSViewController {
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
-            })
+        })
         return
     }
     
@@ -113,12 +121,18 @@ class FileViewController: NSViewController {
             self.openPanel!.beginWithCompletionHandler({ (result:Int) -> Void in
                 if result == NSFileHandlingPanelOKButton
                 {
-                    self.loadJPQFile(self.openPanel!.URL!)
-                    self.addFileScrollViewIfNotSubViewedOfSelf()
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                        self.loadJPQFile(self.openPanel!.URL!)
+                        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                            self.addFileScrollViewIfNotSubViewedOfSelf()
+                            self.addJPQButton.enabled = true
+                            self.loadJPQButton.enabled = true
+                            self.jpqModifierView.hidden = true
+                            self.fileModifierView.hidden = false
+                        })
+                    })
                 }
             })
-            self.addJPQButton.enabled = true
-            self.loadJPQButton.enabled = true
         })
     }
     
@@ -188,6 +202,7 @@ class FileViewController: NSViewController {
         addJPQButton.enabled = false
         loadJPQButton.enabled = false
         
+        
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -219,10 +234,7 @@ class FileViewController: NSViewController {
         var jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path)
         if jpqFile != nil
         {
-            self.jpqModifierView.hidden = true
-            self.fileModifierView.hidden = false
             self.loadedJPQFile = jpqFile
-            
             var fileSize:UInt64 = 0
             let fileData:NSData = self.loadedJPQFile!.LoadFile("/dufus/marcus/(jpqdir)", withFileSize:&fileSize)
             
