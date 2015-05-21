@@ -69,7 +69,11 @@ class FileViewController: NSViewController {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
+        var frame = view.window!.frame
+        frame.size.height = 74
+        frame.size.width = 640
+        view.window!.setFrame(frame, display: true)
+        //view.window!.setFrame(frame, display: true, animate: true)
     }
     
     
@@ -98,9 +102,14 @@ class FileViewController: NSViewController {
             self.addJPQButton.enabled = true
             self.loadJPQButton.enabled = true
         })*/
-        var frame = view.window!.frame
-        frame.size.height = 74;
-        view.window!.setFrame(frame, display: true, animate: true)
+        
+        if !fileOutlineScrollView.isDescendantOf(self.view)
+        {
+            fileOutlineScrollView.frame = CGRectMake(0, 0, 5, 5)
+            self.view.addSubview(fileOutlineScrollView)
+            
+            
+        }
         
     }
     
