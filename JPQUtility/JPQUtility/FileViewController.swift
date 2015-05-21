@@ -124,20 +124,13 @@ class FileViewController: NSViewController {
         {
             fileOutlineScrollView.frame = CGRectMake(0, 0, 500, 500)
             self.view.addSubview(fileOutlineScrollView)
-            
-            fileOutlineScrollView.translatesAutoresizingMaskIntoConstraints = false
-            
-            self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: fileOutlineScrollView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
-            self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: fileOutlineScrollView, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0))
-            self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
-            self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0))
+            addConstraintForBottomSection(fileOutlineScrollView)
             
             var frame = view.window!.frame
             frame.size.height = 500
             view.window!.setFrame(frame, display: true, animate: true)
             
         }
-        
     }
     
     @IBAction func unloadJPQPressed(sender: NSButton)
@@ -145,6 +138,31 @@ class FileViewController: NSViewController {
         self.loadedJPQFile = nil;
         self.jpqModifierView.hidden = false
         self.fileModifierView.hidden = true
+    }
+    
+    func addConstraintForBottomSection(view: NSView) -> Array<NSLayoutConstraint>
+    {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let bottom = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0)
+        let top = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0)
+        
+        self.view.addConstraint(bottom)
+        self.view.addConstraint(trailing)
+        self.view.addConstraint(top)
+        self.view.addConstraint(leading)
+        
+        return [bottom, trailing, top, leading]
+    }
+    
+    class func removeConstraintsFromView(view _view:NSView, withConstraints constArray:Array<NSLayoutConstraint>)
+    {
+        for constraint in constArray
+        {
+            _view.removeConstraint(constraint)
+        }
     }
     
     func createJPQFilePrompt(maxFiles:UInt64, filePositionByteSize:UInt8)
