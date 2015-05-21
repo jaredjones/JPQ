@@ -720,7 +720,7 @@
                                     </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="74" id="694-gJ-4MS"/>
+                                    <constraint firstAttribute="height" constant="74" id="694-gJ-4MS"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="Fmt-5l-rdV"/>
                                     <constraint firstItem="dJR-H5-u37" firstAttribute="top" secondItem="ds0-ha-Frb" secondAttribute="top" id="MFP-NT-iTR"/>
                                     <constraint firstAttribute="bottom" secondItem="dJR-H5-u37" secondAttribute="bottom" id="N2g-Px-Xn9"/>

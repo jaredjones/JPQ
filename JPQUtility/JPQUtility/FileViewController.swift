@@ -103,6 +103,7 @@ class FileViewController: NSViewController {
         return
     }
     
+    var constList:Array<NSLayoutConstraint>?
     @IBAction func loadJPQActionButton(sender: NSButton)
     {
         /*
@@ -122,14 +123,23 @@ class FileViewController: NSViewController {
         
         if !fileOutlineScrollView.isDescendantOf(self.view)
         {
-            fileOutlineScrollView.frame = CGRectMake(0, 0, 500, 500)
+            fileOutlineScrollView.frame = CGRectMake(0, 0, 0, 0)
             self.view.addSubview(fileOutlineScrollView)
-            addConstraintForBottomSection(fileOutlineScrollView)
+            self.constList = addConstraintForBottomSection(fileOutlineScrollView)
             
             var frame = view.window!.frame
             frame.size.height = 500
             view.window!.setFrame(frame, display: true, animate: true)
+        }
+        else
+        {
+            FileViewController.removeConstraintsFromView(view: self.view, withConstraints: self.constList!)
             
+            fileOutlineScrollView.animator().removeFromSuperview()
+            
+            var frame = view.window!.frame
+            frame.size.height = self.toolbarVisualEffectsView.frame.height
+            view.window!.setFrame(frame, display: true, animate: true)
         }
     }
     
