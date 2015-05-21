@@ -159,8 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */,
-				7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */,
 				7FEF00931A59B71300F26E05 /* FileTableDelegateAndData.swift */,
+				7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */,
 				7F3FBDB51A59D976009F3930 /* FileOutlineView.swift */,
 			);
 			name = "File Table";

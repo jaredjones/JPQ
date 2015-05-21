@@ -8,10 +8,34 @@
 
 import Cocoa
 
-class FileOutlineView: NSOutlineView, NSDraggingDestination
+class FileOutlineView: NSOutlineView/*, NSDraggingDestination*/
 {
     weak var controller:FileViewController?
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+    }
+    
+    convenience init()
+    {
+        self.init(frame: CGRectMake(0, 0, 0, 0))
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
+    override func drawRect(dirtyRect: NSRect) {
+        super.drawRect(dirtyRect)
+        // Drawing code here.
+    }
+    
+    
+    /*
     override func draggingEntered(sender: NSDraggingInfo) -> NSDragOperation {
         return NSDragOperation.Copy
     }
@@ -35,6 +59,6 @@ class FileOutlineView: NSOutlineView, NSDraggingDestination
         return true
     }
     
-    
+    */
     
 }

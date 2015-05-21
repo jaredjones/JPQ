@@ -20,7 +20,7 @@ class FileViewController: NSViewController {
 
 //    @IBOutlet weak var fileTableView: FileTableView!
 
-    var fileOutlineScrollView: FileScrollView
+    var fileOutlineScrollView: FileScrollView!
     
     var savePanel:NSSavePanel?
     var openPanel:NSOpenPanel?
@@ -30,6 +30,19 @@ class FileViewController: NSViewController {
     
     required init?(coder: NSCoder) {
         fileOutlineScrollView = FileScrollView()
+        var tableView:NSTableView = NSTableView(frame: NSMakeRect(0, 0, 364, 200))
+        var column1 = NSTableColumn(identifier: "Col1")
+        var column2 = NSTableColumn(identifier: "Col2")
+        column1.width = 252
+        column2.width = 198
+        
+        tableView.addTableColumn(column1)
+        tableView.addTableColumn(column2)
+        tableView.reloadData()
+        
+        fileOutlineScrollView.documentView = tableView
+        fileOutlineScrollView.hasVerticalScroller = true
+        
         super.init(coder: coder)
     }
 
@@ -105,9 +118,15 @@ class FileViewController: NSViewController {
         
         if !fileOutlineScrollView.isDescendantOf(self.view)
         {
-            fileOutlineScrollView.frame = CGRectMake(0, 0, 5, 5)
+            fileOutlineScrollView.frame = CGRectMake(0, 0, 500, 500)
             self.view.addSubview(fileOutlineScrollView)
             
+            fileOutlineScrollView.translatesAutoresizingMaskIntoConstraints = false
+            
+            self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: fileOutlineScrollView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
+            self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: fileOutlineScrollView, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0))
+            self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
+            self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0))
             
         }
         
