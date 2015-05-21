@@ -106,7 +106,6 @@ class FileViewController: NSViewController {
     var constList:Array<NSLayoutConstraint>?
     @IBAction func loadJPQActionButton(sender: NSButton)
     {
-        /*
         addJPQButton.enabled = false
         loadJPQButton.enabled = false
         
@@ -115,32 +114,12 @@ class FileViewController: NSViewController {
                 if result == NSFileHandlingPanelOKButton
                 {
                     self.loadJPQFile(self.openPanel!.URL!)
+                    self.addFileScrollViewIfNotSubViewedOfSelf()
                 }
             })
             self.addJPQButton.enabled = true
             self.loadJPQButton.enabled = true
-        })*/
-        
-        if !fileOutlineScrollView.isDescendantOf(self.view)
-        {
-            fileOutlineScrollView.frame = CGRectMake(0, 0, 0, 0)
-            self.view.addSubview(fileOutlineScrollView)
-            self.constList = addConstraintForBottomSection(fileOutlineScrollView)
-            
-            var frame = view.window!.frame
-            frame.size.height = 500
-            view.window!.setFrame(frame, display: true, animate: true)
-        }
-        else
-        {
-            FileViewController.removeConstraintsFromView(view: self.view, withConstraints: self.constList!)
-            
-            fileOutlineScrollView.animator().removeFromSuperview()
-            
-            var frame = view.window!.frame
-            frame.size.height = self.toolbarVisualEffectsView.frame.height
-            view.window!.setFrame(frame, display: true, animate: true)
-        }
+        })
     }
     
     @IBAction func unloadJPQPressed(sender: NSButton)
@@ -148,6 +127,7 @@ class FileViewController: NSViewController {
         self.loadedJPQFile = nil;
         self.jpqModifierView.hidden = false
         self.fileModifierView.hidden = true
+        self.removeFileScrollViewIfNotSubViewedOfSelf()
     }
     
     func addConstraintForBottomSection(view: NSView) -> Array<NSLayoutConstraint>
@@ -172,6 +152,34 @@ class FileViewController: NSViewController {
         for constraint in constArray
         {
             _view.removeConstraint(constraint)
+        }
+    }
+    
+    func addFileScrollViewIfNotSubViewedOfSelf()
+    {
+        if !fileOutlineScrollView.isDescendantOf(self.view)
+        {
+            fileOutlineScrollView.frame = CGRectMake(0, 0, 0, 0)
+            self.view.addSubview(fileOutlineScrollView)
+            self.constList = addConstraintForBottomSection(fileOutlineScrollView)
+            
+            var frame = view.window!.frame
+            frame.size.height = 500
+            view.window!.setFrame(frame, display: true, animate: true)
+        }
+    }
+    
+    func removeFileScrollViewIfNotSubViewedOfSelf()
+    {
+        if fileOutlineScrollView.isDescendantOf(self.view)
+        {
+            FileViewController.removeConstraintsFromView(view: self.view, withConstraints: self.constList!)
+            
+            fileOutlineScrollView.animator().removeFromSuperview()
+            
+            var frame = view.window!.frame
+            frame.size.height = self.toolbarVisualEffectsView.frame.height
+            view.window!.setFrame(frame, display: true, animate: true)
         }
     }
     
@@ -274,6 +282,7 @@ class FileViewController: NSViewController {
                 self.jpqModifierView.hidden = true
                 self.fileModifierView.hidden = false
                 self.loadedJPQFile = jpqFile
+                self.addFileScrollViewIfNotSubViewedOfSelf()
             }
         }
         else
