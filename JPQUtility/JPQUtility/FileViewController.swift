@@ -85,8 +85,11 @@ class FileViewController: NSViewController {
         var frame = view.window!.frame
         frame.size.height = 74
         frame.size.width = 640
-        view.window!.setFrame(frame, display: true)
-        //view.window!.setFrame(frame, display: true, animate: true)
+        view.window!.setFrame(frame, display: true, animate: false)
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
     }
     
     
@@ -101,7 +104,8 @@ class FileViewController: NSViewController {
     }
     
     @IBAction func loadJPQActionButton(sender: NSButton)
-    {/*
+    {
+        /*
         addJPQButton.enabled = false
         loadJPQButton.enabled = false
         
@@ -127,6 +131,10 @@ class FileViewController: NSViewController {
             self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: fileOutlineScrollView, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0))
             self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0))
             self.view.addConstraint(NSLayoutConstraint(item: fileOutlineScrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0))
+            
+            var frame = view.window!.frame
+            frame.size.height = 500
+            view.window!.setFrame(frame, display: true, animate: true)
             
         }
         
