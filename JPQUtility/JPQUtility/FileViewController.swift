@@ -17,8 +17,10 @@ class FileViewController: NSViewController {
     @IBOutlet weak var addJPQLabel: NSTextField!
     @IBOutlet weak var loadJPQButton: NSButton!
     @IBOutlet weak var unloadJPQButton: NSButton!
-    @IBOutlet weak var fileTableScrollView: FileScrollView!
-    @IBOutlet weak var fileTableView: FileTableView!
+
+//    @IBOutlet weak var fileTableView: FileTableView!
+
+    var fileOutlineScrollView: FileScrollView
     
     var savePanel:NSSavePanel?
     var openPanel:NSOpenPanel?
@@ -26,10 +28,18 @@ class FileViewController: NSViewController {
     var addJPQPop = NSPopover()
     var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle: nil)!
     
+    required init?(coder: NSCoder) {
+        fileOutlineScrollView = FileScrollView()
+        super.init(coder: coder)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        fileTableView.controller = self
-        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as [AnyObject])
+//        fileTableView.controller = self
+//        fileTableView.registerForDraggedTypes(NSArray(objects:  NSURLPboardType) as [AnyObject])
+        
+        
+        
         
         savePanel = NSSavePanel()
         savePanel!.nameFieldLabel = "JPQ Name:"
@@ -57,6 +67,12 @@ class FileViewController: NSViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+    }
+    
+    
     @IBAction func addJPQButtonAction(sender: NSButton)
     {
         // Since running the savePanel will hault the sender action from returning
@@ -68,7 +84,7 @@ class FileViewController: NSViewController {
     }
     
     @IBAction func loadJPQActionButton(sender: NSButton)
-    {
+    {/*
         addJPQButton.enabled = false
         loadJPQButton.enabled = false
         
@@ -81,7 +97,11 @@ class FileViewController: NSViewController {
             })
             self.addJPQButton.enabled = true
             self.loadJPQButton.enabled = true
-        })
+        })*/
+        var frame = view.window!.frame
+        frame.size.height = 74;
+        view.window!.setFrame(frame, display: true, animate: true)
+        
     }
     
     @IBAction func unloadJPQPressed(sender: NSButton)

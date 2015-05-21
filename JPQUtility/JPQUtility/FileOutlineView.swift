@@ -1,5 +1,5 @@
 //
-//  FileTableView.swift
+//  FileOutlineView.swift
 //  JPQUtility
 //
 //  Created by Jared Jones on 1/4/15.
@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class FileTableView: NSTableView, NSDraggingDestination
+class FileOutlineView: NSOutlineView, NSDraggingDestination
 {
     weak var controller:FileViewController?
     
@@ -27,11 +27,14 @@ class FileTableView: NSTableView, NSDraggingDestination
         {
             let fileURL = NSURL(fromPasteboard: pboard)
             let fileName = fileURL?.path
-            controller?.addFile(fileName!, replace: false)
+            //controller?.addFile(fileName!, replace: false)
             //(self.delegate() as FileTableDelegateAndData).tableData.append(Dictionary(dictionaryLiteral: ("filename", fileName!)))
             //self.reloadData()
         }
         
         return true
     }
+    
+    
+    
 }

@@ -11,7 +11,7 @@
 		7F017EC01A85756C00B2CF8A /* libJPQLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F017EBF1A85756C00B2CF8A /* libJPQLib.a */; };
 		7F1017D21A6BA770002E40BD /* AddJPQPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */; };
 		7F1017D31A6BA770002E40BD /* AddJPQPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */; };
-		7F3FBDB61A59D976009F3930 /* FileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3FBDB51A59D976009F3930 /* FileTableView.swift */; };
+		7F3FBDB61A59D976009F3930 /* FileOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3FBDB51A59D976009F3930 /* FileOutlineView.swift */; };
 		7F9F7C4D1A170CB200B062DC /* FileScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */; };
 		7F9F7C7A1A17429600B062DC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F7C791A17429600B062DC /* MainWindowController.swift */; };
 		7FA7C8821A06A6F60061BDCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7C8811A06A6F60061BDCB /* AppDelegate.swift */; };
@@ -38,14 +38,14 @@
 		7F017EBF1A85756C00B2CF8A /* libJPQLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJPQLib.a; path = ../DerivedData/JPQUtility/Build/Products/Debug/libJPQLib.a; sourceTree = "<group>"; };
 		7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddJPQPopover.swift; sourceTree = "<group>"; };
 		7F1017D11A6BA770002E40BD /* AddJPQPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddJPQPopover.xib; sourceTree = "<group>"; };
-		7F3FBDB51A59D976009F3930 /* FileTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileTableView.swift; sourceTree = "<group>"; };
+		7F3FBDB51A59D976009F3930 /* FileOutlineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileOutlineView.swift; sourceTree = "<group>"; };
 		7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileScrollView.swift; sourceTree = "<group>"; };
 		7F9F7C791A17429600B062DC /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		7FA7C87C1A06A6F60061BDCB /* JPQUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPQUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7C8801A06A6F60061BDCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7FA7C8811A06A6F60061BDCB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FA7C8831A06A6F60061BDCB /* FileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewController.swift; sourceTree = "<group>"; };
-		7FA7C8851A06A6F60061BDCB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		7FA7C8851A06A6F60061BDCB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = JPQUtility/Images.xcassets; sourceTree = "<group>"; };
 		7FA7C8881A06A6F60061BDCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7FA7C88E1A06A6F60061BDCB /* JPQUtilityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JPQUtilityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7C8931A06A6F60061BDCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 		7FA7C8731A06A6F60061BDCB = {
 			isa = PBXGroup;
 			children = (
-				7F017EBF1A85756C00B2CF8A /* libJPQLib.a */,
+				7FA7C8851A06A6F60061BDCB /* Images.xcassets */,
 				7FB58E961A5AA6D400F79B84 /* Libraries */,
 				7FA7C8BF1A06A7730061BDCB /* JPQUtility-Bridging-Header.h */,
 				7FA7C87E1A06A6F60061BDCB /* JPQUtility */,
@@ -102,7 +102,6 @@
 			children = (
 				7FA7C8811A06A6F60061BDCB /* AppDelegate.swift */,
 				7FB58E951A5AA6A800F79B84 /* File View Window */,
-				7FA7C8851A06A6F60061BDCB /* Images.xcassets */,
 				7FA7C8871A06A6F60061BDCB /* Main.storyboard */,
 				7FA7C87F1A06A6F60061BDCB /* Supporting Files */,
 			);
@@ -137,7 +136,7 @@
 		7FB58E951A5AA6A800F79B84 /* File View Window */ = {
 			isa = PBXGroup;
 			children = (
-				7FEF00921A59B6E200F26E05 /* Table Stuff */,
+				7FEF00921A59B6E200F26E05 /* File Table */,
 				7F9F7C791A17429600B062DC /* MainWindowController.swift */,
 				7FA7C8831A06A6F60061BDCB /* FileViewController.swift */,
 				7F1017D01A6BA770002E40BD /* AddJPQPopover.swift */,
@@ -149,21 +148,22 @@
 		7FB58E961A5AA6D400F79B84 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7F017EBF1A85756C00B2CF8A /* libJPQLib.a */,
 				7FA7C8CF1A06AE900061BDCB /* libc++.dylib */,
 				7FA7C8B51A06A7110061BDCB /* libJPQLib.a */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
 		};
-		7FEF00921A59B6E200F26E05 /* Table Stuff */ = {
+		7FEF00921A59B6E200F26E05 /* File Table */ = {
 			isa = PBXGroup;
 			children = (
 				7F004D1B1A16FD2400EBCA6D /* TopLineView.swift */,
 				7F9F7C4C1A170CB200B062DC /* FileScrollView.swift */,
 				7FEF00931A59B71300F26E05 /* FileTableDelegateAndData.swift */,
-				7F3FBDB51A59D976009F3930 /* FileTableView.swift */,
+				7F3FBDB51A59D976009F3930 /* FileOutlineView.swift */,
 			);
-			name = "Table Stuff";
+			name = "File Table";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,7 +273,7 @@
 				7F9F7C7A1A17429600B062DC /* MainWindowController.swift in Sources */,
 				7F1017D21A6BA770002E40BD /* AddJPQPopover.swift in Sources */,
 				7FEF00941A59B71300F26E05 /* FileTableDelegateAndData.swift in Sources */,
-				7F3FBDB61A59D976009F3930 /* FileTableView.swift in Sources */,
+				7F3FBDB61A59D976009F3930 /* FileOutlineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
