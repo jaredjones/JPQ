@@ -132,6 +132,11 @@ class FileViewController: NSViewController {
                         })
                     })
                 }
+                else
+                {
+                    self.addJPQButton.enabled = true
+                    self.loadJPQButton.enabled = true
+                }
             })
         })
     }
