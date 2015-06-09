@@ -32,9 +32,9 @@ class FileViewController: NSViewController {
     
     required init?(coder: NSCoder) {
         fileOutlineScrollView = FileScrollView()
-        var tableView:NSTableView = NSTableView(frame: NSMakeRect(0, 0, 364, 200))
-        var column1 = NSTableColumn(identifier: "Col1")
-        var column2 = NSTableColumn(identifier: "Col2")
+        let tableView:NSTableView = NSTableView(frame: NSMakeRect(0, 0, 364, 200))
+        let column1 = NSTableColumn(identifier: "Col1")
+        let column2 = NSTableColumn(identifier: "Col2")
         column1.width = 252
         column2.width = 198
         
@@ -106,7 +106,7 @@ class FileViewController: NSViewController {
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSMaxYEdge)
+            self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSRectEdge.MaxY)
         })
         return
     }
@@ -236,7 +236,7 @@ class FileViewController: NSViewController {
     
     func loadJPQFile(jpqFilePath:NSURL)
     {
-        var jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path)
+        let jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path)
         if jpqFile != nil
         {
             self.loadedJPQFile = jpqFile
@@ -245,15 +245,15 @@ class FileViewController: NSViewController {
             
             let fileStuff:NSString = NSString(data: fileData, encoding: NSUTF8StringEncoding)!
             
-            println("Size:\(fileSize)")
-            println("StringLength:\(fileStuff.length)")
-            println("Stuff:\(fileStuff)")
+            print("Size:\(fileSize)")
+            print("StringLength:\(fileStuff.length)")
+            print("Stuff:\(fileStuff)")
         }
     }
     
     func saveJPQFile(fileLocation:String, maxFiles:UInt64, filePositionByteSize:UInt8, replace:Bool = false) -> Void
     {
-        var jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
+        let jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
             withOverwriteFile: replace,
             withMaxNumberOfFiles: NSNumber(unsignedLongLong: maxFiles),
             withVersion: nil,

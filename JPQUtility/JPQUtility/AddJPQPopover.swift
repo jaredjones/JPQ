@@ -133,7 +133,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     func convertToAbbreviatedForm(counter:Int, size:Double) -> String
     {
         var byteString:String
-        var format = ".3"
+        let format = ".3"
         if (useBaseTwo)
         {
             switch counter

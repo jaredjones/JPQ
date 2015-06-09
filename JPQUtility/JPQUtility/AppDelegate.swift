@@ -15,12 +15,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         
 #if DEBUG
-        println("Debugging Mode Enabled!")
+        print("Debugging Mode Enabled!")
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
 #endif
         
         //TESTING
-        let x:JPQLibSwiftBridge = JPQLibSwiftBridge()
+        let _:JPQLibSwiftBridge = JPQLibSwiftBridge()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

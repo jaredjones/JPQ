@@ -25,7 +25,7 @@ class FileTableDelegateAndData: NSObject, NSTableViewDelegate, NSTableViewDataSo
     }
     
     func tableView(tableView: NSTableView, willDisplayCell cell: AnyObject, forTableColumn tableColumn: NSTableColumn?, row: Int) {
-        let fieldCell = cell as! NSTextFieldCell
+        //let fieldCell = cell as! NSTextFieldCell
         
     }
 }
