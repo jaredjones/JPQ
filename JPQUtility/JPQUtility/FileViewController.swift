@@ -236,7 +236,7 @@ class FileViewController: NSViewController {
     
     func loadJPQFile(jpqFilePath:NSURL)
     {
-        let jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path)
+        let jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path!)
         if jpqFile != nil
         {
             self.loadedJPQFile = jpqFile
