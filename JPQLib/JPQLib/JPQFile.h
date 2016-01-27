@@ -47,6 +47,7 @@ public:
 private:
     JPQFile()
     {
+        _jpqFile = nullptr;
         Clear();
     }
     bool _fileExists(std::string jpqFilePath);
