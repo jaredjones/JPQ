@@ -245,9 +245,9 @@ class FileViewController: NSViewController {
             
             let fileStuff:NSString = NSString(data: fileData, encoding: NSUTF8StringEncoding)!
             
-            print("Size:\(fileSize)")
-            print("StringLength:\(fileStuff.length)")
-            print("Stuff:\(fileStuff)")
+            print("Size:\(fileSize)", terminator: "")
+            print("StringLength:\(fileStuff.length)", terminator: "")
+            print("Stuff:\(fileStuff)", terminator: "")
         }
     }
     

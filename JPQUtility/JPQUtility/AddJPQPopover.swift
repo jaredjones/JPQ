@@ -96,7 +96,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         while abbreviatedMaxFilesBig > dividend
         {
             abbreviatedMaxFilesBig /= dividend
-            counterMaxFiles++
+            counterMaxFiles += 1
         }
         
         var abbreviatedSpaceFilesBig:Swift.Float80 = Swift.Float80(spaceForFiles)
@@ -104,7 +104,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         while abbreviatedSpaceFilesBig > dividend
         {
             abbreviatedSpaceFilesBig /= dividend
-            counterSpaceFiles++
+            counterSpaceFiles += 1
         }
         
         let maxFileByteString = convertToAbbreviatedForm(counterMaxFiles, size: Double(abbreviatedMaxFilesBig))

@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         
 #if DEBUG
-        print("Debugging Mode Enabled!")
+        print("Debugging Mode Enabled!", terminator: "")
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
 #endif
         
