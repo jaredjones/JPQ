@@ -30,7 +30,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     var useBaseTwo:Bool = true
     weak var holder:FileViewController?
     
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -50,7 +50,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         maxNumberOfFilesTextField.stringValue = String("\(maxNumberOfFiles)")
         filePositionByteSizeTextField.stringValue = String("\(filePositionByteSize)")
         
-        baseTwoCheckBox.state = useBaseTwo ? 1 : 0
+        baseTwoCheckBox.state = NSControl.StateValue(rawValue: useBaseTwo ? 1 : 0)
         
         updateFileSizeLabel()
         // Do view setup here.
@@ -190,7 +190,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     }
     
     @IBAction func baseChangePressed(sender: NSButton) {
-        if (sender.state == 0)
+        if (sender.state.rawValue == 0)
         {
             useBaseTwo = false
         }

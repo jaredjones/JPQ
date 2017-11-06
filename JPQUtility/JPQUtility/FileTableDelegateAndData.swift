@@ -20,11 +20,12 @@ class FileTableDelegateAndData: NSObject, NSTableViewDelegate, NSTableViewDataSo
         return tableData.count
     }
     
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> Any? {
-        return tableData[row][tableColumn!.identifier] as AnyObject
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+        let row: Dictionary<String, String> = tableData[row]
+        return row.index(forKey: tableColumn!.identifier.rawValue) as AnyObject
     }
     
-    func tableView(tableView: NSTableView, willDisplayCell cell: Any, forTableColumn tableColumn: NSTableColumn?, row: Int) {
+    func tableView(_ tableView: NSTableView, willDisplayCell cell: Any, for tableColumn: NSTableColumn?, row: Int) {
         //let fieldCell = cell as! NSTextFieldCell
         
     }

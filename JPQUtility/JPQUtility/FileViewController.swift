@@ -28,13 +28,13 @@ class FileViewController: NSViewController {
     //TODO: Make this atomic when swift implemented this
     var loadedJPQFile:JPQFileSwiftBridge?
     var addJPQPop = NSPopover()
-    var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle:nil)!
+    var addJPQPopVC = AddJPQPopover(nibName: NSNib.Name(rawValue: "AddJPQPopover"), bundle:nil)
     
     required init?(coder: NSCoder) {
         fileOutlineScrollView = FileScrollView()
         let tableView:NSTableView = NSTableView(frame: NSMakeRect(0, 0, 364, 200))
-        let column1 = NSTableColumn(identifier: "Col1")
-        let column2 = NSTableColumn(identifier: "Col2")
+        let column1 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "Col1"))
+        let column2 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "Col2"))
         column1.width = 252
         column2.width = 198
         
@@ -71,12 +71,12 @@ class FileViewController: NSViewController {
         openPanel!.allowsOtherFileTypes = false
         openPanel!.isExtensionHidden = false
         
-        toolbarVisualEffectsView.state = NSVisualEffectState.followsWindowActiveState
-        toolbarVisualEffectsView.material = NSVisualEffectMaterial.titlebar
-        toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.behindWindow
+        toolbarVisualEffectsView.state = NSVisualEffectView.State.followsWindowActiveState
+        toolbarVisualEffectsView.material = NSVisualEffectView.Material.titlebar
+        toolbarVisualEffectsView.blendingMode = NSVisualEffectView.BlendingMode.behindWindow
         
         addJPQPop.contentViewController = addJPQPopVC
-        addJPQPop.behavior = NSPopoverBehavior.semitransient
+        addJPQPop.behavior = NSPopover.Behavior.semitransient
         addJPQPopVC.holder = self;
         
         // Do any additional setup after loading the view.
@@ -118,8 +118,8 @@ class FileViewController: NSViewController {
         loadJPQButton.isEnabled = false
         
         DispatchQueue.main.async(execute: { () -> Void in
-            self.openPanel!.begin(completionHandler: { (result:Int) -> Void in
-                if result == NSFileHandlingPanelOKButton
+            self.openPanel!.begin(completionHandler: { (result:NSApplication.ModalResponse) -> Void in
+                if result.rawValue == NSFileHandlingPanelOKButton
                 {
                     DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
                         self.loadJPQFile(jpqFilePath: self.openPanel!.url! as NSURL)
@@ -153,10 +153,10 @@ class FileViewController: NSViewController {
     {
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottom = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
-        let trailing = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0)
-        let top = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
-        let leading = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: self.view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: self.view, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: 0)
+        let top = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 0)
         
         self.view.addConstraint(bottom)
         self.view.addConstraint(trailing)
@@ -212,8 +212,8 @@ class FileViewController: NSViewController {
         // we must prompt the save panel asyncronously
         DispatchQueue.main.async(execute: { () -> Void in
             
-            self.savePanel!.begin { (result: Int) -> Void in
-                if result == NSFileHandlingPanelOKButton
+            self.savePanel!.begin { (result: NSApplication.ModalResponse) -> Void in
+                if result.rawValue == NSFileHandlingPanelOKButton
                 {
                     if let fileLocation = self.savePanel?.url?.path
                     {
@@ -267,16 +267,16 @@ class FileViewController: NSViewController {
                 case 1:
                     self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "An unknown error has occured that has prevented the JPQFile from saving.",
-                        style: NSAlertStyle.warning)
+                        style: NSAlert.Style.warning)
                 case 2:
                     let alert = NSAlert()
                     alert.addButton(withTitle: "Cancel")
                     alert.addButton(withTitle: "Overwrite File");
                     alert.messageText = "JPQFile Already Exists!"
                     alert.informativeText = "The JPQFile already exists!\rAre you sure you want to overwrite the file?\rThere is no going back!"
-                    alert.alertStyle = NSAlertStyle.critical
+                    alert.alertStyle = NSAlert.Style.critical
                     alert.beginSheetModal(for: self.view.window!, completionHandler: { (NSModalResponse) -> Void in
-                        if NSModalResponse == NSAlertSecondButtonReturn
+                        if NSModalResponse == NSApplication.ModalResponse.alertSecondButtonReturn
                         {
                             self.saveJPQFile(fileLocation: fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
@@ -284,11 +284,11 @@ class FileViewController: NSViewController {
                 case 4:
                     self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "OS X has denied you write access to the location you've chosen!",
-                        style: NSAlertStyle.warning)
+                        style: NSAlert.Style.warning)
                 case 8:
                     self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "OS X has denied you read access to the location you've chosen!",
-                        style: NSAlertStyle.warning)
+                        style: NSAlert.Style.warning)
                 default:
                     break
                 }
@@ -315,7 +315,7 @@ class FileViewController: NSViewController {
         
     }
     
-    func dispatchStandardAlert(title:String, body:String, style:NSAlertStyle)
+    func dispatchStandardAlert(title:String, body:String, style:NSAlert.Style)
     {
         let alert = NSAlert()
         alert.addButton(withTitle: "Continue")

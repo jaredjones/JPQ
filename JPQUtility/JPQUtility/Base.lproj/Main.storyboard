@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12113" systemVersion="16G30" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -596,6 +598,9 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="502" y="274" width="256" height="100"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="xvb-Sr-DeG"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="Ftz-75-rel"/>
@@ -619,104 +624,138 @@
                                     <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dJR-H5-u37" userLabel="fileModifierView">
                                         <rect key="frame" x="0.0" y="0.0" width="640" height="74"/>
                                         <subviews>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xzd-Zk-IxA">
-                                                <rect key="frame" x="579" y="21" width="40" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="GUo-GB-SsZ"/>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="40" id="uCo-Gd-9Zg"/>
-                                                    <constraint firstAttribute="width" constant="40" id="ylZ-4h-nkO"/>
-                                                </constraints>
-                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yk6-mk-2LN">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <action selector="unloadJPQPressedWithSender:" target="XfG-lQ-9wD" id="Y5V-Wq-39O"/>
-                                                </connections>
-                                            </button>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEK-Zq-FiY">
-                                                <rect key="frame" x="567" y="7" width="66" height="14"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Unload JPQ" id="QON-Og-nmR">
-                                                    <font key="font" metaFont="smallSystem"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
+                                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qKU-Vm-M8S">
+                                                <rect key="frame" x="558" y="5" width="62" height="45"/>
+                                                <subviews>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xzd-Zk-IxA">
+                                                        <rect key="frame" x="11" y="12" width="40" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="31" id="Ssj-3n-j9X"/>
+                                                            <constraint firstAttribute="width" constant="40" id="jH1-KQ-TXD"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yk6-mk-2LN">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="unloadJPQPressedWithSender:" target="XfG-lQ-9wD" id="Y5V-Wq-39O"/>
+                                                        </connections>
+                                                    </button>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fEK-Zq-FiY">
+                                                        <rect key="frame" x="-2" y="0.0" width="66" height="14"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Unload JPQ" id="QON-Og-nmR">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="xzd-Zk-IxA" firstAttribute="top" secondItem="dJR-H5-u37" secondAttribute="top" constant="29" id="8gz-nx-GaQ"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="Dcq-hE-BKz"/>
-                                            <constraint firstAttribute="bottom" secondItem="fEK-Zq-FiY" secondAttribute="bottom" constant="7" id="ELv-EU-Enl"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fEK-Zq-FiY" secondAttribute="trailing" constant="9" id="JGI-JP-rjc"/>
-                                            <constraint firstAttribute="trailing" secondItem="xzd-Zk-IxA" secondAttribute="trailing" constant="21" id="KPb-Ve-fBo"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xzd-Zk-IxA" secondAttribute="trailing" constant="21" id="KUe-CA-dTJ"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="LaK-So-g7B"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="gul-n2-ppN"/>
-                                            <constraint firstItem="xzd-Zk-IxA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dJR-H5-u37" secondAttribute="top" constant="29" id="hL7-FX-6Xl"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="hgS-Eu-1Ct"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="tb6-9a-1Rz"/>
-                                            <constraint firstItem="fEK-Zq-FiY" firstAttribute="top" secondItem="xzd-Zk-IxA" secondAttribute="bottom" constant="2" id="uAe-B5-WaC"/>
-                                            <constraint firstAttribute="trailing" secondItem="fEK-Zq-FiY" secondAttribute="trailing" constant="9" id="vYl-XY-Rwu"/>
+                                            <constraint firstAttribute="trailing" secondItem="qKU-Vm-M8S" secondAttribute="trailing" constant="20" id="bbZ-X7-Nb1"/>
+                                            <constraint firstAttribute="bottom" secondItem="qKU-Vm-M8S" secondAttribute="bottom" constant="5" id="n8a-FV-mhc"/>
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="kmZ-4j-7BL" userLabel="jpqModifierView">
                                         <rect key="frame" x="0.0" y="0.0" width="640" height="74"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhR-iq-hae">
-                                                <rect key="frame" x="74" y="7" width="55" height="14"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Load JPQ" id="VUw-1h-tub">
-                                                    <font key="font" metaFont="smallSystem"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LW3-sE-rCV">
-                                                <rect key="frame" x="24" y="21" width="40" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="e60-fb-E8e"/>
-                                                </constraints>
-                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zwe-bM-IId">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <action selector="addJPQButtonActionWithSender:" target="XfG-lQ-9wD" id="Ije-ST-Iyx"/>
-                                                </connections>
-                                            </button>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Vt-hV-c1C">
-                                                <rect key="frame" x="84" y="21" width="40" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="40" id="SgX-qi-wfv"/>
-                                                </constraints>
-                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSListViewTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xAy-n8-aqk">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <action selector="loadJPQActionButtonWithSender:" target="XfG-lQ-9wD" id="48t-4G-AjO"/>
-                                                </connections>
-                                            </button>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USg-wC-c09">
-                                                <rect key="frame" x="18" y="7" width="50" height="14"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add JPQ" id="0yD-e2-5rk">
-                                                    <font key="font" metaFont="smallSystem"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
+                                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="9" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ImV-o9-c6u">
+                                                <rect key="frame" x="20" y="5" width="106" height="42"/>
+                                                <subviews>
+                                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qxy-Ev-km0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="46" height="42"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LW3-sE-rCV">
+                                                                <rect key="frame" x="3" y="12" width="40" height="31"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="WW3-ho-ggZ"/>
+                                                                    <constraint firstAttribute="height" constant="28" id="YhM-Fh-LxG"/>
+                                                                </constraints>
+                                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zwe-bM-IId">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="addJPQButtonActionWithSender:" target="XfG-lQ-9wD" id="Ije-ST-Iyx"/>
+                                                                </connections>
+                                                            </button>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="USg-wC-c09">
+                                                                <rect key="frame" x="-2" y="0.0" width="50" height="14"/>
+                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add JPQ" id="0yD-e2-5rk">
+                                                                    <font key="font" metaFont="smallSystem"/>
+                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYN-F8-Dph">
+                                                        <rect key="frame" x="55" y="0.0" width="51" height="42"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Vt-hV-c1C">
+                                                                <rect key="frame" x="6" y="12" width="40" height="31"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="40" id="SgX-qi-wfv"/>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="lmg-tb-Iwc"/>
+                                                                    <constraint firstAttribute="height" constant="28" id="yWQ-Ub-N6L"/>
+                                                                </constraints>
+                                                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSListViewTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xAy-n8-aqk">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="loadJPQActionButtonWithSender:" target="XfG-lQ-9wD" id="48t-4G-AjO"/>
+                                                                </connections>
+                                                            </button>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qhR-iq-hae">
+                                                                <rect key="frame" x="-2" y="0.0" width="55" height="14"/>
+                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Load JPQ" id="VUw-1h-tub">
+                                                                    <font key="font" metaFont="smallSystem"/>
+                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                </subviews>
+                                                <visibilityPriorities>
+                                                    <integer value="1000"/>
+                                                    <integer value="1000"/>
+                                                </visibilityPriorities>
+                                                <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                    <real value="3.4028234663852886e+38"/>
+                                                </customSpacing>
+                                            </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="USg-wC-c09" firstAttribute="top" secondItem="LW3-sE-rCV" secondAttribute="bottom" constant="2" id="LJe-gp-Gcf"/>
-                                            <constraint firstAttribute="bottom" secondItem="USg-wC-c09" secondAttribute="bottom" constant="7" id="ZBW-0F-JB2"/>
-                                            <constraint firstItem="USg-wC-c09" firstAttribute="top" secondItem="LW3-sE-rCV" secondAttribute="bottom" constant="2" id="a75-dl-t1W"/>
-                                            <constraint firstItem="USg-wC-c09" firstAttribute="leading" secondItem="kmZ-4j-7BL" secondAttribute="leading" constant="20" id="adR-lR-k71"/>
-                                            <constraint firstItem="2Vt-hV-c1C" firstAttribute="leading" secondItem="LW3-sE-rCV" secondAttribute="trailing" constant="20" id="dUL-tJ-3T0"/>
-                                            <constraint firstItem="2Vt-hV-c1C" firstAttribute="leading" secondItem="LW3-sE-rCV" secondAttribute="trailing" constant="20" id="hkC-Ui-xzX"/>
-                                            <constraint firstItem="qhR-iq-hae" firstAttribute="leading" secondItem="USg-wC-c09" secondAttribute="trailing" constant="10" id="qgo-uf-NIy"/>
-                                            <constraint firstItem="2Vt-hV-c1C" firstAttribute="top" secondItem="kmZ-4j-7BL" secondAttribute="top" constant="29" id="row-v9-bbD"/>
-                                            <constraint firstItem="qhR-iq-hae" firstAttribute="top" secondItem="2Vt-hV-c1C" secondAttribute="bottom" constant="2" id="uhP-k0-TD8"/>
-                                            <constraint firstItem="LW3-sE-rCV" firstAttribute="top" secondItem="kmZ-4j-7BL" secondAttribute="top" constant="29" id="xkE-dU-I2i"/>
-                                            <constraint firstItem="LW3-sE-rCV" firstAttribute="leading" secondItem="kmZ-4j-7BL" secondAttribute="leading" constant="24" id="z0d-wS-myO"/>
+                                            <constraint firstItem="ImV-o9-c6u" firstAttribute="leading" secondItem="kmZ-4j-7BL" secondAttribute="leading" constant="20" id="KSc-XH-zfG"/>
+                                            <constraint firstAttribute="bottom" secondItem="ImV-o9-c6u" secondAttribute="bottom" constant="5" id="aHi-Lt-hPk"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
