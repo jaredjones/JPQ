@@ -22,15 +22,15 @@ class FileOutlineView: NSOutlineView/*, NSDraggingDestination*/
     
     convenience init()
     {
-        self.init(frame: CGRectMake(0, 0, 0, 0))
+        self.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
         // Drawing code here.
     }
     

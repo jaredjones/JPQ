@@ -11,7 +11,7 @@ import Cocoa
 extension Double
 {
     func format(f: String) -> String {
-        return NSString(format: "%\(f)f", self) as String
+        return NSString(format: "%\(f)f" as NSString, self) as String
     }
 }
 
@@ -30,7 +30,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     var useBaseTwo:Bool = true
     weak var holder:FileViewController?
     
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -50,7 +50,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
         maxNumberOfFilesTextField.stringValue = String("\(maxNumberOfFiles)")
         filePositionByteSizeTextField.stringValue = String("\(filePositionByteSize)")
         
-        baseTwoCheckBox.state = Int(useBaseTwo)
+        baseTwoCheckBox.state = useBaseTwo ? 1 : 0
         
         updateFileSizeLabel()
         // Do view setup here.
@@ -107,7 +107,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             counterSpaceFiles += 1
         }
         
-        let maxFileByteString = convertToAbbreviatedForm(counterMaxFiles, size: Double(abbreviatedMaxFilesBig))
+        let maxFileByteString = convertToAbbreviatedForm(counter: counterMaxFiles, size: Double(abbreviatedMaxFilesBig))
         
         if counterMaxFiles == 0
         {
@@ -118,7 +118,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             fileSizeLabel.stringValue = "JPQ Size: \(estimatedMaxFileSize) bytes (\(maxFileByteString))."
         }
         
-        let combinedStorageByteString = convertToAbbreviatedForm(counterSpaceFiles, size: Double(abbreviatedSpaceFilesBig))
+        let combinedStorageByteString = convertToAbbreviatedForm(counter: counterSpaceFiles, size: Double(abbreviatedSpaceFilesBig))
         
         if counterSpaceFiles == 0
         {
@@ -141,23 +141,23 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             case 0:
                 byteString = "\(size) bytes"
             case 1:
-                byteString = "\(size.format(format))KiBs"
+                byteString = "\(size.format(f: format))KiBs"
             case 2:
-                byteString = "\(size.format(format))MiBs"
+                byteString = "\(size.format(f: format))MiBs"
             case 3:
-                byteString = "\(size.format(format))GiBs"
+                byteString = "\(size.format(f: format))GiBs"
             case 4:
-                byteString = "\(size.format(format))TiBs"
+                byteString = "\(size.format(f: format))TiBs"
             case 5:
-                byteString = "\(size.format(format))PiBs"
+                byteString = "\(size.format(f: format))PiBs"
             case 6:
-                byteString = "\(size.format(format))EiBs"
+                byteString = "\(size.format(f: format))EiBs"
             case 7:
-                byteString = "\(size.format(format))ZiBs"
+                byteString = "\(size.format(f: format))ZiBs"
             case 8:
-                byteString = "\(size.format(format))YiBs"
+                byteString = "\(size.format(f: format))YiBs"
             default:
-                byteString = "\(size.format(format)) bytes"
+                byteString = "\(size.format(f: format)) bytes"
             }
         }
         else
@@ -167,23 +167,23 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             case 0:
                 byteString = "\(size) bytes"
             case 1:
-                byteString = "\(size.format(format))KBs"
+                byteString = "\(size.format(f: format))KBs"
             case 2:
-                byteString = "\(size.format(format))MBs"
+                byteString = "\(size.format(f: format))MBs"
             case 3:
-                byteString = "\(size.format(format))GBs"
+                byteString = "\(size.format(f: format))GBs"
             case 4:
-                byteString = "\(size.format(format))TBs"
+                byteString = "\(size.format(f: format))TBs"
             case 5:
-                byteString = "\(size.format(format))PBs"
+                byteString = "\(size.format(f: format))PBs"
             case 6:
-                byteString = "\(size.format(format))EBs"
+                byteString = "\(size.format(f: format))EBs"
             case 7:
-                byteString = "\(size.format(format))ZBs"
+                byteString = "\(size.format(f: format))ZBs"
             case 8:
-                byteString = "\(size.format(format))YBs"
+                byteString = "\(size.format(f: format))YBs"
             default:
-                byteString = "\(size.format(format)) bytes"
+                byteString = "\(size.format(f: format)) bytes"
             }
         }
         return byteString;
@@ -210,7 +210,7 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     {
         let x = maxNumberOfFiles
         let y = filePositionByteSize
-        holder!.createJPQFilePrompt(x, filePositionByteSize: y)
+        holder!.createJPQFilePrompt(maxFiles: x, filePositionByteSize: y)
     }
     
     @IBAction func stepperPressed(sender: NSStepper)
@@ -246,31 +246,31 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
     }
     //Allows only numbers in Textfield
     var lastLength:Int = 0
-    override func controlTextDidChange(obj: NSNotification)
+    override func controlTextDidChange(_ notification: Notification)
     {
-        let txtField:NSTextField = obj.object as! NSTextField
-        let len = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+        let txtField:NSTextField = notification.object as! NSTextField
+        let len = txtField.stringValue.lengthOfBytes(using: String.Encoding.utf8)
         if len == 0
         {
             return
         }
-        var str:NSString = txtField.stringValue
+        var str:NSString = txtField.stringValue as NSString
         
         //Check for non-ascii character and remove it
         if (len - lastLength) > 1
         {
-            txtField.stringValue = str.substringToIndex(len - (len - lastLength))
+            txtField.stringValue = str.substring(to: len - (len - lastLength))
             return
         }
         
         //Grab character and strip it if it's not a number
-        let chr = str.characterAtIndex(len - 1)
+        let chr = str.character(at: len - 1)
         if chr < 48 || chr > 57
         {
-            str = str.substringToIndex(len - 1)
+            str = str.substring(to: len - 1) as NSString
             txtField.stringValue = str as String
         }
-        lastLength = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+        lastLength = txtField.stringValue.lengthOfBytes(using: String.Encoding.utf8)
         
         if txtField == maxNumberOfFilesTextField
         {
@@ -280,14 +280,14 @@ class AddJPQPopover: NSViewController, NSTextFieldDelegate
             }
             self.maxFilesStepper.integerValue = txtField.integerValue
             self.maxNumberOfFiles = UInt64(txtField.integerValue)
-            self.stepperPressed(self.maxFilesStepper)
+            self.stepperPressed(sender: self.maxFilesStepper)
             updateFileSizeLabel()
         }
     }
     
-    override func controlTextDidBeginEditing(obj: NSNotification)
+    override func controlTextDidBeginEditing(_ notification: Notification)
     {
-        let txtField:NSTextField = obj.object as! NSTextField
-        lastLength = txtField.stringValue.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+        let txtField:NSTextField = notification.object as! NSTextField
+        lastLength = txtField.stringValue.lengthOfBytes(using: String.Encoding.utf8)
     }
 }

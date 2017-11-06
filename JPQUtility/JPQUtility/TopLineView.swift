@@ -10,10 +10,10 @@ import Cocoa
 
 class TopLineView: NSView
 {
-    override func drawRect(dirtyRect: NSRect)
+    override func draw(_ dirtyRect: NSRect)
     {
-        super.drawRect(dirtyRect)
-        self.drawBorder(dirtyRect)
+        super.draw(dirtyRect)
+        self.drawBorder(rect: dirtyRect)
     }
     
     func drawBorder(rect:NSRect)
@@ -24,8 +24,8 @@ class TopLineView: NSView
         }
     
         let line:NSBezierPath = NSBezierPath()
-        line.moveToPoint(NSMakePoint(0, rect.height))
-        line.lineToPoint(NSMakePoint(rect.width, rect.height))
+        line.move(to: NSMakePoint(0, rect.height))
+        line.line(to: NSMakePoint(rect.width, rect.height))
         
         line.lineWidth = 1;
         NSColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1).set()

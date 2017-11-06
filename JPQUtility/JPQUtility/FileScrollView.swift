@@ -18,11 +18,12 @@ class FileScrollView: NSScrollView {
     }
     
     override func viewWillDraw() {
-        line.frame = CGRectMake(0, 0, self.frame.width, 1)
+        
+        line.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 1)
     }
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
         // Drawing code here.
     }
 }

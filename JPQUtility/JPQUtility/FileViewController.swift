@@ -28,7 +28,7 @@ class FileViewController: NSViewController {
     //TODO: Make this atomic when swift implemented this
     var loadedJPQFile:JPQFileSwiftBridge?
     var addJPQPop = NSPopover()
-    var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle: nil)!
+    var addJPQPopVC = AddJPQPopover(nibName: "AddJPQPopover", bundle:nil)!
     
     required init?(coder: NSCoder) {
         fileOutlineScrollView = FileScrollView()
@@ -61,7 +61,7 @@ class FileViewController: NSViewController {
         savePanel!.nameFieldStringValue = "file.JPQ"
         savePanel!.allowedFileTypes = ["JPQ"]
         savePanel!.allowsOtherFileTypes = false
-        savePanel!.extensionHidden = false
+        savePanel!.isExtensionHidden = false
         savePanel!.canCreateDirectories = true
         
         openPanel = NSOpenPanel()
@@ -69,14 +69,14 @@ class FileViewController: NSViewController {
         openPanel!.nameFieldStringValue = "file.JPQ"
         openPanel!.allowedFileTypes = ["JPQ"]
         openPanel!.allowsOtherFileTypes = false
-        openPanel!.extensionHidden = false
+        openPanel!.isExtensionHidden = false
         
-        toolbarVisualEffectsView.state = NSVisualEffectState.FollowsWindowActiveState
-        toolbarVisualEffectsView.material = NSVisualEffectMaterial.Titlebar
-        toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.BehindWindow
+        toolbarVisualEffectsView.state = NSVisualEffectState.followsWindowActiveState
+        toolbarVisualEffectsView.material = NSVisualEffectMaterial.titlebar
+        toolbarVisualEffectsView.blendingMode = NSVisualEffectBlendingMode.behindWindow
         
         addJPQPop.contentViewController = addJPQPopVC
-        addJPQPop.behavior = NSPopoverBehavior.Semitransient
+        addJPQPop.behavior = NSPopoverBehavior.semitransient
         addJPQPopVC.holder = self;
         
         // Do any additional setup after loading the view.
@@ -105,8 +105,8 @@ class FileViewController: NSViewController {
     {
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.addJPQPop.showRelativeToRect(NSRect(x: 0, y: 0, width: 250, height: 160), ofView: self.addJPQLabel, preferredEdge: NSRectEdge.MaxY)
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.addJPQPop.show(relativeTo: NSRect(x: 0, y: 0, width: 250, height: 160), of: self.addJPQLabel, preferredEdge: NSRectEdge.maxY)
         })
         return
     }
@@ -114,28 +114,28 @@ class FileViewController: NSViewController {
     var constList:Array<NSLayoutConstraint>?
     @IBAction func loadJPQActionButton(sender: NSButton)
     {
-        addJPQButton.enabled = false
-        loadJPQButton.enabled = false
+        addJPQButton.isEnabled = false
+        loadJPQButton.isEnabled = false
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.openPanel!.beginWithCompletionHandler({ (result:Int) -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.openPanel!.begin(completionHandler: { (result:Int) -> Void in
                 if result == NSFileHandlingPanelOKButton
                 {
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-                        self.loadJPQFile(self.openPanel!.URL!)
-                        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.global(qos: .userInitiated).async(execute: { () -> Void in
+                        self.loadJPQFile(jpqFilePath: self.openPanel!.url! as NSURL)
+                        DispatchQueue.main.sync(execute: { () -> Void in
                             self.addFileScrollViewIfNotSubViewedOfSelf()
-                            self.addJPQButton.enabled = true
-                            self.loadJPQButton.enabled = true
-                            self.jpqModifierView.hidden = true
-                            self.fileModifierView.hidden = false
+                            self.addJPQButton.isEnabled = true
+                            self.loadJPQButton.isEnabled = true
+                            self.jpqModifierView.isHidden = true
+                            self.fileModifierView.isHidden = false
                         })
                     })
                 }
                 else
                 {
-                    self.addJPQButton.enabled = true
-                    self.loadJPQButton.enabled = true
+                    self.addJPQButton.isEnabled = true
+                    self.loadJPQButton.isEnabled = true
                 }
             })
         })
@@ -144,8 +144,8 @@ class FileViewController: NSViewController {
     @IBAction func unloadJPQPressed(sender: NSButton)
     {
         self.loadedJPQFile = nil;
-        self.jpqModifierView.hidden = false
-        self.fileModifierView.hidden = true
+        self.jpqModifierView.isHidden = false
+        self.fileModifierView.isHidden = true
         self.removeFileScrollViewIfNotSubViewedOfSelf()
     }
     
@@ -153,10 +153,10 @@ class FileViewController: NSViewController {
     {
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottom = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
-        let trailing = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0)
-        let top = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
-        let leading = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0)
+        let top = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: toolbarVisualEffectsView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
+        let leading = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0)
         
         self.view.addConstraint(bottom)
         self.view.addConstraint(trailing)
@@ -176,11 +176,11 @@ class FileViewController: NSViewController {
     
     func addFileScrollViewIfNotSubViewedOfSelf()
     {
-        if !fileOutlineScrollView.isDescendantOf(self.view)
+        if !fileOutlineScrollView.isDescendant(of: self.view)
         {
-            fileOutlineScrollView.frame = CGRectMake(0, 0, 0, 0)
+            fileOutlineScrollView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
             self.view.addSubview(fileOutlineScrollView)
-            self.constList = addConstraintForBottomSection(fileOutlineScrollView)
+            self.constList = addConstraintForBottomSection(view: fileOutlineScrollView)
             
             var frame = view.window!.frame
             frame.size.height = 500
@@ -190,7 +190,7 @@ class FileViewController: NSViewController {
     
     func removeFileScrollViewIfNotSubViewedOfSelf()
     {
-        if fileOutlineScrollView.isDescendantOf(self.view)
+        if fileOutlineScrollView.isDescendant(of: self.view)
         {
             FileViewController.removeConstraintsFromView(view: self.view, withConstraints: self.constList!)
             
@@ -204,29 +204,29 @@ class FileViewController: NSViewController {
     
     func createJPQFilePrompt(maxFiles:UInt64, filePositionByteSize:UInt8)
     {
-        addJPQButton.enabled = false
-        loadJPQButton.enabled = false
+        addJPQButton.isEnabled = false
+        loadJPQButton.isEnabled = false
         
         
         // Since running the savePanel will hault the sender action from returning
         // we must prompt the save panel asyncronously
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
-            self.savePanel!.beginWithCompletionHandler { (result: Int) -> Void in
+            self.savePanel!.begin { (result: Int) -> Void in
                 if result == NSFileHandlingPanelOKButton
                 {
-                    if let fileLocation = self.savePanel?.URL?.path
+                    if let fileLocation = self.savePanel?.url?.path
                     {
-                        self.saveJPQFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: false)
+                        self.saveJPQFile(fileLocation: fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: false)
                     }
                     else
                     {
-                        self.dispatchStandardAlert("JPQFile Failed to Save!", body: "The file location you're attemping to save to is invalid aka nil.",
-                            style: NSAlertStyle.WarningAlertStyle)
+                        self.dispatchStandardAlert(title: "JPQFile Failed to Save!", body: "The file location you're attemping to save to is invalid aka nil.",
+                            style: .warning)
                     }
                 }
-                self.addJPQButton.enabled = true
-                self.loadJPQButton.enabled = true
+                self.addJPQButton.isEnabled = true
+                self.loadJPQButton.isEnabled = true
             }
             
             //dispatch_async must return void
@@ -236,14 +236,14 @@ class FileViewController: NSViewController {
     
     func loadJPQFile(jpqFilePath:NSURL)
     {
-        let jpqFile = JPQLibSwiftBridge.LoadJPQPackage(jpqFilePath.path!)
+        let jpqFile = JPQLibSwiftBridge.loadJPQPackage(jpqFilePath.path!)
         if jpqFile != nil
         {
             self.loadedJPQFile = jpqFile
             var fileSize:UInt64 = 0
-            let fileData:NSData = self.loadedJPQFile!.LoadFile("/dufus/marcus/(jpqdir)", withFileSize:&fileSize)
+            let fileData:NSData = self.loadedJPQFile!.loadFile("/dufus/marcus/(jpqdir)", withFileSize:&fileSize)! as NSData
             
-            let fileStuff:NSString = NSString(data: fileData, encoding: NSUTF8StringEncoding)!
+            let fileStuff:NSString = NSString(data: fileData as Data, encoding: String.Encoding.utf8.rawValue)!
             
             print("Size:\(fileSize)", terminator: "")
             print("StringLength:\(fileStuff.length)", terminator: "")
@@ -253,42 +253,42 @@ class FileViewController: NSViewController {
     
     func saveJPQFile(fileLocation:String, maxFiles:UInt64, filePositionByteSize:UInt8, replace:Bool = false) -> Void
     {
-        let jpqFile = JPQLibSwiftBridge.CreateJPQPackage(fileLocation,
+        let jpqFile = JPQLibSwiftBridge.createJPQPackage(fileLocation,
             withOverwriteFile: replace,
-            withMaxNumberOfFiles: NSNumber(unsignedLongLong: maxFiles),
+            withMaxNumberOfFiles: NSNumber(value: maxFiles),
             withVersion: nil,
-            withFilePositionSizeInBytes: NSNumber(unsignedChar: filePositionByteSize))
-        if ((jpqFile) != nil)
+            withFilePositionSizeInBytes: NSNumber(value: filePositionByteSize))
+        if let jpqFile = jpqFile
         {
             if jpqFile.errorCode != 0
             {
                 switch jpqFile.errorCode
                 {
                 case 1:
-                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                    self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "An unknown error has occured that has prevented the JPQFile from saving.",
-                        style: NSAlertStyle.WarningAlertStyle)
+                        style: NSAlertStyle.warning)
                 case 2:
                     let alert = NSAlert()
-                    alert.addButtonWithTitle("Cancel")
-                    alert.addButtonWithTitle("Overwrite File");
+                    alert.addButton(withTitle: "Cancel")
+                    alert.addButton(withTitle: "Overwrite File");
                     alert.messageText = "JPQFile Already Exists!"
                     alert.informativeText = "The JPQFile already exists!\rAre you sure you want to overwrite the file?\rThere is no going back!"
-                    alert.alertStyle = NSAlertStyle.CriticalAlertStyle
-                    alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
+                    alert.alertStyle = NSAlertStyle.critical
+                    alert.beginSheetModal(for: self.view.window!, completionHandler: { (NSModalResponse) -> Void in
                         if NSModalResponse == NSAlertSecondButtonReturn
                         {
-                            self.saveJPQFile(fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
+                            self.saveJPQFile(fileLocation: fileLocation, maxFiles: maxFiles, filePositionByteSize: filePositionByteSize, replace: true)
                         }
                     })
                 case 4:
-                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                    self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "OS X has denied you write access to the location you've chosen!",
-                        style: NSAlertStyle.WarningAlertStyle)
+                        style: NSAlertStyle.warning)
                 case 8:
-                    self.dispatchStandardAlert("JPQFile Failed to Save!",
+                    self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                         body: "OS X has denied you read access to the location you've chosen!",
-                        style: NSAlertStyle.WarningAlertStyle)
+                        style: NSAlertStyle.warning)
                 default:
                     break
                 }
@@ -296,17 +296,17 @@ class FileViewController: NSViewController {
             else
             {
                 addJPQPop.close()
-                self.jpqModifierView.hidden = true
-                self.fileModifierView.hidden = false
+                self.jpqModifierView.isHidden = true
+                self.fileModifierView.isHidden = false
                 self.loadedJPQFile = jpqFile
                 self.addFileScrollViewIfNotSubViewedOfSelf()
             }
         }
         else
         {
-            self.dispatchStandardAlert("JPQFile Failed to Save!",
+            self.dispatchStandardAlert(title: "JPQFile Failed to Save!",
                 body: "An unknown error has occured that has prevented the file from saving. The JPQFile was returned as nil to the program.",
-                style: NSAlertStyle.WarningAlertStyle)
+                style: .warning)
         }
     }
     
@@ -318,16 +318,16 @@ class FileViewController: NSViewController {
     func dispatchStandardAlert(title:String, body:String, style:NSAlertStyle)
     {
         let alert = NSAlert()
-        alert.addButtonWithTitle("Continue")
+        alert.addButton(withTitle: "Continue")
         alert.messageText = title
         alert.informativeText = body
         alert.alertStyle = style
-        alert.beginSheetModalForWindow(self.view.window!, completionHandler: { (NSModalResponse) -> Void in
+        alert.beginSheetModal(for: self.view.window!, completionHandler: { (NSModalResponse) -> Void in
             
         })
     }
     
-    override var representedObject: AnyObject? {
+    override var representedObject: Any? {
         didSet {
             // Update the view, if already loaded.
         }

@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7528.3" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12113" systemVersion="16G30" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7528.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AddJPQPopover" customModule="JPQUtility" customModuleProvider="target">
@@ -22,8 +23,9 @@
             <rect key="frame" x="0.0" y="0.0" width="329" height="160"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9xb-wH-CUX">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xb-wH-CUX">
                     <rect key="frame" x="164" y="121" width="137" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="HXd-j8-Z2o">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -32,50 +34,56 @@
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="upB-cp-G69">
                     <rect key="frame" x="235" y="7" width="87" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="squareTextured" title="Create JPQ" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="q1o-aR-dGH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="createJPQButton:" target="-2" id="zd3-do-D3J"/>
+                        <action selector="createJPQButtonWithSender:" target="-2" id="Q74-Pz-tlp"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDx-VE-2QM">
                     <rect key="frame" x="7" y="7" width="55" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="squareTextured" title="Cancel" bezelStyle="texturedSquare" imagePosition="left" alignment="left" state="on" borderStyle="border" allowsMixedState="YES" inset="2" id="JDN-Xy-LwM">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="cancelJPQPopover:" target="-2" id="yRx-KQ-i4Q"/>
+                        <action selector="cancelJPQPopoverWithSender:" target="-2" id="V12-BD-45y"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-sV-1Xd">
                     <rect key="frame" x="12" y="96" width="146" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="File Position Byte Size:" id="3cy-K5-NuT">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RDo-Zn-tgM">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDo-Zn-tgM">
                     <rect key="frame" x="12" y="80" width="291" height="13"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Max Storage: x bytes (XKiBs)" id="U7d-uJ-xt4">
                         <font key="font" metaFont="system" size="10"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4GH-Hs-KBA">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4GH-Hs-KBA">
                     <rect key="frame" x="164" y="94" width="137" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="VXy-en-ZMe">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DXn-gW-f2M">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXn-gW-f2M">
                     <rect key="frame" x="12" y="70" width="291" height="13"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="JPQ Size: x bytes (xKiBs)" id="9TB-NI-5Hn">
                         <font key="font" metaFont="system" size="10"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -84,30 +92,34 @@
                 </textField>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-xI-CeO">
                     <rect key="frame" x="306" y="118" width="19" height="27"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="9.2233720368547758e+18" doubleValue="1" id="G3o-sx-Eev"/>
                     <connections>
-                        <action selector="stepperPressed:" target="-2" id="gGD-Ur-ypx"/>
+                        <action selector="stepperPressedWithSender:" target="-2" id="B5r-5d-LRC"/>
                     </connections>
                 </stepper>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i30-zx-IVF">
                     <rect key="frame" x="306" y="91" width="19" height="27"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="9.2233720368547758e+18" doubleValue="1" id="BF8-Rr-4cP"/>
                     <connections>
-                        <action selector="stepperPressed:" target="-2" id="jsp-tJ-hHM"/>
+                        <action selector="stepperPressedWithSender:" target="-2" id="cfp-f4-eUc"/>
                     </connections>
                 </stepper>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kXB-j0-e5S">
                     <rect key="frame" x="110" y="11" width="94" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Use Base-2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VS2-jn-56e">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="baseChangePressed:" target="-2" id="fgg-jG-bfm"/>
+                        <action selector="baseChangePressedWithSender:" target="-2" id="v7d-E9-zrf"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-LJ-7FA">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehT-LJ-7FA">
                     <rect key="frame" x="6" y="123" width="152" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Maximum Files/Folders:" id="COv-Wx-jsN">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
