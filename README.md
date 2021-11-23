@@ -1,5 +1,9 @@
 # JPQ (Jared Package) Library
 
+## Warning
+
+This was a personal project during my years in college. It is actually pretty slow due to the obsessive amount of syscalls it makes. Please do not use this in production code. :)
+
 ## Introduction
 
 The JPQ Library is a C++ piece of software inspired by Blizzard Entertainment's MPQ file format. The JPQ library allows for the creation of very large data stores of files. JPQ is designed to be used in video games and high performance applications that require a faster alternative to that of a typical B-TREE log(n) based file lookup that is used by most file systems. Files that are inserted into a JPQ file format are indexed using a hash table for really fast ~O(1) lookup. When high performance applications, in particular games have to load in tons of resources from disk, a lot of times software applications will freeze or stay stuck on a loading bar while resources load from disk. The JPQ library is used to counteract this. Utilizing both spatial locality along with the fast lookup of the hash table, software is able to access files from disk considerably faster than that of an OS filesystem.
